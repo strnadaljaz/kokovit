@@ -9,7 +9,7 @@ export default function Hero() {
     const router = useRouter();
     
     return (
-        <div className="bg-[#4caf50] h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-8">
+        <div className="h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-8">
             <p className="text-white text-3xl font-bold mb-12 text-center animate-fade-in">V kar treh različnih oblikah!</p>
             <div id="Domov" className="flex items-center justify-center w-full gap-8 max-w-6xl">
                 <div className="w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up" onClick={() => openNewPage(router, "/izdelki/70l")}>
