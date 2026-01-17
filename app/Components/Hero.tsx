@@ -1,7 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-function openNewPage(router, pageName) {
+function openNewPage(router: AppRouterInstance, pageName: string) {
     router.push(pageName);
 }
 
