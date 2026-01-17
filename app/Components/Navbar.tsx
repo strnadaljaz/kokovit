@@ -1,6 +1,6 @@
 "use client";
 // Style consts
-const aStyle = "font-semibold text-xl group text-white transition-all duration-300 ease-in-out hover:text-[#6b4226]";
+const aStyle = "font-semibold text-xl group text-[#F5F5DC] transition-all duration-300 ease-in-out hover:text-[#6b4226]";
 const spanStyle = "bg-left-bottom bg-gradient-to-r from-[#6B4226] to-[#6B4226] bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-250 ease-out";
 
 export default function Navbar() {
