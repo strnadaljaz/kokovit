@@ -21,13 +21,13 @@ export default function Navbar() {
 
                     {/* Hamburger Button */}
                     <button 
-                        className={`md:hidden absolute right-4 focus:outline-none z-[60] p-2 ${isOpen ? 'fixed' : ''}`}
+                        className="md:hidden absolute right-4 focus:outline-none p-2"
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <div className="w-8 h-8 flex flex-col justify-center items-center">
-                            <span className={`block w-7 h-0.5 transition-all duration-300 ${isOpen ? 'bg-[#2d5016] rotate-45 translate-y-1.5' : 'bg-[#F5F5DC] mb-1.5'}`}></span>
-                            <span className={`block w-7 h-0.5 transition-all duration-300 ${isOpen ? 'bg-[#2d5016] opacity-0' : 'bg-[#F5F5DC] mb-1.5'}`}></span>
-                            <span className={`block w-7 h-0.5 transition-all duration-300 ${isOpen ? 'bg-[#2d5016] -rotate-45 -translate-y-1.5' : 'bg-[#F5F5DC]'}`}></span>
+                            <span className="block w-7 h-0.5 bg-[#F5F5DC] mb-1.5"></span>
+                            <span className="block w-7 h-0.5 bg-[#F5F5DC] mb-1.5"></span>
+                            <span className="block w-7 h-0.5 bg-[#F5F5DC]"></span>
                         </div>
                     </button>
                 </div>
@@ -35,12 +35,31 @@ export default function Navbar() {
 
             {/* Mobile Menu Overlay */}
             <div 
-                className={`md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`md:hidden fixed inset-0 z-40 transition-opacity duration-800 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 onClick={() => setIsOpen(false)}
             />
 
             {/* Mobile Menu Sidebar */}
-            <div className={`md:hidden fixed top-0 right-0 h-full w-[75%] bg-[#F5F5DC] shadow-2xl z-[55] transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`md:hidden fixed top-0 right-0 h-full w-[100%] bg-[#F5F5DC] shadow-2xl z-[55] transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                {/* Close Button */}
+                <button 
+                    className="absolute top-6 right-6 p-2 focus:outline-none group"
+                    onClick={() => setIsOpen(false)}
+                    aria-label="Zapri meni"
+                >
+                    <svg 
+                        className="w-8 h-8 text-[#2d5016] transition-transform duration-300 group-hover:scale-110" 
+                        fill="none" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth="2.5" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                    >
+                        <path d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                
                 <div className="flex flex-col items-center justify-center h-full">
                     <ul className="flex flex-col items-center space-y-8">
                         <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-100`}>
