@@ -22,7 +22,7 @@ export default function Page() {
                     <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="flex justify-center">
                             <img 
-                                src="/jumbo.webp" 
+                                src="/jumbo-detailed.webp" 
                                 alt="Kokovit Jumbo substrat" 
                                 className="w-full max-w-lg rounded-3xl shadow-2xl ring-4 ring-[#F5F5DC]/30"
                             />

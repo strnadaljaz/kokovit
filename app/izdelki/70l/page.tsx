@@ -76,13 +76,16 @@ export default function Page() {
                                 </p>
                             </div>
 
-                            <div className="bg-white rounded-xl p-6 shadow-lg">
+                            <div className="bg-white rounded-xl p-6 shadow-lg border-4 border-[#4CAF50]">
                                 <p className="text-xl font-semibold text-gray-800 mb-2">
                                     ✍️ PALETA 33 kom + 5 GRATIS
                                 </p>
-                                <p className="text-2xl font-bold text-[#4CAF50]">
+                                <p className="text-2xl font-bold text-[#4CAF50] mb-2">
                                     366€ (300€ + DDV)
                                 </p>
+                                <p className="text-lg text-green-600 font-semibold">
+                                    🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
+                                </p> 
                             </div>
                         </div>
 

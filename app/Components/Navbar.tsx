@@ -11,7 +11,7 @@ export default function Navbar() {
                     <li><a className={aStyle} href="/">Domov</a></li>
                     <li><a className={aStyle} href="#Produkti">Produkti</a></li>
                     <li><a className={aStyle} href="/onas">O nas</a></li>
-                    <li><a className={aStyle} href="#Povprasevanje">Povprasevanje</a></li>
+                    <li><a className={aStyle} href="/povprasevanje">Povprasevanje</a></li>
                     <li><a className={aStyle} href="#Kontakt">Kontakt</a></li>
                 </ul>
             </div>
