@@ -14,7 +14,7 @@ export default function Povprasevanje () {
                 <input type="text" name="ime" placeholder="Ime in priimek"/>
                 <input type="email" name="email" placeholder="E-pošta" />
                 <input type="tel" name="telefon" placeholder="Telefonska številka"/> 
-                <button onClick={() => sendMail(ime.value, email.value, telefon.value)}></button>
+                <button /*onClick={() => sendMail(ime.value, email.value, telefon.value)}*/></button>
             </form>
             <Footer />
         </div>
