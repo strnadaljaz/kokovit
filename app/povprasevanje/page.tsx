@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
-function sendMail(
+async function sendMail(
   imeInPriimek: string,
   eMail: string,
   telefonska: string,
@@ -14,17 +14,11 @@ function sendMail(
   kolicina45: number,
   kolicinaJumbo: number,
 ) {
-  console.log({
-    imeInPriimek,
-    eMail,
-    telefonska,
-    naslov,
-    postna,
-    kraj,
-    kolicina70,
-    kolicina45,
-    kolicinaJumbo,
-  });
+    const response = await fetch ("/api/send-email", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaJumbo}),
+    });
 }
 
 export default function Povprasevanje() {

@@ -6,9 +6,9 @@ export default function About() {
     const router = useRouter(); 
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-8 py-20">
+        <div className="lg:mt-0 mt-[50rem] min-h-screen flex items-center justify-center px-8 py-20">
             <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center animate-slide-up">
-                <div className="flex justify-center">
+                <div className="flex justify-center order-2 md:order-1">
                     <img 
                         src="grede.webp" 
                         alt="grede" 
@@ -16,7 +16,7 @@ export default function About() {
                     /> 
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-6 order-1 md:order-2">
                     <h2 className="text-5xl md:text-7xl font-bold text-[#F5F5DC] drop-shadow-lg">
                         O nas
                     </h2>

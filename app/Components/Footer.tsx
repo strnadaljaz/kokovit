@@ -28,10 +28,8 @@ export default function Footer () {
                     <h3 className="text-xl font-semibold mb-4">Povezave</h3>
                     <ul className="space-y-2">
                         <li><a href="/" className="hover:opacity-70 transition-opacity">Domov</a></li>
-                        <li><a href="#Produkti" className="hover:opacity-70 transition-opacity">Produkti</a></li>
                         <li><a href="/onas" className="hover:opacity-70 transition-opacity">O nas</a></li>
                         <li><a href="/povprasevanje" className="hover:opacity-70 transition-opacity">Povpraševanje</a></li>
-                        <li><a href="#Kontakt" className="hover:opacity-70 transition-opacity">Kontakt</a></li>
                     </ul>
                 </div>
 

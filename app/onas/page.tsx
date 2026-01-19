@@ -8,9 +8,17 @@ export default function Onas() {
             <Navbar />
             <div className="bg-gradient-to-b from-[#4CAF50] to-[#6b4226] min-h-screen">
                 <div className="max-w-5xl mx-auto px-8 py-20">
-                    <h1 className="text-5xl md:text-7xl font-bold text-[#F5F5DC] text-center mb-16 drop-shadow-lg">
+                    <h1 className="text-5xl md:text-7xl font-bold text-[#F5F5DC] text-center mb-12 drop-shadow-lg">
                         O nas
                     </h1>
+
+                    <div className="flex justify-center mb-16">
+                        <img 
+                            src="/onas.webp" 
+                            alt="O nas - Kokovit" 
+                            className="w-full max-w-3xl rounded-2xl shadow-2xl border-4 border-[#F5F5DC]/20 hover:scale-105 transition-transform duration-300"
+                        />
+                    </div>
 
                     <div className="space-y-12 text-[#F5F5DC]">
                         <section className="space-y-6">

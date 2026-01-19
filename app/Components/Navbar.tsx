@@ -11,17 +11,15 @@ export default function Navbar() {
             <nav className="relative top-0 w-full bg-[#4CAF50] h-[6rem] p-4 z-50">
                 <div className='flex items-center justify-center h-full max-w-7xl mx-auto relative'>
                     {/* Desktop Menu */}
-                    <ul className="hidden md:flex items-center space-x-6 lg:space-x-10">
+                    <ul className="hidden lg:flex items-center space-x-6 lg:space-x-10">
                         <li><a className={aStyle} href="/">Domov</a></li>
-                        <li><a className={aStyle} href="#Produkti">Produkti</a></li>
                         <li><a className={aStyle} href="/onas">O nas</a></li>
                         <li><a className={aStyle} href="/povprasevanje">Povpraševanje</a></li>
-                        <li><a className={aStyle} href="#Kontakt">Kontakt</a></li>
                     </ul>
 
                     {/* Hamburger Button */}
                     <button 
-                        className="md:hidden absolute right-4 focus:outline-none p-2"
+                        className="lg:hidden absolute right-4 focus:outline-none p-2"
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <div className="w-8 h-8 flex flex-col justify-center items-center">
@@ -35,12 +33,12 @@ export default function Navbar() {
 
             {/* Mobile Menu Overlay */}
             <div 
-                className={`md:hidden fixed inset-0 z-40 transition-opacity duration-800 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                className={`lg:hidden fixed inset-0 z-40 transition-opacity duration-800 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 onClick={() => setIsOpen(false)}
             />
 
             {/* Mobile Menu Sidebar */}
-            <div className={`md:hidden fixed top-0 right-0 h-full w-[100%] bg-[#F5F5DC] shadow-2xl z-[55] transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`lg:hidden fixed top-0 right-0 h-full w-[100%] bg-[#F5F5DC] shadow-2xl z-[55] transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 {/* Close Button */}
                 <button 
                     className="absolute top-6 right-6 p-2 focus:outline-none group"
