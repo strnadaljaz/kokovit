@@ -9,11 +9,13 @@ export default function Navbar() {
     return (
         <>
             <nav className="relative top-0 w-full bg-[#4CAF50] h-[6rem] p-4 z-50">
+                
                 <div className='flex items-center justify-center h-full max-w-7xl mx-auto relative'>
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex items-center space-x-6 lg:space-x-10">
                         <li><a className={aStyle} href="/">Domov</a></li>
                         <li><a className={aStyle} href="/onas">O nas</a></li>
+                        <li><a className={aStyle} href="/uporaba">Uporaba</a></li>
                         <li><a className={aStyle} href="/povprasevanje">Povpraševanje</a></li>
                     </ul>
 

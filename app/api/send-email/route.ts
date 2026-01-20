@@ -7,16 +7,57 @@ export async function POST(req: Request) {
         service: "gmail",
         auth: {
             user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_APP_PASSWORD,
+            pass: process.env.GMAIL_APP_PASS,
         },
     });
+    try {
+        await transporter.verify();
+    } catch (err: any) {
+        console.error(err);
+        return Response.json({
+            success: false,
+            error: err
+        },
+        {
+            status: 502
+        },
+        )
+    }
 
-    await transporter.sendMail({
+    const message = {
         from: process.env.GMAIL_USER,
         to: process.env.GMAIL_USER,
-        subject: `Novo narocilo od ${imeInPriimek}`,
-        text: `${imeInPriimek}\n${eMail}\n${telefonska}\n${naslov}\n${postna}\n${kraj}\nKolicina70:${kolicina70}\nKolicina45:${kolicina45}\n${kolicinaJumbo}`
-    });
+        subject: `Novo naročilo od ${imeInPriimek}`,
+        text: [
+            imeInPriimek,
+            eMail,
+            telefonska,
+            naslov,
+            postna,
+            kraj,
+            `Kolicina70: ${kolicina70 ?? 0}`,
+            `Kolicina45: ${kolicina45 ?? 0}`,
+            `Kolicina Big Bag: ${kolicinaJumbo ?? 0}`,
+        ].join('\n'),
+    };
 
-    return Response.json({ success: true });
+    try {
+        const info = await transporter.sendMail(message);
+
+        return Response.json(
+            {
+                success: true
+            },
+            { status: 200 },
+        );
+    } catch (err: any) {
+        console.error(err);
+        return Response.json(
+            {
+                success: false,
+                error: err
+            },
+            { status: 500 },
+        );
+    }
 }

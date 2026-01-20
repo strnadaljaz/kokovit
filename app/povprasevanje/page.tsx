@@ -19,6 +19,7 @@ async function sendMail(
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaJumbo}),
     });
+    console.log(response);
 }
 
 export default function Povprasevanje() {
@@ -65,6 +66,7 @@ export default function Povprasevanje() {
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 space-y-6">
           <div className="space-y-4">
             <input
+              required
               type="text"
               value={imeInPriimek}
               onChange={(e) => setImeInPriimek(e.target.value)}
@@ -72,6 +74,7 @@ export default function Povprasevanje() {
               className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
             />
             <input
+              required
               type="email"
               value={eMail}
               onChange={(e) => setEMail(e.target.value)}
@@ -79,6 +82,7 @@ export default function Povprasevanje() {
               className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
             />
             <input
+              required
               type="tel"
               value={telefonska}
               onChange={(e) => setTelefonska(e.target.value)}
@@ -86,6 +90,7 @@ export default function Povprasevanje() {
               className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
             />
             <input
+              required
               type="text"
               value={naslov}
               onChange={(e) => setNaslov(e.target.value)}
@@ -94,6 +99,7 @@ export default function Povprasevanje() {
             />
             <div className="grid grid-cols-2 gap-4">
               <input
+                required
                 type="text"
                 value={postna}
                 onChange={(e) => setPostna(e.target.value)}
@@ -101,6 +107,7 @@ export default function Povprasevanje() {
                 className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
               />
               <input
+                required
                 type="text"
                 value={kraj}
                 onChange={(e) => setKraj(e.target.value)}
