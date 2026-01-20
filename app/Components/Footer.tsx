@@ -58,6 +58,9 @@ export default function Footer () {
             <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-[#F5F5DC]/20 text-center text-sm">
                 <p>&copy; {new Date().getFullYear()} Kokovit. Vse pravice pridržane.</p>
             </div>
+            <div className="text-center mt-8">
+                <p>Izdelava spletne strani: <a href="https://strnadaljaz.vercel.app/" className="underline">Aljaž Strnad</a></p>
+            </div>
         </footer>
     );
 }

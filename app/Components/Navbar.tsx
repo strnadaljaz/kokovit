@@ -8,9 +8,13 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="relative top-0 w-full bg-[#4CAF50] h-[6rem] p-4 z-50">
-                
-                <div className='flex items-center justify-center h-full max-w-7xl mx-auto relative'>
+            <nav className="relative top-0 w-full bg-[#4CAF50] h-[6rem] p-4 z-50 flex items-start md:items-center border-b-2 border-[#2d5016] md:border-0"> 
+                <div className="w-[70%] md:w-[30%] flex items-center justify-center pl-4">
+                    <div className="relative">
+                            <img src="/logotip-black.webp" alt="logo" className="h-[4rem] w-auto"/>
+                    </div>
+                </div>
+                <div className='flex items-center justify-center h-full max-w-7xl mx-auto relative w-[30%] md:w-[70%]'>
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex items-center space-x-6 lg:space-x-10">
                         <li><a className={aStyle} href="/">Domov</a></li>

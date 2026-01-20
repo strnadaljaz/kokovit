@@ -36,7 +36,7 @@ export default function Page() {
                                 Z KOKOVIT substratom 70L – naraven substrat iz kokosovih vlaken, šote in organskih snovi, idealen za visoke grede, vrtove, rastlinjake, okrasne grede in lončnice!
                             </p>
                             <div className="text-2xl font-bold text-[#4CAF50]">
-                                Cena: 12,99€ (10,65€ + DDV)
+                                Cena: 12,99€
                             </div>
                         </div>
                         
@@ -57,7 +57,7 @@ export default function Page() {
                                     ✍️ 10 kom + 1 GRATIS
                                 </p>
                                 <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    120,78€ (99€ + DDV)
+                                    120,78€
                                 </p>
                                 <p className="text-lg text-green-600 font-semibold">
                                     🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
@@ -69,7 +69,7 @@ export default function Page() {
                                     ✍️ 15 kom + 2 GRATIS
                                 </p>
                                 <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    175,68€ (144€ + DDV)
+                                    175,68€
                                 </p>
                                 <p className="text-lg text-green-600 font-semibold">
                                     🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
@@ -81,7 +81,7 @@ export default function Page() {
                                     ✍️ PALETA 33 kom + 5 GRATIS
                                 </p>
                                 <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    366€ (300€ + DDV)
+                                    366€
                                 </p>
                                 <p className="text-lg text-green-600 font-semibold">
                                     🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!

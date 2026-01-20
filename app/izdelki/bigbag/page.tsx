@@ -67,7 +67,7 @@ export default function Page() {
                                     💰 Cena
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
-                                    125€ + DDV / 1m³
+                                    125,50€
                                 </p>
                             </div>
 
