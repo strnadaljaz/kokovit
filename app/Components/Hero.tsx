@@ -7,7 +7,8 @@ export default function Hero() {
     
     return (
         <div className="min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-4 md:px-8 py-12">
-            <p className="text-[#F5F5DC] text-xl sm:text-2xl md:text-3xl font-bold mb-8 md:mb-12 text-center animate-fade-in">
+            <img src="oblacko.webp" alt="logo" className="h-[11rem] md:h[20rem] mb-8"/>
+            <p className="text-[#F5F5DC] text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-center animate-fade-in">
                 V kar treh različnih <u><b>OBLIKAH!</b></u>
             </p>
             <div id="Domov" className="flex flex-col md:flex-row items-center justify-center w-full gap-8 md:gap-6 lg:gap-8 max-w-6xl">
