@@ -11,10 +11,10 @@ export default function Page() {
                     {/* Hero Section */}
                     <div className="text-center mb-12">
                         <h1 className="text-5xl md:text-7xl font-bold text-[#F5F5DC] mb-6 drop-shadow-lg">
-                            KOKOVIT JUMBO
+                            KOKOVIT BIG BAG
                         </h1>
                         <p className="text-2xl md:text-3xl text-[#F5F5DC] font-semibold">
-                            🌱🥥 Zdaj tudi v JUMBO izvedbi! 🥥🌱
+                            🌱🥥 Zdaj tudi v BIG BAG izvedbi! 🥥🌱
                         </p>
                     </div>
 
@@ -22,8 +22,8 @@ export default function Page() {
                     <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="flex justify-center">
                             <img 
-                                src="/jumbo-detailed.webp" 
-                                alt="Kokovit Jumbo substrat" 
+                                src="/bigbag-detailed.webp" 
+                                alt="Kokovit bigBag substrat" 
                                 className="w-full max-w-lg rounded-3xl shadow-2xl ring-4 ring-[#F5F5DC]/30"
                             />
                         </div>
@@ -33,7 +33,7 @@ export default function Page() {
                                 Potrebujete več substrata?
                             </h2>
                             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                                Imamo rešitev ➝ JUMBO vreča (1m³) Kokovit substrata – idealna za večje površine in profesionalno uporabo v vrtovih, visokih gredah ali rastlinjakih.
+                                Imamo rešitev ➝ BIG BAG vreča (1m³) Kokovit substrata – idealna za večje površine in profesionalno uporabo v vrtovih, visokih gredah ali rastlinjakih.
                             </p>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3">

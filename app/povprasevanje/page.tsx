@@ -19,7 +19,7 @@ async function sendMail(
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaJumbo}),
     });
-    console.log(response);
+    return response.ok;
 }
 
 export default function Povprasevanje() {
@@ -40,9 +40,15 @@ export default function Povprasevanje() {
   const [kolicina45, setKolicina45] = useState(0);
   const [kolicinaJumbo, setKolicinaJumbo] = useState(0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Loading and success states
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    sendMail(
+    setIsLoading(true);
+    const success = await sendMail(
       imeInPriimek,
       eMail,
       telefonska,
@@ -53,6 +59,25 @@ export default function Povprasevanje() {
       checked45l ? kolicina45 : 0,
       checkedJumbo ? kolicinaJumbo : 0,
     );
+    setIsLoading(false);
+    setIsSuccess(success);
+    setIsSubmitted(true);
+  };
+
+  const handleReset = () => {
+    setIsSubmitted(false);
+    setImeInPriimek("");
+    setEMail("");
+    setTelefonska("");
+    setNaslov("");
+    setPostna("");
+    setKraj("");
+    setChecked70l(false);
+    setChecked45l(false);
+    setCheckedJumbo(false);
+    setKolicina70(0);
+    setKolicina45(0);
+    setKolicinaJumbo(0);
   };
 
   return (
@@ -63,7 +88,9 @@ export default function Povprasevanje() {
           Povpraševanje
         </h1>
         <h2 className="text-xl font-bold text-[#000000] text-center mb-4">Predračun dobite po e-pošti!</h2>
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 space-y-6">
+        
+        {!isSubmitted ? (
+          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 space-y-6">
           <div className="space-y-4">
             <input
               required
@@ -192,11 +219,63 @@ export default function Povprasevanje() {
 
           <button
             type="submit"
-            className="w-full cursor-pointer bg-[#4CAF50] text-white font-semibold py-4 px-6 rounded-lg hover:bg-[#45a049] transition-colors duration-300 shadow-md hover:shadow-lg"
+            disabled={isLoading}
+            className="w-full cursor-pointer bg-[#4CAF50] text-white font-semibold py-4 px-6 rounded-lg hover:bg-[#45a049] transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
           >
-            Pošlji povpraševanje
+            {isLoading ? (
+              <>
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Pošiljam...</span>
+              </>
+            ) : (
+              "Pošlji povpraševanje"
+            )}
           </button>
         </form>
+        ) : (
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            {isSuccess ? (
+              <div className="text-center space-y-6">
+                <div className="flex justify-center">
+                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-green-600">Povpraševanje uspešno poslano!</h3>
+                <p className="text-gray-700">Predračun boste prejeli po e-pošti v najkrajšem možnem času.</p>
+                <button
+                  onClick={handleReset}
+                  className="mt-4 px-8 py-3 bg-[#4CAF50] text-white font-semibold rounded-lg hover:bg-[#45a049] transition-colors duration-300 shadow-md hover:shadow-lg cursor-pointer"
+                >
+                  Naroči več
+                </button>
+              </div>
+            ) : (
+              <div className="text-center space-y-6">
+                <div className="flex justify-center">
+                  <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
+                    <svg className="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-red-600">Napaka pri pošiljanju</h3>
+                <p className="text-gray-700">Prišlo je do napake. Prosimo, poskusite ponovno.</p>
+                <button
+                  onClick={handleReset}
+                  className="mt-4 px-8 py-3 bg-[#4CAF50] text-white font-semibold rounded-lg hover:bg-[#45a049] transition-colors duration-300 shadow-md hover:shadow-lg cursor-pointer"
+                >
+                  Poskusi ponovno
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <Footer />
     </div>

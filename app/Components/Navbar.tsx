@@ -64,18 +64,15 @@ export default function Navbar() {
                     <ul className="flex flex-col items-center space-y-8">
                         <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-100`}>
                             <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/" onClick={() => setIsOpen(false)}>Domov</a>
-                        </li>
-                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-200`}>
-                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="#Produkti" onClick={() => setIsOpen(false)}>Produkti</a>
-                        </li>
+                        </li> 
                         <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-300`}>
                             <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/onas" onClick={() => setIsOpen(false)}>O nas</a>
                         </li>
+                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-[500ms]`}>
+                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/uporaba" onClick={() => setIsOpen(false)}>Uporaba</a>
+                        </li>
                         <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-[400ms]`}>
                             <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/povprasevanje" onClick={() => setIsOpen(false)}>Povpraševanje</a>
-                        </li>
-                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-[500ms]`}>
-                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="#Kontakt" onClick={() => setIsOpen(false)}>Kontakt</a>
                         </li>
                     </ul>
                 </div>

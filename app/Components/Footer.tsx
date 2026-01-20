@@ -29,6 +29,7 @@ export default function Footer () {
                     <ul className="space-y-2">
                         <li><a href="/" className="hover:opacity-70 transition-opacity">Domov</a></li>
                         <li><a href="/onas" className="hover:opacity-70 transition-opacity">O nas</a></li>
+                        <li><a href="/uporaba" className="hover:opacity-70 transition-opacity">Uporaba</a></li>
                         <li><a href="/povprasevanje" className="hover:opacity-70 transition-opacity">Povpraševanje</a></li>
                     </ul>
                 </div>
