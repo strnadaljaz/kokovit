@@ -38,6 +38,10 @@ export default function Page() {
                             <div className="text-2xl font-bold text-[#4CAF50]">
                                 Cena: 12,99€
                             </div>
+
+                            <div className="mt-6">
+                                <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer">Kako uporabljati</a>
+                            </div>
                         </div>
                         
                     </div>

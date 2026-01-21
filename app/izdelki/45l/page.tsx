@@ -52,6 +52,9 @@ export default function Page() {
                                     <p className="text-lg text-gray-700">Pripravljen za takojšnje sajenje in setev</p>
                                 </div>
                             </div>
+                            <div className="mt-6">
+                                <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer inline-block">Kako uporabljati</a>
+                            </div>
                         </div>
                     </div>
 

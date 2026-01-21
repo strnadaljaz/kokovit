@@ -24,31 +24,33 @@ export default function ImageSlider() {
   }, []);
 
   return (
-    <div className="relative w-full md:w-[90%] mx-auto overflow-hidden shadow-lg opacity-82">
-      <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)` }}
-      >
-        {images.map((src, index) => (
-          <img
-            key={index}
-            src={`${src}?auto=format&fit=crop&w=1200&q=80`}
-            alt={`Slide ${index + 1}`}
-            className="w-full flex-shrink-0 object-cover h-[60vh] md:h-[80vh]"
-          />
-        ))}
+    <div className="relative w-full md:w-[90%] mx-auto md:overflow-visible shadow-lg opacity-82 border-4 rounded-2xl border-[#F5F5DC]/20">
+      <div className="mx-auto w-full rounded-2xl overflow-hidden">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {images.map((src, index) => (
+            <img
+              key={index}
+              src={`${src}?auto=format&fit=crop&w=1200&q=80`}
+              alt={`Slide ${index + 1}`}
+              className="w-full flex-shrink-0 object-cover h-[60vh] md:h-[80vh]"
+            />
+          ))}
+        </div>
       </div>
 
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer"
+        className="absolute left-6 md:-left-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
         aria-label="Previous slide">
             &lt; 
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer"
+        className="absolute right-6 md:-right-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
         aria-label="Next slide">
             &gt;
       </button>
