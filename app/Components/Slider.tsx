@@ -24,8 +24,8 @@ export default function ImageSlider() {
   }, []);
 
   return (
-    <div className="relative w-full md:w-[90%] mx-auto md:overflow-visible shadow-lg opacity-82 border-4 rounded-2xl border-[#F5F5DC]/20">
-      <div className="mx-auto w-full rounded-2xl overflow-hidden">
+    <div className="relative w-full md:w-[90%] mx-auto md:overflow-visible shadow-lg opacity-82 border-0 md:border-4 md:rounded-2xl md:border-[#F5F5DC]/20">
+      <div className="mx-auto w-full md:rounded-2xl overflow-hidden">
         <div
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
