@@ -1,5 +1,6 @@
 import Navbar from "@/app/Components/Navbar"
 import Footer from "../Components/Footer"
+import Image from "next/image"
 
 export default function Uporaba () {
     return (
@@ -10,7 +11,9 @@ export default function Uporaba () {
                     <h1 className="text-4xl md:text-6xl font-bold text-[#F5F5DC] text-center mb-12 drop-shadow-lg">
                         🌱 KOKOVIT substrat – naravna osnova za zdrav in bogat pridelek
                     </h1>
-                    
+                    <div className="flex justify-center mb-8">
+                        <Image src="/uporaba.webp" alt="KOKOVIT substrat" width={1600} height={600} className="w-full max-w-3xl rounded-2xl shadow-2xl object-cover border-4 border-[#F5F5DC]/20" />
+                    </div>
                     <div className="bg-[#f5f5dc] rounded-2xl p-8 shadow-2xl mb-12">
                         <p className="text-lg md:text-xl text-[#2d5016] leading-relaxed">
                             KOKOVIT substrat je visokokakovosten, naraven substrat na osnovi kokosovih vlaken, obogaten s hranili za eno celotno rastno sezono. Namenjen je vsem, ki želite manj dela, boljšo strukturo tal in vidno boljše rezultate na vrtu, v visokih gredah ali rastlinjaku. Primeren je tako za izkušene vrtičkarje kot tudi začetnike, saj omogoča takojšnje sajenje ali setev brez dodatne priprave.
