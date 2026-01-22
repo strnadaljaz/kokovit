@@ -12,7 +12,7 @@ export default function Hero() {
             </h1>
 
             <div id="Domov" className="flex flex-col md:flex-row items-center justify-center w-full gap-8 md:gap-6 lg:gap-8 max-w-6xl">
-                <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:150ms] border-3 border-[#F5F5DC]/20 rounded-2xl bg-[#6b4226]/30" onClick={() => openNewPage(router, "/izdelki/45l")}>
+                <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:150ms]" onClick={() => openNewPage(router, "/izdelki/45l")}>
                     <img src="45l.webp" alt="45l" className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
                     <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6 underline">45l Kokovit substrat</p>
                 </div>

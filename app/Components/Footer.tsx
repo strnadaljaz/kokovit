@@ -50,6 +50,26 @@ export default function Footer () {
                             </svg>
                             <a href="mailto:kokovit.info@gmail.com" className="hover:opacity-70 transition-opacity">kokovit.info@gmail.com</a>
                         </li>
+                        <li className="flex items-center gap-2">
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.797.636 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <p>FIGRE, Gregor Fištravec s.p.</p>
+                        </li>
+                        <li className="flex items-center gap-2">
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 21s7-7.75 7-13C19 5.13 15.87 2 12 2S5 5.13 5 9c0 5.25 7 13 7 13z" />
+                            </svg>
+                            <p>Velika Nedelja 19c</p>
+                        </li>
+                        <li className="flex items-center gap-2">
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 3h10l4 4v13a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h10M7 16h6" />
+                            </svg>
+                            <p>DŠ: 47063084</p>
+                        </li>
                     </ul>
                 </div>
             </div>
