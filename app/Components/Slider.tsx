@@ -25,7 +25,7 @@ export default function ImageSlider() {
   }, []);
 
   return (
-    <div className="relative w-full mx-auto h-[calc(100vh-6rem-3)] md:overflow-visible shadow-lg opacity-82 border-3 border-2 border-r-0 border-l-0 border-[#F5F5DC]/30">
+    <div className="relative w-full mx-auto h-[calc(100vh-5rem-3)] md:overflow-visible shadow-lg opacity-82 border-3 border-2 border-r-0 border-l-0 border-[#F5F5DC]/30">
       <div className="mx-auto w-full overflow-hidden">
         <div
           className="flex transition-transform duration-700 ease-in-out"
@@ -36,7 +36,7 @@ export default function ImageSlider() {
               key={index}
               src={`${src}?auto=format&fit=crop&w=1200&q=80`}
               alt={`Slide ${index + 1}`}
-              className="w-full flex-shrink-0 object-cover h-[calc(100vh-6rem-3)] md:h-[calc(100vh-6rem)]"
+              className="w-full flex-shrink-0 object-cover h-[calc(100vh-5rem-3)] md:h-[calc(100vh-5rem)]"
             />
           ))}
         </div>

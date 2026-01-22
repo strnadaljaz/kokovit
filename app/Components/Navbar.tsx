@@ -8,7 +8,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="relative top-0 w-full bg-[#4CAF50] h-[6rem] p-4 z-50 flex items-start md:items-center"> 
+            <nav className="relative top-0 w-full bg-[#4CAF50] h-[5rem] p-4 z-50 flex items-start md:items-center"> 
                 <div className='flex items-center justify-center h-full max-w-7xl mx-auto w-full'>
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex items-center space-x-6 lg:space-x-10">
