@@ -42,6 +42,18 @@ export default function ImageSlider() {
         </div>
       </div>
 
+      <button type="button" aria-label="Previous slide" onClick={prevSlide} className="cursor-pointer absolute left-3 top-1/2 -translate-y-1/2 bg-[#F5F5DC]/10 hover:bg-[#F5F5DC]/20 p-2 rounded-full text-[#F5F5DC]">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button type="button" aria-label="Next slide" onClick={nextSlide} className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 bg-[#F5F5DC]/10 hover:bg-[#F5F5DC]/20 p-2 rounded-full text-[#F5F5DC]">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
         {images.map((_, index) => (
           <button
