@@ -51,7 +51,7 @@ export default function Page() {
                             </div>
 
                             <div className="mt-6">
-                                <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer">Kako uporabljati</a>
+                                <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer">Kako uporabljati 📚</a>
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@ export default function Page() {
                     {/* Pricing Section */}
                     <div className="bg-[#F5F5DC] rounded-2xl p-10 shadow-2xl mb-16">
                         <h2 className="text-4xl font-bold text-center text-red-600 mb-8">
-                            🚜 Pridi in odpelji JUMBO KOKOVIT 🚜
+                            🚜 Pridi in odpelji BIG BAG KOKOVIT 🚜
                         </h2>
                         <p className="text-2xl font-bold text-center text-[#2d5016] mb-8">
                             Akcija, ki se splača!
@@ -71,7 +71,7 @@ export default function Page() {
                                     💰 Cena
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
-                                    125,50€
+                                    125€ / kom
                                 </p>
                             </div>
 
@@ -80,7 +80,7 @@ export default function Page() {
                                     🎁 Posebna ponudba
                                 </p>
                                 <p className="text-3xl font-bold text-red-600 mb-2">
-                                    Ob nakupu 2 vreč ➝ 3. GRATIS!
+                                    Ob nakupu 2 kom ➝ 3. GRATIS!
                                 </p>
                             </div>
                         </div>

@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 const images = [
   "/onas.webp",
   "/uporaba.webp",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+  "/379.webp",
+  "/371.webp",
 ];
 
 export default function ImageSlider() {
@@ -24,8 +25,8 @@ export default function ImageSlider() {
   }, []);
 
   return (
-    <div className="relative w-full md:w-[90%] mx-auto md:overflow-visible shadow-lg opacity-82 border-0 md:border-4 md:rounded-2xl md:border-[#F5F5DC]/20">
-      <div className="mx-auto w-full md:rounded-2xl overflow-hidden">
+    <div className="relative w-full mx-auto h-[calc(100vh-6rem-3)] md:overflow-visible shadow-lg opacity-82 border-3 border-2 border-r-0 border-l-0 border-[#F5F5DC]/30">
+      <div className="mx-auto w-full overflow-hidden">
         <div
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
@@ -35,35 +36,21 @@ export default function ImageSlider() {
               key={index}
               src={`${src}?auto=format&fit=crop&w=1200&q=80`}
               alt={`Slide ${index + 1}`}
-              className="w-full flex-shrink-0 object-cover h-[60vh] md:h-[80vh]"
+              className="w-full flex-shrink-0 object-cover h-[calc(100vh-6rem-3)] md:h-[calc(100vh-6rem)]"
             />
           ))}
         </div>
       </div>
-
-      <button
-        onClick={prevSlide}
-        className="absolute hidden md:block left-6 md:-left-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
-        aria-label="Previous slide">
-            &lt; 
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="absolute hidden md:block right-6 md:-right-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
-        aria-label="Next slide">
-            &gt;
-      </button>
 
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
         {images.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrent(index)}
-            className={`h-2.5 w-2.5 rounded-full transition-all ${
+            className={`h-2.5 w-2.5 rounded-full transition-all cursor-pointer ${
               current === index
-                ? "bg-white scale-125"
-                : "bg-white/60 hover:bg-white"
+                ? "bg-black scale-125"
+                : "bg-black/60 hover:bg-black"
             }`}
           />
         ))}

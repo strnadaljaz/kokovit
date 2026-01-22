@@ -38,7 +38,7 @@ export async function POST(req: Request) {
             `Kolicina70: ${kolicina70 ?? 0}`,
             `Kolicina45: ${kolicina45 ?? 0}`,
             `Kolicina Big Bag: ${kolicinaBigBag ?? 0}`,
-            opombe
+            `Opombe: ${opombe}`,
         ].join('\n'),
     };
 
