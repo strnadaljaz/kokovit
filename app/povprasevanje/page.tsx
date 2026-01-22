@@ -12,12 +12,13 @@ async function sendMail(
   kraj: string,
   kolicina70: number,
   kolicina45: number,
-  kolicinaJumbo: number,
+  kolicinaBigBag: number,
+  opombe: string
 ) {
     const response = await fetch ("/api/send-email", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaJumbo}),
+        body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaBigBag, opombe}),
     });
     return response.ok;
 }
@@ -34,12 +35,12 @@ export default function Povprasevanje() {
   // Checkboxes and their quantities
   const [checked70l, setChecked70l] = useState(false);
   const [checked45l, setChecked45l] = useState(false);
-  const [checkedJumbo, setCheckedJumbo] = useState(false);
+  const [checkedBigBag, setCheckedBigBag] = useState(false);
 
   const [kolicina70, setKolicina70] = useState(0);
   const [kolicina45, setKolicina45] = useState(0);
-  const [kolicinaJumbo, setKolicinaJumbo] = useState(0);
-
+  const [kolicinaBigBag, setKolicinaBigBag] = useState(0);
+  const [opombe, setOpombe] = useState("");
   // Loading and success states
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -57,7 +58,8 @@ export default function Povprasevanje() {
       kraj,
       checked70l ? kolicina70 : 0,
       checked45l ? kolicina45 : 0,
-      checkedJumbo ? kolicinaJumbo : 0,
+      checkedBigBag ? kolicinaBigBag : 0,
+      opombe
     );
     setIsLoading(false);
     setIsSuccess(success);
@@ -74,10 +76,11 @@ export default function Povprasevanje() {
     setKraj("");
     setChecked70l(false);
     setChecked45l(false);
-    setCheckedJumbo(false);
+    setCheckedBigBag(false);
     setKolicina70(0);
     setKolicina45(0);
-    setKolicinaJumbo(0);
+    setKolicinaBigBag(0);
+    setOpombe("");
   };
 
   return (
@@ -141,6 +144,7 @@ export default function Povprasevanje() {
                 placeholder="Kraj"
                 className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
               />
+              <textarea name="" id="" placeholder="Opombe" value={opombe} onChange={(e) => setOpombe(e.target.value)} className="col-span-2 w-full text-[#000000] font-bold border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors px-4 py-3"></textarea>
             </div>
           </div>
 
@@ -196,19 +200,19 @@ export default function Povprasevanje() {
               <label className="flex items-center space-x-3 cursor-pointer group h-[44px]">
                 <input
                   type="checkbox"
-                  checked={checkedJumbo}
-                  onChange={(e) => setCheckedJumbo(e.target.checked)}
+                  checked={checkedBigBag}
+                  onChange={(e) => setCheckedBigBag(e.target.checked)}
                   className="w-5 h-5 text-[#4CAF50] border-gray-300 rounded focus:ring-[#4CAF50] focus:ring-2"
                 />
                 <span className="text-gray-700 group-hover:text-[#4CAF50] transition-colors flex-1">
-                  Jumbo
+                  BigBag
                 </span>
-                {checkedJumbo && (
+                {checkedBigBag && (
                   <input
                     type="number"
                     min="1"
-                    value={kolicinaJumbo}
-                    onChange={(e) => setKolicinaJumbo(Number(e.target.value))}
+                    value={kolicinaBigBag}
+                    onChange={(e) => setKolicinaBigBag(Number(e.target.value))}
                     placeholder="Količina"
                     className="w-32 text-[#000000] font-bold px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
                   />
