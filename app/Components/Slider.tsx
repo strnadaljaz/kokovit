@@ -43,14 +43,14 @@ export default function ImageSlider() {
 
       <button
         onClick={prevSlide}
-        className="absolute left-6 md:-left-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
+        className="absolute hidden md:block left-6 md:-left-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
         aria-label="Previous slide">
             &lt; 
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 md:-right-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
+        className="absolute hidden md:block right-6 md:-right-16 top-1/2 -translate-y-1/2 text-black md:text-white text-5xl md:text-6xl font-light opacity-100 md:opacity-80 hover:opacity-100 transition cursor-pointer z-10"
         aria-label="Next slide">
             &gt;
       </button>
