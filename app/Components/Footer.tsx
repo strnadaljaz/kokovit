@@ -61,7 +61,7 @@ export default function Footer () {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 21s7-7.75 7-13C19 5.13 15.87 2 12 2S5 5.13 5 9c0 5.25 7 13 7 13z" />
                             </svg>
-                            <p>Velika Nedelja 19c</p>
+                            <a href="https://www.google.com/maps/place/Velika+Nedelja+19c,+2274+Velika+Nedelja/@46.4246404,16.1067591,17z/data=!4m6!3m5!1s0x476f5b064ca725d9:0xf577a0f421ca4b19!8m2!3d46.4246367!4d16.109334!16s%2Fg%2F11vc4ty2k5?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D" className="hover:opacity-70 transition-opacity">Velika Nedelja 19c</a>
                         </li>
                         <li className="flex items-center gap-2">
                             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,12 +74,15 @@ export default function Footer () {
                 </div>
             </div>
 
-            {/* Copyright */}
-            <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-[#F5F5DC]/20 text-center text-sm">
-                <p>&copy; {new Date().getFullYear()} Kokovit. Vse pravice pridržane.</p>
-            </div>
-            <div className="text-center mt-8">
-                <p>Izdelava spletne strani: <a href="https://strnadaljaz.vercel.app/" className="underline">Aljaž Strnad</a></p>
+            {/* Legal links */}
+            <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-[#F5F5DC]/20 text-center text-sm">
+                <div className="flex justify-center gap-4 mb-2 text-sm text-[#F5F5DC]/90">
+                    <a href="/splosni-pogoji" className="hover:underline">Splošni pogoji</a>
+                    <span className="text-[#F5F5DC]/60">·</span>
+                    <a href="/politika-zasebnosti" className="hover:underline">Politika zasebnosti</a>
+                </div>
+                <p className="text-[#F5F5DC]/90 mb-1">&copy; {new Date().getFullYear()} Kokovit. Vse pravice pridržane.</p>
+                <p className="text-[#F5F5DC]/70 mt-4">Izdelava spletne strani: <a href="https://strnadaljaz.vercel.app/" className="hover:underline">Aljaž Strnad</a></p>
             </div>
         </footer>
     );
