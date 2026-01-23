@@ -8,7 +8,7 @@ export default function About() {
     return (
         <div className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16 md:py-20">
             <div className="max-w-6xl w-full grid md:grid-cols-2 gap-8 md:gap-12 items-center animate-slide-up">
-                <div className="flex justify-center order-2 md:order-1">
+                <div className="flex justify-center">
                     <img 
                         src="grede.webp" 
                         alt="grede" 
@@ -16,7 +16,7 @@ export default function About() {
                     /> 
                 </div>
                 
-                <div className="space-y-4 md:space-y-6 order-1 md:order-2">
+                <div className="space-y-4 md:space-y-6">
                     <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#F5F5DC] drop-shadow-lg">
                         O nas
                     </h2>
