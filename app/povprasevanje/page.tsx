@@ -32,14 +32,11 @@ export default function Povprasevanje() {
   const [postna, setPostna] = useState("");
   const [kraj, setKraj] = useState("");
 
-  // Checkboxes and their quantities
-  const [checked70l, setChecked70l] = useState(false);
-  const [checked45l, setChecked45l] = useState(false);
-  const [checkedBigBag, setCheckedBigBag] = useState(false);
+  // Quantities
 
-  const [kolicina70, setKolicina70] = useState(0);
-  const [kolicina45, setKolicina45] = useState(0);
-  const [kolicinaBigBag, setKolicinaBigBag] = useState(0);
+  const [kolicina70, setKolicina70] = useState<number | "">("");
+  const [kolicina45, setKolicina45] = useState<number | "">("");
+  const [kolicinaBigBag, setKolicinaBigBag] = useState<number | "">("");
   const [opombe, setOpombe] = useState("");
   // Loading and success states
   const [isLoading, setIsLoading] = useState(false);
@@ -56,9 +53,9 @@ export default function Povprasevanje() {
       naslov,
       postna,
       kraj,
-      checked70l ? kolicina70 : 0,
-      checked45l ? kolicina45 : 0,
-      checkedBigBag ? kolicinaBigBag : 0,
+      kolicina70 === "" ? 0 : kolicina70,
+      kolicina45 === "" ? 0 : kolicina45,
+      kolicinaBigBag === "" ? 0 : kolicinaBigBag,
       opombe
     );
     setIsLoading(false);
@@ -74,12 +71,9 @@ export default function Povprasevanje() {
     setNaslov("");
     setPostna("");
     setKraj("");
-    setChecked70l(false);
-    setChecked45l(false);
-    setCheckedBigBag(false);
-    setKolicina70(0);
-    setKolicina45(0);
-    setKolicinaBigBag(0);
+    setKolicina70("");
+    setKolicina45("");
+    setKolicinaBigBag("");
     setOpombe("");
   };
 
@@ -148,76 +142,58 @@ export default function Povprasevanje() {
             </div>
           </div>
 
-          <div className="pt-4">
-            <p className="text-lg font-semibold text-[#2d5016] mb-4">
-              Izberite velikost vreče:
+          <div className="pt-6">
+            <p className="text-lg font-semibold text-[#2d5016] mb-6">
+              Izberite količino vreč:
             </p>
-            <div className="space-y-3">
-              <label className="flex items-center space-x-3 cursor-pointer group h-[44px]">
-                <input
-                  type="checkbox"
-                  checked={checked70l}
-                  onChange={(e) => setChecked70l(e.target.checked)}
-                  className="w-5 h-5 text-[#4CAF50] border-gray-300 rounded focus:ring-[#4CAF50] focus:ring-2"
-                />
-                <span className="text-gray-700 group-hover:text-[#4CAF50] transition-colors flex-1">
-                  70l
-                </span>
-                {checked70l && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
+                <label className="flex flex-col space-y-3">
+                  <span className="text-base font-semibold text-[#2d5016]">
+                    45L Vreča
+                  </span>
                   <input
                     type="number"
-                    min="1"
-                    value={kolicina70}
-                    onChange={(e) => setKolicina70(Number(e.target.value))}
-                    placeholder="Količina"
-                    className="w-32 text-[#000000] font-bold px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
-                  />
-                )}
-              </label>
-
-              <label className="flex items-center space-x-3 cursor-pointer group h-[44px]">
-                <input
-                  type="checkbox"
-                  checked={checked45l}
-                  onChange={(e) => setChecked45l(e.target.checked)}
-                  className="w-5 h-5 text-[#4CAF50] border-gray-300 rounded focus:ring-[#4CAF50] focus:ring-2"
-                />
-                <span className="text-gray-700 group-hover:text-[#4CAF50] transition-colors flex-1">
-                  45l
-                </span>
-                {checked45l && (
-                  <input
-                    type="number"
-                    min="1"
+                    min="0"
                     value={kolicina45}
-                    onChange={(e) => setKolicina45(Number(e.target.value))}
-                    placeholder="Količina"
-                    className="w-32 text-[#000000] font-bold px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
+                    onChange={(e) => setKolicina45(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="0"
+                    className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors text-center"
                   />
-                )}
-              </label>
+                </label>
+              </div>
 
-              <label className="flex items-center space-x-3 cursor-pointer group h-[44px]">
-                <input
-                  type="checkbox"
-                  checked={checkedBigBag}
-                  onChange={(e) => setCheckedBigBag(e.target.checked)}
-                  className="w-5 h-5 text-[#4CAF50] border-gray-300 rounded focus:ring-[#4CAF50] focus:ring-2"
-                />
-                <span className="text-gray-700 group-hover:text-[#4CAF50] transition-colors flex-1">
-                  BigBag
-                </span>
-                {checkedBigBag && (
+              <div className="bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
+                <label className="flex flex-col space-y-3">
+                  <span className="text-base font-semibold text-[#2d5016]">
+                    70L Vreča
+                  </span>
                   <input
                     type="number"
-                    min="1"
-                    value={kolicinaBigBag}
-                    onChange={(e) => setKolicinaBigBag(Number(e.target.value))}
-                    placeholder="Količina"
-                    className="w-32 text-[#000000] font-bold px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors"
+                    min="0"
+                    value={kolicina70}
+                    onChange={(e) => setKolicina70(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="0"
+                    className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors text-center"
                   />
-                )}
-              </label>
+                </label>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
+                <label className="flex flex-col space-y-3">
+                  <span className="text-base font-semibold text-[#2d5016]">
+                    BigBag
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={kolicinaBigBag}
+                    onChange={(e) => setKolicinaBigBag(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="0"
+                    className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors text-center"
+                  />
+                </label>
+              </div>
             </div>
           </div>
 
