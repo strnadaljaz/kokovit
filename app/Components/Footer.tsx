@@ -85,6 +85,8 @@ export default function Footer () {
                     <a href="/splosni-pogoji" className="hover:underline">Splošni pogoji</a>
                     <span className="text-[#F5F5DC]/60">·</span>
                     <a href="/politika-zasebnosti" className="hover:underline">Politika zasebnosti</a>
+                    <span className="text-[#F5F5DC]/60">·</span>
+                    <a href="/politika-piskotkov" className="hover:underline">Politika piškotkov</a>
                 </div>
                 <p className="text-[#F5F5DC]/90 mb-1">&copy; {new Date().getFullYear()} Kokovit. Vse pravice pridržane.</p>
                 <p className="text-[#F5F5DC]/70 mt-4">Izdelava spletne strani: <a href="https://strnadaljaz.vercel.app/" className="hover:underline">Aljaž Strnad</a></p>
