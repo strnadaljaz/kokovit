@@ -21,7 +21,7 @@ export default function Hero() {
                     <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6 underline">70l Kokovit substrat</p>
                 </div>
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:300ms] mt-6" onClick={() => openNewPage(router, "/izdelki/bigbag")}>
-                    <img src="381.webp" alt="Big Bag" className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
+                    <img src="bigbag.webp" alt="Big Bag" className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
                     <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6 underline">Big Bag Kokovit substrat</p>
                 </div>
             </div>
