@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 const images = [
   "/onas.webp",
-  "/uporaba.webp",
   "/379.webp",
   "/371.webp",
 ];

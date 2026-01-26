@@ -73,7 +73,7 @@ export default function Footer () {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 3h10l4 4v13a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h3z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h10M7 16h6" />
                             </svg>
-                            <p>DŠ: 47063084</p>
+                            <p>DŠ: SI47063084</p>
                         </li>
                     </ul>
                 </div>

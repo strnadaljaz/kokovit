@@ -31,6 +31,7 @@ export default function Povprasevanje() {
   const [naslov, setNaslov] = useState("");
   const [postna, setPostna] = useState("");
   const [kraj, setKraj] = useState("");
+  const [splosniPogoji, setSplosniPogoji] = useState(false);
 
   // Quantities
 
@@ -45,6 +46,10 @@ export default function Povprasevanje() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!splosniPogoji) {
+      alert('Za oddajo povpraševanja morate sprejeti splošne pogoje poslovanja.');
+      return;
+    }
     setIsLoading(true);
     const success = await sendMail(
       imeInPriimek,
@@ -195,6 +200,13 @@ export default function Povprasevanje() {
                 </label>
               </div>
             </div>
+            <div className="mt-4">
+              <input type="checkbox" className="cursor-pointer scale-150 ml-1"
+                checked={splosniPogoji}
+                onChange={() => setSplosniPogoji(!splosniPogoji)}/>
+              <label htmlFor="" className="text-[#000000] ml-2">Strinjam se s splošnimi pogoji poslovanja</label>
+            </div>
+
           </div>
 
           <button

@@ -59,7 +59,7 @@ export default function Page() {
                     {/* Pricing Section */}
                     <div className="bg-[#F5F5DC] rounded-2xl p-10 shadow-2xl mb-16">
                         <h2 className="text-4xl font-bold text-center text-red-600 mb-8">
-                            🚜 Pridi in odpelji BIG BAG KOKOVIT 🚜
+                            🚚 Pridi in odpelji BIG BAG KOKOVIT 
                         </h2>
                         <p className="text-2xl font-bold text-center text-[#2d5016] mb-8">
                             Akcija, ki se splača!
@@ -68,7 +68,7 @@ export default function Page() {
                         <div className="max-w-2xl mx-auto space-y-6 mb-8">
                             <div className="bg-white rounded-xl p-8 shadow-lg text-center">
                                 <p className="text-2xl font-semibold text-gray-800 mb-4">
-                                    💰 Cena
+                                    💶 Cena
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
                                     125€ / kom

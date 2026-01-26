@@ -14,7 +14,7 @@ export default function Page() {
                             KOKOVIT 70L
                         </h1>
                         <p className="text-2xl md:text-3xl text-[#F5F5DC] font-semibold">
-                            🌱🥥 Top izbira za vaš vrt! 🥥🌱
+                            🥥 Top izbira za vaš vrt! 🥥
                         </p>
                     </div>
 
@@ -36,7 +36,7 @@ export default function Page() {
                                 Z KOKOVIT substratom 70L – naraven substrat iz kokosovih vlaken, šote in organskih snovi, idealen za visoke grede, vrtove, rastlinjake, okrasne grede in lončnice!
                             </p>
                             <div className="text-2xl font-bold text-[#4CAF50]">
-                                Cena: 12,99€
+                                Cena: 12,99€ / kom
                             </div>
 
                             <div className="mt-6">
@@ -49,7 +49,7 @@ export default function Page() {
                     {/* Akcija Section */}
                     <div className="bg-[#F5F5DC] rounded-2xl p-10 shadow-2xl mb-16">
                         <h2 className="text-4xl font-bold text-center text-red-600 mb-8">
-                            🔥🔥🔥 VELIKA AKCIJA 🔥🔥🔥
+                            🔥 VELIKA AKCIJA 🔥
                         </h2>
                         <p className="text-2xl font-bold text-center text-[#2d5016] mb-8">
                             🎁 NAROČI VEČ – PREJMI GRATIS!
@@ -94,9 +94,6 @@ export default function Page() {
                         </div>
 
                         <div className="mt-8 text-center">
-                            <p className="text-lg text-gray-700 mb-4">
-                                📦 Dostave ponovno začnemo od <span className="font-bold">2. Februarja 2026</span> po celi Sloveniji 🇸🇮
-                            </p>
                             <p className="text-xl font-semibold text-[#2d5016] mb-8">
                                 ⏩ Pohiti in si zagotovi svoj KOKOVIT substrat za SUPER VRT! 🥦🥕🍅🍆
                             </p>
