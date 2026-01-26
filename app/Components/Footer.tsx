@@ -1,4 +1,5 @@
 "use client";
+import links from "./Links";
 
 export default function Footer () {
     return (
@@ -27,10 +28,14 @@ export default function Footer () {
                 <div>
                     <h3 className="text-xl font-semibold mb-4">Povezave</h3>
                     <ul className="space-y-2">
-                        <li><a href="/" className="hover:opacity-70 transition-opacity">Domov</a></li>
-                        <li><a href="/onas" className="hover:opacity-70 transition-opacity">O nas</a></li>
-                        <li><a href="/uporaba" className="hover:opacity-70 transition-opacity">Uporaba</a></li>
-                        <li><a href="/povprasevanje" className="hover:opacity-70 transition-opacity">Povpraševanje</a></li>
+                        {links.map((item, index) => (
+                            <li key={index}>
+                                <a 
+                                    href={item.link}
+                                    className="hover:opacity-70 transition-opacity"
+                                >{item.name}</a>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Kokovit",
   description: "Visokokvaliteten naravni substrat iz mešanice kokosovih vlaken, šote in drugih organskih snovi, za visoke grede, vrtove, rastlinjake, okrasne grede, ločnice itd.",
-  keywords: "Kokovit, naravni substrat"
+  keywords: "Kokovit, naravni substrat, kokovit, kokosova vlakna, kokos, vlakna"
 };
 
 export default function RootLayout({

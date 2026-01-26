@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import links from "./Links";
 
 const aStyle = "font-semibold text-xl text-[#F5F5DC] transition-all duration-300 ease-in-out hover:text-[#6b4226]";
+
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,10 +14,11 @@ export default function Navbar() {
                 <div className='flex items-center justify-center h-full max-w-7xl mx-auto w-full'>
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex items-center space-x-6 lg:space-x-10">
-                        <li><a className={aStyle} href="/">Domov</a></li>
-                        <li><a className={aStyle} href="/onas">O nas</a></li>
-                        <li><a className={aStyle} href="/uporaba">Uporaba</a></li>
-                        <li><a className={aStyle} href="/povprasevanje">Povpraševanje</a></li>
+                        {links.map((item, index) => (
+                            <li key={index}>
+                                <a href={item.link} className={aStyle}>{item.name}</a>
+                            </li>
+                        ))} 
                     </ul>
 
                     {/* Hamburger Button */}
@@ -61,18 +64,19 @@ export default function Navbar() {
                 
                 <div className="flex flex-col items-center justify-center h-full">
                     <ul className="flex flex-col items-center space-y-8">
-                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-100`}>
-                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/" onClick={() => setIsOpen(false)}>Domov</a>
-                        </li> 
-                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-300`}>
-                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/onas" onClick={() => setIsOpen(false)}>O nas</a>
-                        </li>
-                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-[500ms]`}>
-                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/uporaba" onClick={() => setIsOpen(false)}>Uporaba</a>
-                        </li>
-                        <li className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-[400ms]`}>
-                            <a className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" href="/povprasevanje" onClick={() => setIsOpen(false)}>Povpraševanje</a>
-                        </li>
+                        {links.map((item, index) => (
+                            <li 
+                                key={index} 
+                                className={`transition-all duration-500 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'} delay-100`}
+                            >
+                                <a 
+                                    href={item.link} 
+                                    className="font-bold text-3xl text-[#2d5016] hover:text-[#4CAF50] transition-colors" 
+                                    onClick={() => setIsOpen(false)}>
+                                    {item.name}
+                                </a>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>
