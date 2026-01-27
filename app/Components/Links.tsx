@@ -7,7 +7,7 @@ const links: Link[] = [
     {name: "Domov", link: "/"},
     {name: "Uporaba", link: "/uporaba"},
     {name: "O nas", link: "/onas"},
-    {name: "Povprasevanje", link: "/povprasevanje"},
+    {name: "Povpraševanje", link: "/povprasevanje"},
 ];
 
 export default links;
