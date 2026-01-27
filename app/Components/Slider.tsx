@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 
 const images = [
   "/onas.webp",
-  "/379.webp",
-  "/371.webp",
+  "/kombi.webp",
+  "/dostava.webp",
 ];
 
 export default function ImageSlider() {
