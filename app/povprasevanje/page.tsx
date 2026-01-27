@@ -13,12 +13,13 @@ async function sendMail(
   kolicina70: number,
   kolicina45: number,
   kolicinaBigBag: number,
+  nacinPlacila: string,
   opombe: string
 ) {
     const response = await fetch ("/api/send-email", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaBigBag, opombe}),
+        body: JSON.stringify({imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaBigBag, nacinPlacila, opombe}),
     });
     return response.ok;
 }
@@ -32,6 +33,7 @@ export default function Povprasevanje() {
   const [postna, setPostna] = useState("");
   const [kraj, setKraj] = useState("");
   const [splosniPogoji, setSplosniPogoji] = useState(false);
+  const [nacinPlacila, setNacinPlacila] = useState("");
 
   // Quantities
 
@@ -50,6 +52,14 @@ export default function Povprasevanje() {
       alert('Za oddajo povpraševanja morate sprejeti splošne pogoje poslovanja.');
       return;
     }
+    if (nacinPlacila === "") {
+        alert('Izberite način plačila!');
+        return;
+    }
+    if (kolicinaBigBag == 0 && kolicina45 == 0 && kolicina70 == 0) {
+        alert('Niste vnesli količin!')
+        return;
+    }
     setIsLoading(true);
     const success = await sendMail(
       imeInPriimek,
@@ -61,6 +71,7 @@ export default function Povprasevanje() {
       kolicina70 === "" ? 0 : kolicina70,
       kolicina45 === "" ? 0 : kolicina45,
       kolicinaBigBag === "" ? 0 : kolicinaBigBag,
+      nacinPlacila,
       opombe
     );
     setIsLoading(false);
@@ -79,6 +90,7 @@ export default function Povprasevanje() {
     setKolicina70("");
     setKolicina45("");
     setKolicinaBigBag("");
+    setNacinPlacila("");
     setOpombe("");
   };
 
@@ -199,6 +211,23 @@ export default function Povprasevanje() {
                   />
                 </label>
               </div>
+            </div>
+            <div className="border-b-3 pb-3">
+                <p className="text-lg font-semibold text-[#2d5016] mb-2 mt-4">Plačilo:</p>
+                <label className="text-[#000000]">
+                    <input type="radio" name="placilo" value="predracun" className="mr-2"
+                            checked={nacinPlacila === "predracun"}
+                            onChange={(e) => setNacinPlacila(e.target.value)}
+                    />
+                     Predračun
+                </label>
+                <label className="text-[#000000] ml-2">
+                    <input type="radio" name="placilo" value="Po povzetju" className="mr-2"
+                            checked={nacinPlacila === "Po povzetju"}
+                            onChange={(e) => setNacinPlacila(e.target.value)}
+                    />
+                    Po povzetju
+                </label>
             </div>
             <div className="mt-4">
               <input type="checkbox" className="cursor-pointer scale-150 ml-1"
