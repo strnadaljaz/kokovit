@@ -8,6 +8,7 @@ const links: Link[] = [
     {name: "Uporaba", link: "/uporaba"},
     {name: "O nas", link: "/onas"},
     {name: "Povpraševanje", link: "/povprasevanje"},
+    {name: "Partnerji", link: "/partnerji"}
 ];
 
 export default links;

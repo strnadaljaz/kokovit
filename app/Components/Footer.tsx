@@ -66,7 +66,7 @@ export default function Footer () {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 21s7-7.75 7-13C19 5.13 15.87 2 12 2S5 5.13 5 9c0 5.25 7 13 7 13z" />
                             </svg>
-                            <a href="https://www.google.com/maps/place/Velika+Nedelja+19c,+2274+Velika+Nedelja/@46.4246404,16.1067591,17z/data=!4m6!3m5!1s0x476f5b064ca725d9:0xf577a0f421ca4b19!8m2!3d46.4246367!4d16.109334!16s%2Fg%2F11vc4ty2k5?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D" className="hover:opacity-70 transition-opacity">Velika Nedelja 19c</a>
+                            <a href="https://www.google.com/maps/place/Velika+Nedelja+19c,+2274+Velika+Nedelja/@46.4246404,16.1067591,17z/data=!4m6!3m5!1s0x476f5b064ca725d9:0xf577a0f421ca4b19!8m2!3d46.4246367!4d16.109334!16s%2Fg%2F11vc4ty2k5?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D" className="hover:opacity-70 transition-opacity" target="_blank">Velika Nedelja 19c</a>
                         </li>
                         <li className="flex items-center gap-2">
                             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
