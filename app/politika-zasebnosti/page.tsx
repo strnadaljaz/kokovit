@@ -74,7 +74,7 @@ export default function politikaZasebnosti() {
                   <li>prenosljivosti podatkov,</li>
                   <li>ugovora obdelavi.</li>
                 </ul>
-                <p className="mb-4">Zahtevo lahko pošlje na: [e-pošta].</p>
+                <p className="mb-4">Zahtevo lahko pošlje na: kokovit.info@gmail.com.</p>
 
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">Kontakt</h2>
                 <p className="mb-6">Za vprašanja o tej politiki zasebnosti ali uveljavljanje vaših pravic nas kontaktirajte na: <a className="text-[#2d5016] underline" href="mailto:kokovit.info@gmail.com">kokovit.info@gmail.com</a> ali po telefonu <a className="text-[#2d5016]" href="tel:+386030333167">030 333 167</a>.</p>

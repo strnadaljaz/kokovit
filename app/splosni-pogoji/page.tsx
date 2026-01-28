@@ -10,8 +10,8 @@ export default function splosniPogoji() {
             <div className="max-w-2xl mx-auto px-4 py-12 text-gray-800 leading-relaxed">
                 <h1 className="text-3xl md:text-4xl font-bold text-[#2d5016] text-center mb-4">SPLOŠNI POGOJI POSLOVANJA</h1>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">1. Splošno</h2>
-                <p className="mb-4">Ti splošni pogoji poslovanja določajo pogoje uporabe spletne strani in zbiranja naročil za izdelke KOKOVIT substrat.<br />
-Upravljavec spletne strani:</p>
+                <p className="mb-4">Ti splošni pogoji poslovanja določajo pogoje uporabe spletne strani in zbiranja naročil za izdelke <b>KOKOVIT substrat.</b><br />
+<br/>Upravljavec spletne strani:</p>
 <ul className="list-disc ml-6 mb-2">
   <li>Ime podjetja / ime in priimek: FIGRE / Gregor Fištravec s.p.</li>
   <li>Naslov: Velika Nedelja 19c</li>
@@ -19,9 +19,10 @@ Upravljavec spletne strani:</p>
   <li>E-pošta: kokovit.info@gmail.com</li>
   <li>Telefon: 030 333 167</li>
 </ul>
+<p>Spletna stran omogoča oddajo naročil <b>fizičnim in pravnim osebam.</b></p>
 <p className="mb-4">Z oddajo naročila uporabnik potrjuje, da je seznanjen s splošnimi pogoji poslovanja in se z njimi strinja.</p>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">2. Vrsta naročila</h2>
-                <p className="mb-4">Oddaja naročila preko spletne strani predstavlja nezavezujoče zbiranje naročil oziroma povpraševanje.<br />
+                <p className="mb-4">Oddaja naročila preko spletne strani predstavlja <b>nezavezujoče zbiranje naročil oziroma povpraševanje.</b><br /> <br/>
 Kupoprodajna pogodba je sklenjena šele, ko ponudnik naročilo:</p>
 <ul className="list-disc ml-6 mb-2">
   <li>potrdi po e-pošti ali telefonu</li>
@@ -29,14 +30,19 @@ Kupoprodajna pogodba je sklenjena šele, ko ponudnik naročilo:</p>
 </ul>
 <p className="mb-4">Ponudnik si pridržuje pravico, da naročilo zavrne brez navedbe razloga.</p>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">3. Izdelki</h2>
-                <p className="mb-4">Ponudba obsega izdelke KOKOVIT substrat (različne pakiranja in količine).<br />
+                <p className="mb-4">Ponudba obsega izdelke <b>KOKOVIT substrat</b> (različne pakiranja in količine).<br /><br/>
 Fotografije izdelkov so simbolične in lahko odstopajo od dejanskega videza embalaže, kar ne vpliva na kakovost izdelka.</p>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">4. Cene</h2>
-                <p className="mb-4">Vse cene so navedene v evrih (EUR) in vključujejo DDV.<br />
-DDV je razviden ob potrditvi naročila ali na računu<br />
-Ponudnik si pridržuje pravico do spremembe cen brez predhodnega obvestila<br />
-Veljavna je cena, ki je potrjena ob potrditvi naročila<br />
-Akcijske ponudbe veljajo do preklica ali do razprodaje zalog.</p>
+                <p className="mb-4">Vse cene so navedene v evrih (EUR) in <b>vključujejo DDV.</b></p>
+                <ul className="list-disc ml-6 mb-2">
+                    <li>DDV je razviden ob potrditvi naročila ali na računu</li>
+                    <li>Ponudnik si pridržuje pravico do spremembe cen brez predhodnega obvestila</li>
+                    <li>Veljavna je cena, ki je potrjena ob potrditvi naročila</li>
+                </ul>
+
+
+
+                <p>Akcijske ponudbe veljajo do preklica ali do razprodaje zalog.</p>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">5. Plačilni pogoji</h2>
                 <p className="mb-4">Možni načini plačila:</p>
 <ul className="list-disc ml-6 mb-2">
@@ -44,7 +50,7 @@ Akcijske ponudbe veljajo do preklica ali do razprodaje zalog.</p>
   <li>ob prevzemu</li>
   <li>po dogovoru</li>
 </ul>
-<p className="mb-4">Rok plačila je naveden na predračunu ali potrditvi naročila.</p>
+<p className="mb-4">Rok in način plačila sta navedena v potrditvi naročila ali na predračunu.</p>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">6. Dostava</h2>
                 <p className="mb-4">Dostava se izvaja:</p>
 <ul className="list-disc ml-6 mb-2">
@@ -52,10 +58,10 @@ Akcijske ponudbe veljajo do preklica ali do razprodaje zalog.</p>
   <li>preko dostavne službe</li>
   <li>ali po pošti (kjer je to navedeno)</li>
 </ul>
-<p className="mb-4">Dobavni roki so informativni. Ponudnik ne odgovarja za zamude, ki so posledica višje sile ali zamud dostavnih služb.<br />
+<p className="mb-4">Dobavni roki so informativni. Ponudnik ne odgovarja za zamude, ki so posledica višje sile ali zamud dostavnih služb.<br /><br />
 Stroški dostave so navedeni ob potrditvi naročila ali posebej dogovorjeni.</p>
-                <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">Odstop od pogodbe – fizične osebe</h2>
-<p className="mb-4">Kupec, ki je fizična oseba (potrošnik), ima pravico, da v 14 dneh od prejema blaga odstopi od pogodbe, brez navedbe razloga, v skladu z Zakonom o varstvu potrošnikov (ZVPot-1).</p>
+                <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">7. Odstop od pogodbe – fizične osebe</h2>
+<p className="mb-4">Kupec, ki je <b>fizična oseba (potrošnik)</b>, ima pravico, da v 14 dneh od prejema blaga odstopi od pogodbe, brez navedbe razloga, v skladu z Zakonom o varstvu potrošnikov (ZVPot-1).</p>
 <ul className="list-disc ml-6 mb-2">
   <li>neuporabljeno,</li>
   <li>nepoškodovano,</li>
@@ -63,7 +69,7 @@ Stroški dostave so navedeni ob potrditvi naročila ali posebej dogovorjeni.</p>
 </ul>
 <p className="mb-4">Stroške vračila blaga nosi kupec, razen če je dogovorjeno drugače.</p>
 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">8. Pravne osebe</h2>
-<p className="mb-4">Za pravne osebe pravica do odstopa od pogodbe ne velja, razen če je to izrecno dogovorjeno.<br />
+<p className="mb-4">Za <b>pravne osebe</b> pravica do odstopa od pogodbe ne velja, razen če je to izrecno dogovorjeno.<br /> <br/>
 Za poslovne kupce veljajo pogoji, dogovorjeni ob potrditvi naročila.</p>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">9. Reklamacije in stvarne napake</h2>
                 <p className="mb-4">Kupec lahko uveljavlja reklamacijo ali stvarno napako v skladu z veljavno zakonodajo.<br />
