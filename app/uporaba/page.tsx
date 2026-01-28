@@ -16,7 +16,7 @@ export default function Uporaba () {
                     </div>
                     <div className="bg-[#f5f5dc] rounded-2xl p-8 shadow-2xl mb-12">
                         <p className="text-lg md:text-xl text-[#2d5016] leading-relaxed">
-                            KOKOVIT substrat je visokokakovosten, naraven substrat na osnovi kokosovih vlaken, obogaten s hranili za eno celotno rastno sezono. Namenjen je vsem, ki želite manj dela, boljšo strukturo tal in vidno boljše rezultate na vrtu, v visokih gredah ali rastlinjaku. Primeren je tako za izkušene vrtičkarje kot tudi začetnike, saj omogoča takojšnje sajenje ali setev brez dodatne priprave.
+                            KOKOVIT substrat je visokokakovosten, naraven substrat na osnovi kokosovih vlaken, obogaten s hranili za eno celotno rastno sezono. Namenjen je vsem, ki želite manj dela, boljšo strukturo tal in vidno boljše rezultate na vrtu, v visokih gredah ali rastlinjaku. Primeren je tako za izkušene vrtnarje kot tudi začetnike, saj omogoča takojšnje sajenje ali setev brez dodatne priprave.
                         </p>
                     </div>
 
