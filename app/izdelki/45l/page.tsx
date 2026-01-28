@@ -17,7 +17,7 @@ export default function Page() {
                             KOKOVIT 45L
                         </h1>
                         <p className="text-xl md:text-2xl text-[#F5F5DC]">
-                            Popolna izbira za vse vrtičkarje, ki želijo kakovost in priročnost v enem paketu.
+                            Popolna izbira za vse vrtnarje, ki želijo kakovost in priročnost v enem paketu.
                         </p>
                     </div>
 
@@ -45,7 +45,7 @@ export default function Page() {
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span className="text-2xl">👌</span>
-                                    <p className="text-lg text-gray-700">Enostavna uporaba za vse vrtičkarje</p>
+                                    <p className="text-lg text-gray-700">Enostavna uporaba za vse vrtnarje</p>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span className="text-2xl">🌱</span>

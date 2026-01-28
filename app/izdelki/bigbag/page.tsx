@@ -68,7 +68,7 @@ export default function Page() {
                         <div className="max-w-2xl mx-auto space-y-6 mb-8">
                             <div className="bg-white rounded-xl p-8 shadow-lg text-center">
                                 <p className="text-2xl font-semibold text-gray-800 mb-4">
-                                    💶 Cena
+                                    💶 Cena / 1m³
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
                                     125€ / kom

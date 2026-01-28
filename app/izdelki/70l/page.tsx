@@ -144,12 +144,21 @@ export default function Page() {
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-2xl">✅</span>
+                                <p className="text-lg text-gray-700">Možnost mešanja z drugimi substrati</p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="text-2xl">✅</span>
                                 <p className="text-lg text-gray-700">Poraba: 1 vreča (70L) za cca. 1m²</p>
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-2xl">✅</span>
                                 <p className="text-lg text-gray-700">pH vrednost 6,5 – 7,5</p>
                             </div>
+                            <div className="flex items-start gap-3">
+                                <span className="text-2xl">✅</span>
+                                <p className="text-lg text-gray-700">Pripravljen za takojšnje sajenje in setev</p>
+                            </div>
+
                         </div>
                     </div>
                 </div>

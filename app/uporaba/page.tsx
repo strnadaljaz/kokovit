@@ -99,7 +99,12 @@ export default function Uporaba () {
                                         <li>zagotovite hranila</li>
                                         <li>dobite dodatno zastirko</li>
                                     </ul>
-                                    <p className="text-lg md:text-xl leading-relaxed">Sadite ali sejete direktno v substrat.</p>
+                                    <p className="text-lg md:text-xl leading-relaxed mb-3">Sadite ali sejete direktno v substrat.</p>
+
+                                    <div className="bg-[#F5F5DC]/20 rounded-xl p-4">
+                                        <h4 className="text-xl font-bold mb-2">Poraba:</h4>
+                                        <p className="text-lg md:text-xl">👉 za 1 m² površine potrebujete približno 1 vrečo (70 L)</p>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -107,8 +112,12 @@ export default function Uporaba () {
                                     <p className="text-lg md:text-xl mb-3 leading-relaxed">Substrat lahko uporabite tudi izključno kot zastirko:</p>
                                     <ul className="list-disc space-y-2 text-lg md:text-xl ml-8 pl-2 mb-4">
                                         <li>Debelina: vsaj 5 cm</li>
-                                        <li className="text-lg md:text-xl leading-relaxed">Sadite ali sejete neposredno vanj</li>
                                     </ul>
+                                    <div className="bg-[#F5F5DC]/20 rounded-xl p-4">
+                                        <h4 className="text-xl font-bold mb-2">Poraba:</h4>
+                                        <p className="text-lg md:text-xl">👉 za 0,75 m² površine potrebujete približno 1 vrečo (70 L)</p>
+                                    </div>
+ 
                                 </div>
                             </div>
                         </section>
