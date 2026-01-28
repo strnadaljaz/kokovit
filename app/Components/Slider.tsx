@@ -5,7 +5,6 @@ const images = [
   "/onas.webp",
   "/kombi.webp",
   "/dostava.webp",
-  "/partnerji.webp",
 ];
 
 export default function ImageSlider() {
