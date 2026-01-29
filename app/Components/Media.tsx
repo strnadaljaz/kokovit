@@ -1,5 +1,5 @@
 "use client";
-
+//
 export default function Media () {
     return (
         <section className="px-4 md:px-8 py-12 md:py-16">
