@@ -54,7 +54,7 @@ const reviews = [
     {
         id: 8,
         name: "Katja Pavlič",
-        text: "Ekološko in kakovostno. Moje zelišča še nikoli niso bila boljša.",
+        text: "Ekološko in kakovostno. Moja zelišča še nikoli niso bila boljša.",
         rating: 5,
         image: ""
     },
@@ -68,7 +68,7 @@ const reviews = [
     {
         id: 10,
         name: "Nina Zupan",
-        text: "Substrat je resnično kakovosten. Moje rože so še nikoli tako cvetele!",
+        text: "Substrat je resnično kakovosten. Moje rože še nikdar niso tako cvetele!",
         rating: 5,
         image: ""
     }

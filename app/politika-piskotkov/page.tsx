@@ -15,8 +15,6 @@ export default function PolitikaPiskotkov() {
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">2. Katere piškotke uporabljamo</h2>
                 <ul className="list-disc ml-6 mb-4">
                     <li><strong>a) Nujni piškotki</strong> – Ti piškotki so potrebni za pravilno delovanje spletne strani in jih ni mogoče izklopiti.</li>
-                    <li><strong>b) Analitični piškotki</strong> – Uporabljajo se za anonimno analizo obiska spletne strani (npr. Google Analytics).</li>
-                    <li><strong>c) Funkcionalni piškotki</strong> – Omogočajo boljšo uporabniško izkušnjo (npr. shranjevanje nastavitev).</li>
                 </ul>
                 <h2 className="text-xl md:text-2xl font-semibold text-[#2d5016] mt-6 mb-3">3. Upravljanje piškotkov</h2>
                 <p className="mb-4">Uporabnik lahko piškotke sprejme, zavrne ali izbriše v nastavitvah svojega brskalnika. Z omejitvijo piškotkov je lahko delovanje spletne strani omejeno.</p>
