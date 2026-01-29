@@ -2,6 +2,25 @@
 import { useState } from "react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
+import { log } from "console";
+
+function checkKolicina45 (value: number | "") {
+    if (value !== "" && value < 4) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+function checkKolicina70(value: number | "") {
+    if (value !== "" && value < 5) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 async function sendMail(
   imeInPriimek: string,
@@ -38,7 +57,9 @@ export default function Povprasevanje() {
   // Quantities
 
   const [kolicina70, setKolicina70] = useState<number | "">("");
+  const [isValid70, setIsValid70] = useState(true);
   const [kolicina45, setKolicina45] = useState<number | "">("");
+  const [isValid45, setIsValid45] = useState(true);
   const [kolicinaBigBag, setKolicinaBigBag] = useState<number | "">("");
   const [opombe, setOpombe] = useState("");
   // Loading and success states
@@ -58,6 +79,14 @@ export default function Povprasevanje() {
     }
     if (kolicinaBigBag == 0 && kolicina45 == 0 && kolicina70 == 0) {
         alert('Niste vnesli količin!')
+        return;
+    }
+    if (!isValid45) {
+        alert("Vzeti morate vsaj 4 vreče 45l");
+        return;
+    }
+    if (!isValid70) {
+        alert("Vzeti morate vsaj 5 vreč 70l");
         return;
     }
     setIsLoading(true);
@@ -173,9 +202,19 @@ export default function Povprasevanje() {
                     type="number"
                     min="0"
                     value={kolicina45}
-                    onChange={(e) => setKolicina45(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) => {
+                        const value = e.target.value === "" ? "" : Number(e.target.value);
+                        setKolicina45(value);
+                        const valid = checkKolicina45(value);
+                        setIsValid45(valid);
+                    }}
                     placeholder="0"
-                    className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors text-center"
+                    className={`w-full text-[#000000] font-bold px-4 py-3 border-2 rounded-lg 
+  focus:outline-none transition-colors text-center
+  ${isValid45 
+    ? "border-gray-300 focus:border-[#4CAF50]" 
+    : "border-red-500 focus:border-red-600"}
+`} 
                   />
                 </label>
               </div>
@@ -189,9 +228,20 @@ export default function Povprasevanje() {
                     type="number"
                     min="0"
                     value={kolicina70}
-                    onChange={(e) => setKolicina70(e.target.value === "" ? "" : Number(e.target.value))}
+                    onChange={(e) => {
+                        const value = e.target.value === "" ? "" : Number(e.target.value);
+                        setKolicina70(value);
+                        const valid = checkKolicina70(value);
+                        setIsValid70(valid);
+                    }}
                     placeholder="0"
-                    className="w-full text-[#000000] font-bold px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-[#4CAF50] focus:outline-none transition-colors text-center"
+                    className={`w-full text-[#000000] font-bold px-4 py-3 border-2 rounded-lg 
+  focus:outline-none transition-colors text-center
+  ${isValid70 
+    ? "border-gray-300 focus:border-[#4CAF50]" 
+    : "border-red-500 focus:border-red-600"}
+`} 
+ 
                   />
                 </label>
               </div>
