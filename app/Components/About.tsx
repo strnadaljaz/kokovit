@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import openNewPage from "../Functions/openNewPage";
 
 export default function About() {
@@ -9,9 +10,11 @@ export default function About() {
         <div className="min-h-screen flex items-center justify-center px-4 md:px-8 py-16 md:py-20">
             <div className="max-w-6xl w-full grid md:grid-cols-2 gap-8 md:gap-12 items-center animate-slide-up">
                 <div className="flex justify-center">
-                    <img 
-                        src="grede.webp" 
-                        alt="grede" 
+                    <Image 
+                        src="/grede.webp" 
+                        alt="grede"
+                        width={600}
+                        height={600}
                         className="w-full max-w-sm md:max-w-md rounded-2xl md:rounded-3xl shadow-2xl ring-2 md:ring-4 ring-[#F5F5DC]/30 hover:scale-105 transition-transform duration-500"
                     /> 
                 </div>

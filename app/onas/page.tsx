@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
@@ -13,9 +14,11 @@ export default function Onas() {
                     </h1>
 
                     <div className="flex justify-center mb-16">
-                        <img 
+                        <Image 
                             src="/onas.webp" 
-                            alt="O nas - Kokovit" 
+                            alt="O nas - Kokovit"
+                            width={1200}
+                            height={800}
                             className="w-full max-w-3xl rounded-2xl shadow-2xl border-4 border-[#F5F5DC]/20 hover:scale-105 transition-transform duration-300"
                         />
                     </div>

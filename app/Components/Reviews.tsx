@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const reviews = [
     {
@@ -113,9 +114,11 @@ export default function Reviews () {
                         {/* Profile Image */}
                         <div className="flex justify-center mb-6">
                             {reviews[currentIndex].image ? (
-                                <img 
+                                <Image 
                                     src={reviews[currentIndex].image} 
                                     alt={reviews[currentIndex].name}
+                                    width={80}
+                                    height={80}
                                     className="w-20 h-20 rounded-full object-cover border-4 border-[#4CAF50]"
                                 />
                             ) : (

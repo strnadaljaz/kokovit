@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 
@@ -21,9 +22,11 @@ export default function Page() {
                     {/* Product Image & Description */}
                     <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="flex justify-center">
-                            <img 
+                            <Image 
                                 src="/70l-detailed.webp" 
-                                alt="Kokovit 70L substrat" 
+                                alt="Kokovit 70L substrat"
+                                width={800}
+                                height={800}
                                 className="w-full max-w-lg rounded-3xl shadow-2xl ring-4 ring-[#F5F5DC]/30"
                             />
                         </div>

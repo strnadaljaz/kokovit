@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const images = [
   "/onas.webp",
@@ -31,10 +32,12 @@ export default function ImageSlider() {
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {images.map((src, index) => (
-            <img
+            <Image
               key={index}
-              src={`${src}?auto=format&fit=crop&w=1200&q=80`}
+              src={src}
               alt={`Slide ${index + 1}`}
+              width={1200}
+              height={800}
               className="w-full flex-shrink-0 object-cover h-[calc(100vh-5rem-3)] md:h-[calc(100vh-5rem)]"
             />
           ))}
