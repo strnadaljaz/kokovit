@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kokovit",
+  title: "Kokovit | Visokokvaliteten naravni substrat",
   description: "Visokokvaliteten naravni substrat iz mešanice kokosovih vlaken, šote in drugih organskih snovi, za visoke grede, vrtove, rastlinjake, okrasne grede, ločnice itd.",
   keywords: "Kokovit, naravni substrat, kokovit, kokosova vlakna, kokos, vlakna, visoke grede, grede, vrt, rastlinjaki, rastlinjak, vrtičkanje, substrat za vrt, organski substrat, substrat za rastlinjake, substrat za visoke grede, ekološki substrat, prodaja substrata Slovenija, kokos substrat"
 };
