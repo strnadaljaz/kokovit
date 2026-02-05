@@ -262,6 +262,16 @@ export default function Povprasevanje() {
                 </label>
               </div>
             </div>
+            {kolicinaBigBag !== "" && (
+                <div className="text-center mb-4 mt-4">
+                    <div className="bg-yellow-100 border-l-4 border-yellow-500 p-6 rounded-lg mb-6">
+                        <p className="font-semibold text-gray-800 flex items-center justify-center gap-2">
+                            <span className="text-2xl">📍</span>
+                            Lasten prevzem v Ormožu po predhodnem dogovoru po telefonu
+                        </p>
+                    </div>
+                </div>                
+            )}
             <div className="border-b-3 pb-3">
                 <p className="text-lg font-semibold text-[#2d5016] mb-2 mt-4">Plačilo:</p>
                 <label className="text-[#000000]">
