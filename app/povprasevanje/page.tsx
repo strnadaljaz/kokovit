@@ -281,10 +281,11 @@ export default function Povprasevanje() {
                     />
                      Predračun
                 </label>
-                <label className="text-[#000000] ml-2">
+                <label className={`ml-2 ${kolicina45 !== "" && kolicina45 > 0 ? "text-gray-400 cursor-not-allowed" : "text-[#000000]"}`}>
                     <input type="radio" name="placilo" value="Po povzetju" className="mr-2"
                             checked={nacinPlacila === "Po povzetju"}
                             onChange={(e) => setNacinPlacila(e.target.value)}
+                            disabled={kolicina45 !== "" && kolicina45 > 0}
                     />
                     Po povzetju
                 </label>

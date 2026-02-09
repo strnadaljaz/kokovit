@@ -1,6 +1,7 @@
 "use client";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
+import Image from "next/image";
 
 export default function Partnerji () {
     return (
@@ -13,10 +14,12 @@ export default function Partnerji () {
                     </h1>
 
                     <div className="flex justify-center mb-16">
-                        <img 
+                        <Image 
                             src="/partnerji.webp" 
                             alt="Poslovni partnerji - Kokovit" 
                             className="w-full max-w-3xl rounded-2xl shadow-2xl border-4 border-[#F5F5DC]/20 hover:scale-105 transition-transform duration-300"
+                            width={1200}
+                            height={800}
                         />
                     </div>
 
@@ -52,6 +55,41 @@ export default function Partnerji () {
                                         className="underline"
                                         target="_blank"
                                     >Sam PE Ormož</a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://www.google.com/maps/place/SAM+Nazarje/@46.3192241,14.9469139,17z/data=!3m1!4b1!4m6!3m5!1s0x47655cb03f1bff97:0xbd51795026d476ae!8m2!3d46.3192204!4d14.9494888!16s%2Fg%2F1hc0tdc9_?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D"
+                                        className="underline"
+                                        target="_blank"
+                                    >Sam PE Nazarje</a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://www.google.com/maps/place/Sam+d.o.o.+Dom%C5%BEale/@46.1624106,14.5954094,17z/data=!3m1!4b1!4m6!3m5!1s0x476535b3b1e1dc37:0x7597fe9d2e057a1d!8m2!3d46.1624069!4d14.5979843!16s%2Fg%2F1hc26_qnb?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D"
+                                        className="underline"
+                                        target="_blank"
+                                    >Sam PE Jarše</a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://www.google.com/maps/place/SAM+Trbovlje/@46.1404618,15.0347314,17z/data=!3m1!4b1!4m6!3m5!1s0x47656b534bd9760d:0xb8eac07a749a5dca!8m2!3d46.1404581!4d15.0373063!16s%2Fg%2F1hc1ww89x?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D"
+                                        className="underline"
+                                        target="_blank"
+                                    >Sam PE Trbovlje</a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://www.google.com/maps/place/SAM+Latkova+vas/@46.2536193,15.0922372,17z/data=!3m1!4b1!4m6!3m5!1s0x476568d72eb0288b:0x6e1ad7d665b96b29!8m2!3d46.2536157!4d15.0971081!16s%2Fg%2F1hc30tv6q?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D"
+                                        className="underline"
+                                        target="_blank"
+                                    >Sam PE Latkova vas</a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://www.google.com/maps/place/Atina+proizvodno+in+trgovsko+podjetje+d.o.o./@46.4177623,16.1094288,17z/data=!3m1!4b1!4m6!3m5!1s0x476f5bab9349fa57:0xeffceb6f895ffd0a!8m2!3d46.4177586!4d16.1120037!16s%2Fg%2F1jkyq48nl?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D"
+                                        className="underline"
+                                        target="_blank"
+                                    >Atina Velika Nedelja</a>
                                 </li>
                             </ul>
                         </section>

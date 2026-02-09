@@ -97,6 +97,10 @@ export default function Page() {
                         </div>
 
                         <div className="mt-8 text-center">
+
+                            <p className="text-2xl font-semibold text-[#2d5016] mb-4">
+                                Dostavni rok: <span className="text-[#4CAF50]">5 - 7 delovnih dni</span> od prejema naročila
+                            </p>
                             <p className="text-xl font-semibold text-[#2d5016] mb-8">
                                 ⏩ Pohiti in si zagotovi svoj KOKOVIT substrat za SUPER VRT! 🥦🥕🍅🍆
                             </p>
