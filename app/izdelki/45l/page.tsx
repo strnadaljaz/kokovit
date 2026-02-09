@@ -96,6 +96,12 @@ export default function Page() {
                             <p className="text-2xl font-semibold text-[#2d5016] mb-4">
                                 Dostavni rok: <span className="text-[#4CAF50]">3 - 5 delovnih dni</span> od prejema naročila
                             </p>
+
+                            <div className="flex items-center justify-center my-6">
+                                <div className="h-0.5 bg-gradient-to-r from-transparent via-[#4CAF50] to-transparent w-full max-w-md"></div>
+                                <span className="mx-4 text-3xl">🌱</span>
+                                <div className="h-0.5 bg-gradient-to-r from-transparent via-[#4CAF50] to-transparent w-full max-w-md"></div>
+                            </div>
                             <p className="text-xl font-semibold text-[#2d5016] mb-8">
                                 🌞 Poskrbite za bogat pridelek – ne zamudite priložnosti!
                             </p>
