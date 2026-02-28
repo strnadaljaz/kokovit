@@ -5,6 +5,7 @@ import Footer from "../Components/Footer";
 import { log } from "console";
 
 function checkKolicina45 (value: number | "") {
+
     if (value !== "" && value < 4) {
         return false;
     }
@@ -207,6 +208,7 @@ export default function Povprasevanje() {
                         setKolicina45(value);
                         const valid = checkKolicina45(value);
                         setIsValid45(valid);
+                        setNacinPlacila("");
                     }}
                     placeholder="0"
                     className={`w-full text-[#000000] font-bold px-4 py-3 border-2 rounded-lg 
