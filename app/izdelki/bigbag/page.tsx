@@ -74,7 +74,7 @@ export default function Page() {
                                     💶 Cena / 1m³
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
-                                    125€ / kom
+                                    152.50€ / kom
                                 </p>
                             </div>
 
