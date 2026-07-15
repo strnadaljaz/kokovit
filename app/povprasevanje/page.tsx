@@ -194,7 +194,7 @@ export default function Povprasevanje() {
               Izberite količino vreč:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
+              <div className="hidden bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
                 <label className="flex flex-col space-y-3">
                   <span className="text-base font-semibold text-[#2d5016]">
                     45L Vreča
@@ -248,7 +248,7 @@ export default function Povprasevanje() {
                 </label>
               </div>
 
-              <div className="bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
+              <div className="hidden bg-gradient-to-br from-green-50 to-white p-5 rounded-xl border-2 border-gray-200 hover:border-[#4CAF50] transition-all duration-300 shadow-sm hover:shadow-md">
                 <label className="flex flex-col space-y-3">
                   <span className="text-base font-semibold text-[#2d5016]">
                     BigBag

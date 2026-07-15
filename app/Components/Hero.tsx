@@ -16,6 +16,9 @@ export default function Hero() {
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:150ms] mt-6" onClick={() => openNewPage(router, "/izdelki/45l")}>
                     <Image src="/45l.webp" alt="45l" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
                     <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6 underline">45l Kokovit substrat</p>
+                    <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
+                        Ni na zalogi!
+                    </p>
                 </div>
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up mt-6" onClick={() => openNewPage(router, "/izdelki/70l")}>
                     <Image src="/70l.webp" alt="70l" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" /> 
@@ -24,6 +27,9 @@ export default function Hero() {
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:300ms] mt-6" onClick={() => openNewPage(router, "/izdelki/bigbag")}>
                     <Image src="/bigbag.webp" alt="Big Bag" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
                     <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6 underline">Big Bag Kokovit substrat</p>
+                    <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
+                        Ni na zalogi!
+                    </p>
                 </div>
             </div>
         </div>
