@@ -16,20 +16,27 @@ const Panel = () => {
     const [kom45, setKom45] = useState<number[]>([0]);
     const [kom70, setKom70] = useState<number[]>([0]);
 
+    const [price45, setPrice45] = useState<string[]>([""]);
+    const [price70, setPrice70] = useState<string[]>([""]);
+
     function increase45() {
         setKom45((prev) => [...prev, 0]);
+        setPrice45((prev) => [...prev, ""]);
     }
 
     function increase70() {
         setKom70((prev) => [...prev, 0]);
+        setPrice70((prev) => [...prev, ""]);
     }
 
     function deleteEntry45(i: number) {
         setKom45((prev) => prev.filter((_, index) => index !== i));
+        setPrice45((prev) => prev.filter((_, index) => index === i));
     }
 
     function deleteEntry70(i: number) {
         setKom70((prev) => prev.filter((_, index) => index !== i));
+        setPrice70((prev) => prev.filter((_, index) => index === i));
     }
 
     return (
@@ -95,6 +102,13 @@ const Panel = () => {
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    value={price45}
+                                    onChange={(e) => {
+                                        const nextValue = e.target.value;
+                                        setPrice45((prev) =>
+                                            prev.map((value, index) => (index === i ? nextValue : value))
+                                        );
+                                    }}
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -133,6 +147,13 @@ const Panel = () => {
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    value={price70}
+                                    onChange={(e) => {
+                                        const nextValue = e.target.value;
+                                        setPrice70((prev) =>
+                                            prev.map((value, index) => (index === i ? nextValue : value))
+                                        );
+                                    }}
                                 />
                             </Fragment>
                         ))}
