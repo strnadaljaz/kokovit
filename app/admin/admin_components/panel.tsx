@@ -13,11 +13,16 @@ const Panel = () => {
     const [bag45, setBag45] = useState(true);
     const [bigBag, setBigBag] = useState(true);
 
-    const [kom45, setKom45] = useState<number[]>([0]);
-    const [kom70, setKom70] = useState<number[]>([0]);
+    const [kom45, setKom45] = useState<number[]>([]);
+    const [kom70, setKom70] = useState<number[]>([]);
 
-    const [price45, setPrice45] = useState<string[]>([""]);
-    const [price70, setPrice70] = useState<string[]>([""]);
+    const [gratisKom, setGratisKom] = useState<number[]>([]);
+
+    const [price45, setPrice45] = useState<string[]>([]);
+    const [price70, setPrice70] = useState<string[]>([]);
+    const [priceBigBag, setPriceBigBag] = useState<string>();
+
+    const [shipping, setShipping] = useState<string[]>([]);
 
     function increase45() {
         setKom45((prev) => [...prev, 0]);
@@ -27,16 +32,18 @@ const Panel = () => {
     function increase70() {
         setKom70((prev) => [...prev, 0]);
         setPrice70((prev) => [...prev, ""]);
+        setGratisKom((prev) => [...prev, 0]);
     }
 
     function deleteEntry45(i: number) {
         setKom45((prev) => prev.filter((_, index) => index !== i));
-        setPrice45((prev) => prev.filter((_, index) => index === i));
+        setPrice45((prev) => prev.filter((_, index) => index !== i));
     }
 
     function deleteEntry70(i: number) {
         setKom70((prev) => prev.filter((_, index) => index !== i));
-        setPrice70((prev) => prev.filter((_, index) => index === i));
+        setPrice70((prev) => prev.filter((_, index) => index !== i));
+        setGratisKom((prev) => prev.filter((_, index) => index !== i));
     }
 
     return (
@@ -112,6 +119,13 @@ const Panel = () => {
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    value={shipping}
+                                    onChange={(e) => {
+                                        const nextValue = e.target.value;
+                                        setShipping((prev) =>
+                                            prev.map((value, index) => (index === i ? nextValue : value))
+                                        );
+                                    }}
                                 />
                             </Fragment>
                         ))}
@@ -144,6 +158,13 @@ const Panel = () => {
                                 <input
                                     type="number"
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    value={gratisKom[i]}
+                                    onChange={(e) => {
+                                        const nextValue = Number(e.target.value);
+                                        setGratisKom((prev) =>
+                                            prev.map((value, index) => (index === i ? nextValue : value))
+                                        );
+                                    }}
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -164,12 +185,12 @@ const Panel = () => {
                 {/* Cene Big Bag Section */}
                 <div id="cene_big_bag" className="bg-white rounded-lg shadow-lg p-8">
                     <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Cene Big Bag</h2>
-                    <div style={{ display: "grid", gridTemplateColumns: "40px 1fr", gap: "1rem" }}>
-                        <p />
+                    <div>
                         <p className="font-semibold text-gray-700">Cena / komad</p>
-                        <p className="text-[#000000] text-xl leading-none cursor-pointer">-</p>
                         <input
                             className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            value={priceBigBag}
+                            onChange={(e) => setPriceBigBag(e.target.value)}
                         />
                     </div>
                 </div>
