@@ -40,7 +40,7 @@ const Login = ({ logIn }: loginParams) => {
                     <div>
                         <label className="block mb-2 text-[#000000]" htmlFor="email">Email</label>
                         <input
-                            className="w-full p-2 mb-6 text-indigo-700 border-b-2 border-[#000000] outline-none focus:bg-gray-300"
+                            className="w-full p-2 mb-6 text-[#000000] border-b-2 border-[#000000] outline-none focus:bg-gray-300"
                             type="email"
                             name="email"
                             value={email}
@@ -51,7 +51,7 @@ const Login = ({ logIn }: loginParams) => {
                     <div>
                         <label className="block mb-2 text-[#000000]" htmlFor="password">Password</label>
                         <input
-                            className="w-full p-2 mb-6 text-indigo-700 border-b-2 border-[#000000] outline-none focus:bg-gray-300"
+                            className="w-full p-2 mb-6 text-[#000000] border-b-2 border-[#000000] outline-none focus:bg-gray-300"
                             type="password"
                             name="password"
                             value={password}
@@ -67,6 +67,11 @@ const Login = ({ logIn }: loginParams) => {
                         >
                         </input>
                     </div>
+                    {wrongCredentials &&
+                        <div className="w-full text-center">
+                            <p style={{ color: "red" }}>Email ali geslo ni pravilno</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div >
