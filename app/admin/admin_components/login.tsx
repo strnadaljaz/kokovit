@@ -14,7 +14,7 @@ const Login = ({ logIn }: loginParams) => {
     const [wrongCredentials, setWrongCredentials] = useState(false);
 
     const checkCredentials = async () => {
-        const supabase = await createClient();
+        const supabase = createClient();
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,

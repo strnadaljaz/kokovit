@@ -1,17 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fragment } from "react";
-
-function deleteCookie() {
-    document.cookie = "login; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-}
+import { createClient } from "@/lib/supabase/client";
 
 const Panel = () => {
-    const [bag70, setBag70] = useState(true);
-    const [bag45, setBag45] = useState(true);
-    const [bigBag, setBigBag] = useState(true);
+
+    const [bag70, setBag70] = useState(false);
+    const [bag45, setBag45] = useState(false);
+    const [bigBag, setBigBag] = useState(false);
 
     const [kom45, setKom45] = useState<number[]>([]);
     const [kom70, setKom70] = useState<number[]>([]);
@@ -23,6 +21,85 @@ const Panel = () => {
     const [priceBigBag, setPriceBigBag] = useState<string>();
 
     const [shipping, setShipping] = useState<string[]>([]);
+
+    const [loading, setLoading] = useState<boolean>(true);
+
+
+    useEffect(() => {
+        const supabase = createClient();
+
+        const loadStockData = async () => {
+
+            const { data, error } = await supabase
+                .from('products')
+                .select('id, in_stock');
+
+            if (error) {
+                console.error("couldnt get data stock data");
+                return;
+            }
+
+            setBag45(data[0].in_stock);
+            setBag70(data[1].in_stock);
+            setBigBag(data[2].in_stock);
+        }
+
+        const load45Data = async () => {
+            const { data, error } = await supabase
+                .from('discounts')
+                .select('id, quantity, price, shipping')
+                .eq("product_id", 1);
+
+            if (error) {
+                console.error("couldnt get 45l data");
+                return;
+            }
+
+            let quantity = [];
+            let price = [];
+            let shipping = [];
+            for (let d of data) {
+                quantity.push(d.quantity);
+                price.push(d.price);
+                shipping.push(d.shipping ? d.shipping : "");
+            }
+
+            setKom45(quantity);
+            setPrice45(price);
+            setShipping(shipping);
+        }
+
+        const load70Data = async () => {
+            const { data, error } = await supabase
+                .from('discounts')
+                .select('id, quantity, free_quantity, price')
+                .eq("product_id", 2);
+
+            if (error) {
+                console.error("couldnt get 70l data");
+                return;
+            }
+
+            let quantity = [];
+            let free_quantity = [];
+            let price = [];
+
+            for (let d of data) {
+                quantity.push(d.quantity);
+                free_quantity.push(d.free_quantity);
+                price.push(d.price);
+            }
+
+            setKom70(quantity);
+            setGratisKom(free_quantity);
+            setPrice70(price);
+        }
+
+        loadStockData();
+        load45Data();
+        load70Data();
+        setLoading(false);
+    }, []);
 
     function increase45() {
         setKom45((prev) => [...prev, 0]);
@@ -53,7 +130,6 @@ const Panel = () => {
                 <h1 className="text-white text-2xl font-bold tracking-wide">Kokovit Admin Panel</h1>
                 <Link
                     href={"/"}
-                    onClick={deleteCookie}
                     className="text-sm font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors px-4 py-2 rounded-lg shadow-md"
                 >
                     Odjava
@@ -87,7 +163,7 @@ const Panel = () => {
 
                 {/* Cene 45l Section */}
                 <div id="cene_45l" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Cene 45l</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Akcije 45l</h2>
                     <div style={{ display: "grid", gridTemplateColumns: "40px repeat(3, 1fr)", gap: "1rem" }}>
                         <p />
                         <p className="font-semibold text-gray-700">Število kosov</p>
@@ -109,7 +185,7 @@ const Panel = () => {
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    value={price45}
+                                    value={price45[i]}
                                     onChange={(e) => {
                                         const nextValue = e.target.value;
                                         setPrice45((prev) =>
@@ -119,7 +195,7 @@ const Panel = () => {
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    value={shipping}
+                                    value={shipping[i]}
                                     onChange={(e) => {
                                         const nextValue = e.target.value;
                                         setShipping((prev) =>
@@ -135,7 +211,7 @@ const Panel = () => {
 
                 {/* Cene 70l Section */}
                 <div id="cene_70l" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Cene 70l</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Akcije 70l</h2>
                     <div style={{ display: "grid", gridTemplateColumns: "40px repeat(3, 1fr)", gap: "1rem" }}>
                         <p />
                         <p className="font-semibold text-gray-700">Število komadov</p>
@@ -168,7 +244,7 @@ const Panel = () => {
                                 />
                                 <input
                                     className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    value={price70}
+                                    value={price70[i]}
                                     onChange={(e) => {
                                         const nextValue = e.target.value;
                                         setPrice70((prev) =>
@@ -182,18 +258,6 @@ const Panel = () => {
                     </div>
                 </div>
 
-                {/* Cene Big Bag Section */}
-                <div id="cene_big_bag" className="bg-white rounded-lg shadow-lg p-8">
-                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Cene Big Bag</h2>
-                    <div>
-                        <p className="font-semibold text-gray-700">Cena / komad</p>
-                        <input
-                            className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            value={priceBigBag}
-                            onChange={(e) => setPriceBigBag(e.target.value)}
-                        />
-                    </div>
-                </div>
             </div>
         </div>
     );
