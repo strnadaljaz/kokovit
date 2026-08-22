@@ -19,11 +19,10 @@ const Panel = () => {
     const [price45, setPrice45] = useState<string[]>([]);
     const [price70, setPrice70] = useState<string[]>([]);
     const [priceBigBag, setPriceBigBag] = useState<string>();
+    const [priceOne45, setPriceOne45] = useState<string>();
+    const [priceOne70, setPriceOne70] = useState<string>();
 
     const [shipping, setShipping] = useState<string[]>([]);
-
-    const [loading, setLoading] = useState<boolean>(true);
-
 
     useEffect(() => {
         const supabase = createClient();
@@ -36,12 +35,20 @@ const Panel = () => {
 
             if (error) {
                 console.error("couldnt get data stock data");
+                console.error(error);
                 return;
             }
 
-            setBag45(data[0].in_stock);
-            setBag70(data[1].in_stock);
-            setBigBag(data[2].in_stock);
+            console.log(data);
+
+            for (const d of data) {
+                if (d.id == 1)
+                    setBag45(d.in_stock);
+                else if (d.id == 2)
+                    setBag70(d.in_stock);
+                else
+                    setBigBag(d.in_stock);
+            }
         }
 
         const load45Data = async () => {
@@ -58,7 +65,8 @@ const Panel = () => {
             let quantity = [];
             let price = [];
             let shipping = [];
-            for (let d of data) {
+
+            for (const d of data) {
                 quantity.push(d.quantity);
                 price.push(d.price);
                 shipping.push(d.shipping ? d.shipping : "");
@@ -84,7 +92,7 @@ const Panel = () => {
             let free_quantity = [];
             let price = [];
 
-            for (let d of data) {
+            for (const d of data) {
                 quantity.push(d.quantity);
                 free_quantity.push(d.free_quantity);
                 price.push(d.price);
@@ -98,7 +106,6 @@ const Panel = () => {
         loadStockData();
         load45Data();
         load70Data();
-        setLoading(false);
     }, []);
 
     function increase45() {
@@ -124,57 +131,109 @@ const Panel = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
+        <div className="min-h-screen bg-[#0F1115] flex flex-col font-sans" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-between px-8 py-4 shadow-lg">
-                <h1 className="text-white text-2xl font-bold tracking-wide">Kokovit Admin Panel</h1>
+            <div className="bg-[#161A20] flex items-center justify-between px-8 py-4 shadow-md shadow-black/30 sticky top-0 z-10 border-b border-white/5">
+                <h1 className="text-slate-100 text-2xl font-bold tracking-wide">Kokovit Admin Panel</h1>
                 <Link
                     href={"/"}
-                    className="text-sm font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors px-4 py-2 rounded-lg shadow-md"
+                    className="text-sm font-semibold text-white bg-[#4CAF50] hover:bg-[#43A047] transition-colors duration-200 px-4 py-2 rounded-lg shadow-sm hover:shadow-md"
                 >
                     Odjava
                 </Link>
             </div>
 
-            <div className="flex-1 p-8 max-w-6xl mx-auto w-full">
+            <div className="flex-1 p-4 sm:p-8 max-w-6xl mx-auto w-full">
                 {/* Zaloga Section */}
-                <div id="zaloga" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Zaloga</h2>
-                    <div className="flex flex-wrap gap-8">
+                <div id="zaloga" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
+                    <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
+                        <span aria-hidden="true">📦</span> Zaloga
+                    </h2>
+                    <div className="flex flex-col gap-4">
                         {[
-                            { id: "70l", label: "70l", state: bag70, setState: setBag70 },
                             { id: "45l", label: "45l", state: bag45, setState: setBag45 },
+                            { id: "70l", label: "70l", state: bag70, setState: setBag70 },
                             { id: "BigBag", label: "BigBag", state: bigBag, setState: setBigBag },
                         ].map(({ id, label, state, setState }) => (
-                            <label key={id} className="flex items-center gap-3 cursor-pointer group">
-                                <input
-                                    type="checkbox"
-                                    id={id}
-                                    name={id}
-                                    checked={state}
-                                    onChange={(e) => setState(e.target.checked)}
-                                    className="w-5 h-5 accent-blue-600 cursor-pointer rounded transition-transform hover:scale-110"
-                                />
-                                <span className="text-lg font-medium text-gray-700 group-hover:text-blue-600 transition-colors">{label}</span>
-                            </label>
+                            <div
+                                key={id}
+                                className="flex flex-wrap items-center gap-4 bg-[#1D222A] rounded-lg px-4 py-3 transition-colors duration-200 hover:bg-[#232933]"
+                            >
+                                <label htmlFor={id} className="flex items-center gap-3 cursor-pointer group">
+                                    {/* Toggle switch */}
+                                    <span className="relative inline-flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id={id}
+                                            name={id}
+                                            checked={state}
+                                            onChange={(e) => setState(e.target.checked)}
+                                            className="sr-only peer"
+                                        />
+                                        <span
+                                            className="w-11 h-6 bg-slate-600 peer-checked:bg-[#4CAF50] rounded-full transition-colors duration-300 ease-in-out cursor-pointer"
+                                        ></span>
+                                        <span
+                                            className="absolute left-1 top-1 w-4 h-4 bg-slate-100 rounded-full shadow transition-transform duration-300 ease-in-out peer-checked:translate-x-5"
+                                        ></span>
+                                    </span>
+                                    <span className="text-lg font-medium text-slate-200 group-hover:text-[#4CAF50] transition-colors duration-200">
+                                        {label}
+                                    </span>
+                                </label>
+                                {
+                                    state &&
+                                    <div className="flex items-center gap-2">
+
+                                        <input
+                                            type="text"
+                                            className="text-slate-100 bg-[#0F1115] w-24 px-3 py-1.5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
+                                        ></input>
+                                    </div>
+                                }
+                            </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Cene 45l Section */}
-                <div id="cene_45l" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Akcije 45l</h2>
-                    <div style={{ display: "grid", gridTemplateColumns: "40px repeat(3, 1fr)", gap: "1rem" }}>
-                        <p />
-                        <p className="font-semibold text-gray-700">Število kosov</p>
-                        <p className="font-semibold text-gray-700">Cena</p>
-                        <p className="font-semibold text-gray-700">Poštnina</p>
+                <div id="cene_45l" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
+                    <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
+                        <span aria-hidden="true">🏷️</span> Akcije 45l
+                    </h2>
+
+                    {/* Column labels */}
+                    <div className="hidden sm:grid grid-cols-[40px_repeat(3,1fr)] gap-4 mb-3 px-2">
+                        <span />
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
+                            Število kosov
+                        </span>
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
+                            Cena
+                        </span>
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
+                            Poštnina
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
                         {kom45.map((_, i) => (
-                            <Fragment key={i}>
-                                <p className="text-[#000000] text-xl leading-none cursor-pointer" onClick={() => deleteEntry45(i)}>-</p>
+                            <div
+                                key={i}
+                                className="grid grid-cols-[40px_repeat(3,1fr)] gap-4 items-center bg-[#1D222A] rounded-lg px-3 py-3 shadow-sm shadow-black/20 hover:shadow-md hover:shadow-black/30 transition-shadow duration-200"
+                            >
+                                <button
+                                    type="button"
+                                    onClick={() => deleteEntry45(i)}
+                                    aria-label="Odstrani vrstico"
+                                    className="flex items-center justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200 cursor-pointer"
+                                >
+                                    ➖
+                                </button>
                                 <input
                                     type="number"
-                                    className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Število kosov"
+                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={kom45[i]}
                                     onChange={(e) => {
                                         const nextValue = Number(e.target.value);
@@ -184,7 +243,8 @@ const Panel = () => {
                                     }}
                                 />
                                 <input
-                                    className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Cena"
+                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={price45[i]}
                                     onChange={(e) => {
                                         const nextValue = e.target.value;
@@ -194,7 +254,8 @@ const Panel = () => {
                                     }}
                                 />
                                 <input
-                                    className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Poštnina"
+                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={shipping[i]}
                                     onChange={(e) => {
                                         const nextValue = e.target.value;
@@ -203,26 +264,57 @@ const Panel = () => {
                                         );
                                     }}
                                 />
-                            </Fragment>
+                            </div>
                         ))}
-                        <p className="text-[#000000] cursor-pointer" onClick={increase45}>+</p>
                     </div>
+
+                    <button
+                        type="button"
+                        onClick={increase45}
+                        className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                    >
+                        ➕ Dodaj vrstico
+                    </button>
                 </div>
 
                 {/* Cene 70l Section */}
-                <div id="cene_70l" className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-500 pb-3">Akcije 70l</h2>
-                    <div style={{ display: "grid", gridTemplateColumns: "40px repeat(3, 1fr)", gap: "1rem" }}>
-                        <p />
-                        <p className="font-semibold text-gray-700">Število komadov</p>
-                        <p className="font-semibold text-gray-700">Število gratis komadov</p>
-                        <p className="font-semibold text-gray-700">Cena</p>
+                <div id="cene_70l" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
+                    <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
+                        <span aria-hidden="true">🏷️</span> Akcije 70l
+                    </h2>
+
+                    {/* Column labels */}
+                    <div className="hidden sm:grid grid-cols-[40px_repeat(3,1fr)] gap-4 mb-3 px-2">
+                        <span />
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
+                            Število komadov
+                        </span>
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
+                            Število gratis komadov
+                        </span>
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
+                            Cena
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
                         {kom70.map((_, i) => (
-                            <Fragment key={i}>
-                                <p className="text-[#000000] text-xl leading-none cursor-pointer" onClick={() => deleteEntry70(i)}>-</p>
+                            <div
+                                key={i}
+                                className="grid grid-cols-[40px_repeat(3,1fr)] gap-4 items-center bg-[#1D222A] rounded-lg px-3 py-3 shadow-sm shadow-black/20 hover:shadow-md hover:shadow-black/30 transition-shadow duration-200"
+                            >
+                                <button
+                                    type="button"
+                                    onClick={() => deleteEntry70(i)}
+                                    aria-label="Odstrani vrstico"
+                                    className="flex items-center cursor-pointer justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200"
+                                >
+                                    ➖
+                                </button>
                                 <input
                                     type="number"
-                                    className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Število komadov"
+                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={kom70[i]}
                                     onChange={(e) => {
                                         const nextValue = Number(e.target.value);
@@ -233,7 +325,8 @@ const Panel = () => {
                                 />
                                 <input
                                     type="number"
-                                    className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Gratis komadi"
+                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={gratisKom[i]}
                                     onChange={(e) => {
                                         const nextValue = Number(e.target.value);
@@ -243,7 +336,8 @@ const Panel = () => {
                                     }}
                                 />
                                 <input
-                                    className="text-[#000000] w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Cena"
+                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={price70[i]}
                                     onChange={(e) => {
                                         const nextValue = e.target.value;
@@ -252,10 +346,17 @@ const Panel = () => {
                                         );
                                     }}
                                 />
-                            </Fragment>
+                            </div>
                         ))}
-                        <p className="text-[#000000] cursor-pointer" onClick={increase70}>+</p>
                     </div>
+
+                    <button
+                        type="button"
+                        onClick={increase70}
+                        className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                    >
+                        ➕ Dodaj vrstico
+                    </button>
                 </div>
 
             </div>
