@@ -31,7 +31,7 @@ const Panel = () => {
 
             const { data, error } = await supabase
                 .from('products')
-                .select('id, in_stock');
+                .select('id, in_stock, price');
 
             if (error) {
                 console.error("couldnt get data stock data");
@@ -42,12 +42,18 @@ const Panel = () => {
             console.log(data);
 
             for (const d of data) {
-                if (d.id == 1)
+                if (d.id == 1) {
                     setBag45(d.in_stock);
-                else if (d.id == 2)
+                    setPriceOne45(d.price);
+                }
+                else if (d.id == 2) {
                     setBag70(d.in_stock);
-                else
+                    setPriceOne70(d.price);
+                }
+                else {
                     setBigBag(d.in_stock);
+                    setPriceBigBag(d.price);
+                }
             }
         }
 
@@ -151,10 +157,10 @@ const Panel = () => {
                     </h2>
                     <div className="flex flex-col gap-4">
                         {[
-                            { id: "45l", label: "45l", state: bag45, setState: setBag45 },
-                            { id: "70l", label: "70l", state: bag70, setState: setBag70 },
-                            { id: "BigBag", label: "BigBag", state: bigBag, setState: setBigBag },
-                        ].map(({ id, label, state, setState }) => (
+                            { id: "45l", label: "45l", state: bag45, setState: setBag45, price: priceOne45, priceChange: setPriceOne45 },
+                            { id: "70l", label: "70l", state: bag70, setState: setBag70, price: priceOne70, priceChange: setPriceOne70 },
+                            { id: "BigBag", label: "BigBag", state: bigBag, setState: setBigBag, price: priceBigBag, priceChange: setPriceBigBag },
+                        ].map(({ id, label, state, setState, price, priceChange }) => (
                             <div
                                 key={id}
                                 className="flex flex-wrap items-center gap-4 bg-[#1D222A] rounded-lg px-4 py-3 transition-colors duration-200 hover:bg-[#232933]"
@@ -184,10 +190,11 @@ const Panel = () => {
                                 {
                                     state &&
                                     <div className="flex items-center gap-2">
-
                                         <input
                                             type="text"
                                             className="text-slate-100 bg-[#0F1115] w-24 px-3 py-1.5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
+                                            value={price}
+                                            onChange={(e) => priceChange(e.target.value)}
                                         ></input>
                                     </div>
                                 }
