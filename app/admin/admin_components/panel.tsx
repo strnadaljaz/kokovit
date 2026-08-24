@@ -1,8 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import React, { SetStateAction, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import Header from "./panel_components/header";
+import Stock from "./panel_components/stock";
+import Section45l from "./panel_components/section_45l";
+import Section70l from "./panel_components/section_70l";
 
 const Panel = () => {
 
@@ -18,6 +21,7 @@ const Panel = () => {
     const [price45, setPrice45] = useState<string[]>([]);
     const [price70, setPrice70] = useState<string[]>([]);
     const [priceBigBag, setPriceBigBag] = useState<string>();
+
     const [priceOne45, setPriceOne45] = useState<string>();
     const [priceOne70, setPriceOne70] = useState<string>();
 
@@ -149,233 +153,17 @@ const Panel = () => {
     return (
         <div className="min-h-screen bg-[#0F1115] flex flex-col font-sans" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
             {/* Header */}
-            <div className="bg-[#161A20] flex items-center justify-between px-8 py-4 shadow-md shadow-black/30 sticky top-0 z-10 border-b border-white/5">
-                <h1 className="text-slate-100 text-2xl font-bold tracking-wide">Kokovit Admin Panel</h1>
-                <Link
-                    href={"/"}
-                    className="text-sm font-semibold text-white bg-[#4CAF50] hover:bg-[#43A047] transition-colors duration-200 px-4 py-2 rounded-lg shadow-sm hover:shadow-md"
-                >
-                    Odjava
-                </Link>
-            </div>
+            <Header />
 
             <div className="flex-1 p-4 sm:p-8 max-w-6xl mx-auto w-full">
                 {/* Zaloga Section */}
-                <div id="zaloga" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
-                        <span aria-hidden="true">📦</span> Zaloga
-                    </h2>
-                    <div className="flex flex-col gap-4">
-                        {[
-                            { id: "45l", label: "45l", state: bag45, setState: setBag45, price: priceOne45, priceChange: setPriceOne45 },
-                            { id: "70l", label: "70l", state: bag70, setState: setBag70, price: priceOne70, priceChange: setPriceOne70 },
-                            { id: "BigBag", label: "BigBag", state: bigBag, setState: setBigBag, price: priceBigBag, priceChange: setPriceBigBag },
-                        ].map(({ id, label, state, setState, price, priceChange }) => (
-                            <div
-                                key={id}
-                                className="flex flex-wrap items-center gap-4 bg-[#1D222A] rounded-lg px-4 py-3 transition-colors duration-200 hover:bg-[#232933]"
-                            >
-                                <label htmlFor={id} className="flex items-center gap-3 cursor-pointer group">
-                                    {/* Toggle switch */}
-                                    <span className="relative inline-flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            id={id}
-                                            name={id}
-                                            checked={state}
-                                            onChange={(e) => setState(e.target.checked)}
-                                            className="sr-only peer"
-                                        />
-                                        <span
-                                            className="w-11 h-6 bg-slate-600 peer-checked:bg-[#4CAF50] rounded-full transition-colors duration-300 ease-in-out cursor-pointer"
-                                        ></span>
-                                        <span
-                                            className="absolute left-1 top-1 w-4 h-4 bg-slate-100 rounded-full shadow transition-transform duration-300 ease-in-out peer-checked:translate-x-5"
-                                        ></span>
-                                    </span>
-                                    <span className="text-lg font-medium text-slate-200 group-hover:text-[#4CAF50] transition-colors duration-200">
-                                        {label}
-                                    </span>
-                                </label>
-                                {
-                                    state &&
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            type="text"
-                                            className="text-slate-100 bg-[#0F1115] w-24 px-3 py-1.5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                            value={price}
-                                            onChange={(e) => priceChange(e.target.value)}
-                                        ></input>
-                                    </div>
-                                }
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <Stock bag45={bag45} setBag45={setBag45} priceOne45={priceOne45} setPriceOne45={setPriceOne45} bag70={bag70} setBag70={setBag70} priceOne70={priceOne70} setPriceOne70={setPriceOne70} bigBag={bigBag} setBigBag={setBigBag} priceBigBag={priceBigBag} setPriceBigBag={setPriceBigBag} />
 
                 {/* Cene 45l Section */}
-                <div id="cene_45l" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
-                        <span aria-hidden="true">🏷️</span> Akcije 45l
-                    </h2>
-
-                    {/* Column labels */}
-                    <div className="hidden sm:grid grid-cols-[40px_repeat(3,1fr)] gap-4 mb-3 px-2">
-                        <span />
-                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
-                            Število kosov
-                        </span>
-                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
-                            Cena
-                        </span>
-                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
-                            Poštnina
-                        </span>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        {kom45.map((_, i) => (
-                            <div
-                                key={i}
-                                className="grid grid-cols-[40px_repeat(3,1fr)] gap-4 items-center bg-[#1D222A] rounded-lg px-3 py-3 shadow-sm shadow-black/20 hover:shadow-md hover:shadow-black/30 transition-shadow duration-200"
-                            >
-                                <button
-                                    type="button"
-                                    onClick={() => deleteEntry(i, setKom45, setPrice45, setShipping, null)}
-                                    aria-label="Odstrani vrstico"
-                                    className="flex items-center justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200 cursor-pointer"
-                                >
-                                    ➖
-                                </button>
-                                <input
-                                    type="number"
-                                    placeholder="Število kosov"
-                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                    value={kom45[i]}
-                                    onChange={(e) => {
-                                        const nextValue = Number(e.target.value);
-                                        setKom45((prev) =>
-                                            prev.map((value, index) => (index === i ? nextValue : value))
-                                        );
-                                    }}
-                                />
-                                <input
-                                    placeholder="Cena"
-                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                    value={price45[i]}
-                                    onChange={(e) => {
-                                        const nextValue = e.target.value;
-                                        setPrice45((prev) =>
-                                            prev.map((value, index) => (index === i ? nextValue : value))
-                                        );
-                                    }}
-                                />
-                                <input
-                                    placeholder="Poštnina"
-                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                    value={shipping[i]}
-                                    onChange={(e) => {
-                                        const nextValue = e.target.value;
-                                        setShipping((prev) =>
-                                            prev.map((value, index) => (index === i ? nextValue : value))
-                                        );
-                                    }}
-                                />
-                            </div>
-                        ))}
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={() => increaseEntry(setKom45, setPrice45, setShipping, null)}
-                        className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
-                    >
-                        ➕ Dodaj vrstico
-                    </button>
-                </div>
+                <Section45l kom45={kom45} setKom45={setKom45} price45={price45} setPrice45={setPrice45} shipping={shipping} setShipping={setShipping} deleteEntry={deleteEntry} increaseEntry={increaseEntry} />
 
                 {/* Cene 70l Section */}
-                <div id="cene_70l" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
-                        <span aria-hidden="true">🏷️</span> Akcije 70l
-                    </h2>
-
-                    {/* Column labels */}
-                    <div className="hidden sm:grid grid-cols-[40px_repeat(3,1fr)] gap-4 mb-3 px-2">
-                        <span />
-                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
-                            Število komadov
-                        </span>
-                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
-                            Število gratis komadov
-                        </span>
-                        <span className="inline-flex w-fit items-center rounded-full bg-[#4CAF50]/10 text-[#6FCF73] text-xs font-semibold px-3 py-1">
-                            Cena
-                        </span>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        {kom70.map((_, i) => (
-                            <div
-                                key={i}
-                                className="grid grid-cols-[40px_repeat(3,1fr)] gap-4 items-center bg-[#1D222A] rounded-lg px-3 py-3 shadow-sm shadow-black/20 hover:shadow-md hover:shadow-black/30 transition-shadow duration-200"
-                            >
-                                <button
-                                    type="button"
-                                    onClick={() => deleteEntry(i, setKom70, setPrice70, null, setGratisKom)}
-                                    aria-label="Odstrani vrstico"
-                                    className="flex items-center cursor-pointer justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200"
-                                >
-                                    ➖
-                                </button>
-                                <input
-                                    type="number"
-                                    placeholder="Število komadov"
-                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                    value={kom70[i]}
-                                    onChange={(e) => {
-                                        const nextValue = Number(e.target.value);
-                                        setKom70((prev) =>
-                                            prev.map((value, index) => (index === i ? nextValue : value))
-                                        );
-                                    }}
-                                />
-                                <input
-                                    type="number"
-                                    placeholder="Gratis komadi"
-                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                    value={gratisKom[i]}
-                                    onChange={(e) => {
-                                        const nextValue = Number(e.target.value);
-                                        setGratisKom((prev) =>
-                                            prev.map((value, index) => (index === i ? nextValue : value))
-                                        );
-                                    }}
-                                />
-                                <input
-                                    placeholder="Cena"
-                                    className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
-                                    value={price70[i]}
-                                    onChange={(e) => {
-                                        const nextValue = e.target.value;
-                                        setPrice70((prev) =>
-                                            prev.map((value, index) => (index === i ? nextValue : value))
-                                        );
-                                    }}
-                                />
-                            </div>
-                        ))}
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={() => increaseEntry(setKom70, setPrice70, null, setGratisKom)}
-                        className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
-                    >
-                        ➕ Dodaj vrstico
-                    </button>
-                </div>
-
+                <Section70l kom70={kom70} setKom70={setKom70} price70={price70} setPrice70={setPrice70} gratisKom={gratisKom} setGratisKom={setGratisKom} deleteEntry={deleteEntry} increaseEntry={increaseEntry} />
             </div>
         </div>
     );
