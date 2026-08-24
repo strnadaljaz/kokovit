@@ -6,12 +6,13 @@ import Header from "./panel_components/header";
 import Stock from "./panel_components/stock";
 import Section45l from "./panel_components/section_45l";
 import Section70l from "./panel_components/section_70l";
+import { updatePrice, updateStock } from "./panel_lib/update_table";
 
 const Panel = () => {
 
-    const [bag70, setBag70] = useState(false);
-    const [bag45, setBag45] = useState(false);
-    const [bigBag, setBigBag] = useState(false);
+    const [bag70, setBag70] = useState<boolean>(false);
+    const [bag45, setBag45] = useState<boolean>(false);
+    const [bigBag, setBigBag] = useState<boolean>(false);
 
     const [kom45, setKom45] = useState<number[]>([]);
     const [kom70, setKom70] = useState<number[]>([]);
@@ -116,6 +117,30 @@ const Panel = () => {
         load45Data();
         load70Data();
     }, []);
+
+    useEffect(() => {
+        updateStock(bag45, 1);
+    }, [bag45]);
+
+    useEffect(() => {
+        updateStock(bag70, 2);
+    }, [bag70]);
+
+    useEffect(() => {
+        updateStock(bigBag, 3);
+    }, [bigBag]);
+
+    useEffect(() => {
+        updatePrice(priceOne45, 1);
+    }, [priceOne45]);
+
+    useEffect(() => {
+        updatePrice(priceOne70, 2);
+    }, [priceOne70]);
+
+    useEffect(() => {
+        updatePrice(priceBigBag, 3);
+    }, [priceBigBag]);
 
     const increaseEntry = (
         setKom: React.Dispatch<SetStateAction<number[]>>,
