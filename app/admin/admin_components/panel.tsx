@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Fragment } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 const Panel = () => {
@@ -114,26 +113,37 @@ const Panel = () => {
         load70Data();
     }, []);
 
-    function increase45() {
-        setKom45((prev) => [...prev, 0]);
-        setPrice45((prev) => [...prev, ""]);
+    const increaseEntry = (
+        setKom: React.Dispatch<SetStateAction<number[]>>,
+        setPrice: React.Dispatch<SetStateAction<string[]>>,
+        setShip: React.Dispatch<SetStateAction<string[]>> | null,
+        setGratis: React.Dispatch<SetStateAction<number[]>> | null
+    ) => {
+        setKom((prev) => [...prev, 0]);
+        setPrice((prev) => [...prev, ""]);
+
+        if (setShip)
+            setShip((prev) => [...prev, ""]);
+
+        if (setGratis)
+            setGratis((prev) => [...prev, 0]);
     }
 
-    function increase70() {
-        setKom70((prev) => [...prev, 0]);
-        setPrice70((prev) => [...prev, ""]);
-        setGratisKom((prev) => [...prev, 0]);
-    }
+    const deleteEntry = (
+        i: number,
+        setKom: React.Dispatch<SetStateAction<number[]>>,
+        setPrice: React.Dispatch<SetStateAction<string[]>>,
+        setShip: React.Dispatch<SetStateAction<string[]>> | null,
+        setGratis: React.Dispatch<SetStateAction<number[]>> | null,
+    ) => {
+        setKom((prev) => prev.filter((_, index) => index !== i));
+        setPrice((prev) => prev.filter((_, index) => index !== i));
 
-    function deleteEntry45(i: number) {
-        setKom45((prev) => prev.filter((_, index) => index !== i));
-        setPrice45((prev) => prev.filter((_, index) => index !== i));
-    }
+        if (setShip)
+            setShip((prev) => prev.filter((_, index) => index !== i));
 
-    function deleteEntry70(i: number) {
-        setKom70((prev) => prev.filter((_, index) => index !== i));
-        setPrice70((prev) => prev.filter((_, index) => index !== i));
-        setGratisKom((prev) => prev.filter((_, index) => index !== i));
+        if (setGratis)
+            setGratis((prev) => prev.filter((_, index) => index !== i));
     }
 
     return (
@@ -231,7 +241,7 @@ const Panel = () => {
                             >
                                 <button
                                     type="button"
-                                    onClick={() => deleteEntry45(i)}
+                                    onClick={() => deleteEntry(i, setKom45, setPrice45, setShipping, null)}
                                     aria-label="Odstrani vrstico"
                                     className="flex items-center justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200 cursor-pointer"
                                 >
@@ -277,7 +287,7 @@ const Panel = () => {
 
                     <button
                         type="button"
-                        onClick={increase45}
+                        onClick={() => increaseEntry(setKom45, setPrice45, setShipping, null)}
                         className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
                     >
                         ➕ Dodaj vrstico
@@ -312,7 +322,7 @@ const Panel = () => {
                             >
                                 <button
                                     type="button"
-                                    onClick={() => deleteEntry70(i)}
+                                    onClick={() => deleteEntry(i, setKom70, setPrice70, null, setGratisKom)}
                                     aria-label="Odstrani vrstico"
                                     className="flex items-center cursor-pointer justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200"
                                 >
@@ -359,7 +369,7 @@ const Panel = () => {
 
                     <button
                         type="button"
-                        onClick={increase70}
+                        onClick={() => increaseEntry(setKom70, setPrice70, null, setGratisKom)}
                         className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
                     >
                         ➕ Dodaj vrstico

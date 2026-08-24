@@ -5,7 +5,7 @@ import Panel from "./admin_components/panel";
 
 const AdminPage = () => {
 
-    const [isLogedIn, logIn] = useState(false);
+    const [isLogedIn, logIn] = useState(true);
 
     return (
         <>
