@@ -2,9 +2,33 @@
 import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Page() {
-    return(
+    const [price, setPrice] = useState<string>("");
+
+    useEffect(() => {
+        const getPrice = async () => {
+            const supabase = createClient();
+
+            const { data, error } = await supabase
+                .from('products')
+                .select('price')
+                .eq('id', 3);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            setPrice(data[0].price);
+        }
+
+        getPrice();
+    }, []);
+
+    return (
         <div>
             <Navbar />
             <div className="bg-gradient-to-b from-[#4CAF50] to-[#6b4226] min-h-screen">
@@ -22,15 +46,15 @@ export default function Page() {
                     {/* Product Image & Description */}
                     <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="flex justify-center">
-                            <Image 
-                                src="/bigbag-detailed.webp" 
+                            <Image
+                                src="/bigbag-detailed.webp"
                                 alt="Kokovit bigBag substrat"
                                 width={800}
                                 height={800}
                                 className="w-full max-w-lg rounded-3xl shadow-2xl ring-4 ring-[#F5F5DC]/30"
                             />
                         </div>
-                        
+
                         <div className="bg-[#F5F5DC] rounded-2xl p-8 shadow-2xl">
                             <h2 className="text-3xl font-bold text-[#2d5016] mb-6">
                                 Potrebujete več substrata?
@@ -62,19 +86,19 @@ export default function Page() {
                     {/* Pricing Section */}
                     <div className="bg-[#F5F5DC] rounded-2xl p-10 shadow-2xl mb-16">
                         <h2 className="text-4xl font-bold text-center text-red-600 mb-8">
-                            🚚 Pridi in odpelji BIG BAG KOKOVIT 
+                            🚚 Pridi in odpelji BIG BAG KOKOVIT
                         </h2>
                         <p className="text-2xl font-bold text-center text-[#2d5016] mb-8">
                             Akcija, ki se splača!
                         </p>
-                        
+
                         <div className="max-w-2xl mx-auto space-y-6 mb-8">
                             <div className="bg-white rounded-xl p-8 shadow-lg text-center">
                                 <p className="text-2xl font-semibold text-gray-800 mb-4">
                                     💶 Cena / 1m³
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
-                                    152.50€ / kom
+                                    {price}€ / kom
                                 </p>
                             </div>
 
@@ -100,19 +124,19 @@ export default function Page() {
                         <div className="text-center">
                             {/* Order CTA */}
                             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-                                <a 
-                                    href="/povprasevanje" 
+                                <a
+                                    href="/povprasevanje"
                                     className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer"
                                 >
                                     📝 Naročite tukaj
                                 </a>
                                 <span className="text-xl font-semibold text-gray-600">ali pa</span>
-                                <a 
-                                    href="tel:+386030333167" 
+                                <a
+                                    href="tel:+386030333167"
                                     className="px-10 py-4 bg-[#2d5016] text-[#F5F5DC] font-bold text-xl rounded-lg shadow-lg hover:bg-[#3d6020] hover:scale-105 transition-all duration-300 cursor-pointer flex items-center gap-2"
                                 >
                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                     </svg>
                                     Pokličite: 030 333 167
                                 </a>
