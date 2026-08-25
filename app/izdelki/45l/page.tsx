@@ -74,7 +74,7 @@ export default function Page() {
                                     👉 4 kosi
                                 </p>
                                 <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    35,96€ + poštnina 3,99€
+                                    39,04€ + poštnina 5,99€
                                 </p>
                             </div>
 
@@ -83,7 +83,7 @@ export default function Page() {
                                     👉 8 kosov
                                 </p>
                                 <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    71,92€
+                                    78,08€
                                 </p>
                                 <p className="text-lg text-green-600 font-semibold">
                                     🚚 BREZ poštnine!
