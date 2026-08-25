@@ -1,10 +1,42 @@
-"use client"
+"use client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import openNewPage from "../Functions/openNewPage";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Hero() {
+    const [stock, setStock] = useState<boolean[]>([true, true, true]);
+
     const router = useRouter();
+
+    useEffect(() => {
+        const getStockData = async () => {
+            const supabase = createClient();
+
+            const { data, error } = await supabase
+                .from('products')
+                .select('id, in_stock')
+                .order('id', { ascending: true });
+
+            let st = [];
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            for (let d of data) {
+                st.push(d.in_stock);
+            }
+
+            console.log(st);
+
+            setStock(st);
+        }
+
+        getStockData();
+    }, []);
 
     return (
         <div className="min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-4 md:px-8 py-12">
@@ -15,23 +47,53 @@ export default function Hero() {
             <div id="Domov" className="flex flex-col md:flex-row items-center justify-center w-full gap-8 md:gap-6 lg:gap-8 max-w-6xl">
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:150ms] mt-6" onClick={() => openNewPage(router, "/izdelki/45l")}>
                     <Image src="/45l.webp" alt="45l" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
-                    <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">❌ <u>45l Kokovit substrat</u></p>
-                    <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
-                        Ni na zalogi!
-                    </p>
+                    {
+                        stock[0] ? (
+                            <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">✅ <u>45l Kokovit substrat</u></p>
+                        ) : (
+                            <div>
+                                <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">❌ <u>45l Kokovit substrat</u></p>
+                                <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
+                                    Ni na zalogi!
+                                </p>
+                            </div>
+                        )
+                    }
                 </div>
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up mt-6" onClick={() => openNewPage(router, "/izdelki/70l")}>
-                    <Image src="/70l.webp" alt="70l" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" /> 
-                    <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">✅ <u>70l Kokovit substrat</u></p>
+                    <Image src="/70l.webp" alt="70l" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
+                    {
+                        stock[1] ? (
+                            <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">✅ <u>70l Kokovit substrat</u></p>
+
+                        ) : (
+                            <div>
+                                <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">❌ <u>70l Kokovit substrat</u></p>
+                                <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
+                                    Ni na zalogi!
+                                </p>
+                            </div>
+                        )
+                    }
+
                 </div>
                 <div className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up [animation-delay:300ms] mt-6" onClick={() => openNewPage(router, "/izdelki/bigbag")}>
                     <Image src="/bigbag.webp" alt="Big Bag" width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
-                    <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">❌ <u>Big Bag Kokovit substrat</u></p>
-                    <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
-                        Ni na zalogi!
-                    </p>
+                    {
+                        stock[2] ? (
+                            <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">✅ <u>Big Bag Kokovit substrat</u></p>
+                        ) : (
+                            <div>
+                                <p className="text-[#F5F5DC] text-2xl sm:text-2xl font-semibold text-center mt-4 md:mt-6">❌ <u>Big Bag Kokovit substrat</u></p>
+                                <p className="text-red-400 text-lg sm:text-xl font-bold text-center mt-2 uppercase tracking-wide">
+                                    Ni na zalogi!
+                                </p>
+                            </div>
+                        )
+                    }
+
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
