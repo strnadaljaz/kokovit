@@ -6,7 +6,7 @@ import Header from "./panel_components/header";
 import Stock from "./panel_components/stock";
 import Section45l from "./panel_components/section_45l";
 import Section70l from "./panel_components/section_70l";
-import { updatePrice, updateStock } from "./panel_lib/update_table";
+import { updateDiscounts45, updatePrice, updateStock, updateDiscounts70 } from "./panel_lib/update_table";
 
 const Panel = () => {
 
@@ -118,30 +118,6 @@ const Panel = () => {
         load70Data();
     }, []);
 
-    useEffect(() => {
-        updateStock(bag45, 1);
-    }, [bag45]);
-
-    useEffect(() => {
-        updateStock(bag70, 2);
-    }, [bag70]);
-
-    useEffect(() => {
-        updateStock(bigBag, 3);
-    }, [bigBag]);
-
-    useEffect(() => {
-        updatePrice(priceOne45, 1);
-    }, [priceOne45]);
-
-    useEffect(() => {
-        updatePrice(priceOne70, 2);
-    }, [priceOne70]);
-
-    useEffect(() => {
-        updatePrice(priceBigBag, 3);
-    }, [priceBigBag]);
-
     const increaseEntry = (
         setKom: React.Dispatch<SetStateAction<number[]>>,
         setPrice: React.Dispatch<SetStateAction<string[]>>,
@@ -179,18 +155,37 @@ const Panel = () => {
         <div className="min-h-screen bg-[#0F1115] flex flex-col font-sans" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
             {/* Header */}
             <Header />
-
             <div className="flex-1 p-4 sm:p-8 max-w-6xl mx-auto w-full">
                 {/* Zaloga Section */}
                 <Stock bag45={bag45} setBag45={setBag45} priceOne45={priceOne45} setPriceOne45={setPriceOne45} bag70={bag70} setBag70={setBag70} priceOne70={priceOne70} setPriceOne70={setPriceOne70} bigBag={bigBag} setBigBag={setBigBag} priceBigBag={priceBigBag} setPriceBigBag={setPriceBigBag} />
-
                 {/* Cene 45l Section */}
                 <Section45l kom45={kom45} setKom45={setKom45} price45={price45} setPrice45={setPrice45} shipping={shipping} setShipping={setShipping} deleteEntry={deleteEntry} increaseEntry={increaseEntry} />
-
                 {/* Cene 70l Section */}
                 <Section70l kom70={kom70} setKom70={setKom70} price70={price70} setPrice70={setPrice70} gratisKom={gratisKom} setGratisKom={setGratisKom} deleteEntry={deleteEntry} increaseEntry={increaseEntry} />
+
+                {/* Shrani gumb */}
+                <div className="flex justify-end mt-2 mb-8">
+                    <button
+                        type="button"
+                        onClick={() => {
+
+                            updateStock(bag45, 1);
+                            updateStock(bag70, 2);
+                            updateStock(bigBag, 3);
+                            updatePrice(priceOne45, 1);
+                            updatePrice(priceOne70, 2);
+                            updatePrice(priceBigBag, 3);
+
+                            updateDiscounts45(kom45, price45, shipping);
+                            updateDiscounts70(kom70, price70, gratisKom);
+                        }}
+                        className="inline-flex items-center gap-2 cursor-pointer bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-8 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                    >
+                        💾 Shrani
+                    </button>
+                </div>
             </div>
-        </div>
+        </div >
     );
 }
 
