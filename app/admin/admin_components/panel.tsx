@@ -28,6 +28,8 @@ const Panel = () => {
 
     const [shipping, setShipping] = useState<string[]>([]);
 
+    const [hasChanged, setHasChanged] = useState(false);
+
     useEffect(() => {
         const supabase = createClient();
 
@@ -157,32 +159,36 @@ const Panel = () => {
             <Header />
             <div className="flex-1 p-4 sm:p-8 max-w-6xl mx-auto w-full">
                 {/* Zaloga Section */}
-                <Stock bag45={bag45} setBag45={setBag45} priceOne45={priceOne45} setPriceOne45={setPriceOne45} bag70={bag70} setBag70={setBag70} priceOne70={priceOne70} setPriceOne70={setPriceOne70} bigBag={bigBag} setBigBag={setBigBag} priceBigBag={priceBigBag} setPriceBigBag={setPriceBigBag} />
+                <Stock bag45={bag45} setBag45={setBag45} priceOne45={priceOne45} setPriceOne45={setPriceOne45} bag70={bag70} setBag70={setBag70} priceOne70={priceOne70} setPriceOne70={setPriceOne70} bigBag={bigBag} setBigBag={setBigBag} priceBigBag={priceBigBag} setPriceBigBag={setPriceBigBag} setHasChanged={setHasChanged} />
                 {/* Cene 45l Section */}
-                <Section45l kom45={kom45} setKom45={setKom45} price45={price45} setPrice45={setPrice45} shipping={shipping} setShipping={setShipping} deleteEntry={deleteEntry} increaseEntry={increaseEntry} />
+                <Section45l kom45={kom45} setKom45={setKom45} price45={price45} setPrice45={setPrice45} shipping={shipping} setShipping={setShipping} deleteEntry={deleteEntry} increaseEntry={increaseEntry} setHasChanged={setHasChanged} />
                 {/* Cene 70l Section */}
-                <Section70l kom70={kom70} setKom70={setKom70} price70={price70} setPrice70={setPrice70} gratisKom={gratisKom} setGratisKom={setGratisKom} deleteEntry={deleteEntry} increaseEntry={increaseEntry} />
+                <Section70l kom70={kom70} setKom70={setKom70} price70={price70} setPrice70={setPrice70} gratisKom={gratisKom} setGratisKom={setGratisKom} deleteEntry={deleteEntry} increaseEntry={increaseEntry} setHasChanged={setHasChanged} />
 
                 {/* Shrani gumb */}
                 <div className="flex justify-end mt-2 mb-8">
-                    <button
-                        type="button"
-                        onClick={() => {
+                    {
+                        hasChanged && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setHasChanged(false);
+                                    updateStock(bag45, 1);
+                                    updateStock(bag70, 2);
+                                    updateStock(bigBag, 3);
+                                    updatePrice(priceOne45, 1);
+                                    updatePrice(priceOne70, 2);
+                                    updatePrice(priceBigBag, 3);
 
-                            updateStock(bag45, 1);
-                            updateStock(bag70, 2);
-                            updateStock(bigBag, 3);
-                            updatePrice(priceOne45, 1);
-                            updatePrice(priceOne70, 2);
-                            updatePrice(priceBigBag, 3);
-
-                            updateDiscounts45(kom45, price45, shipping);
-                            updateDiscounts70(kom70, price70, gratisKom);
-                        }}
-                        className="inline-flex items-center gap-2 cursor-pointer bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-8 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
-                    >
-                        💾 Shrani
-                    </button>
+                                    updateDiscounts45(kom45, price45, shipping);
+                                    updateDiscounts70(kom70, price70, gratisKom);
+                                }}
+                                className="inline-flex items-center gap-2 cursor-pointer bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-8 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+                            >
+                                💾 Shrani
+                            </button>
+                        )
+                    }
                 </div>
             </div>
         </div >

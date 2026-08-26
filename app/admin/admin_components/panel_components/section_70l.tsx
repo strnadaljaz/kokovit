@@ -9,9 +9,10 @@ type Section70lParams = {
     setGratisKom: Dispatch<SetStateAction<number[]>>;
     deleteEntry: Function;
     increaseEntry: Function;
+    setHasChanged: Dispatch<SetStateAction<boolean>>;
 };
 
-const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratisKom, deleteEntry, increaseEntry }: Section70lParams) => {
+const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratisKom, deleteEntry, increaseEntry, setHasChanged }: Section70lParams) => {
     return (
         <div id="cene_70l" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
@@ -40,7 +41,10 @@ const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratis
                     >
                         <button
                             type="button"
-                            onClick={() => deleteEntry(i, setKom70, setPrice70, null, setGratisKom)}
+                            onClick={() => {
+                                deleteEntry(i, setKom70, setPrice70, null, setGratisKom)
+                                setHasChanged(true);
+                            }}
                             aria-label="Odstrani vrstico"
                             className="flex items-center cursor-pointer justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200"
                         >
@@ -56,6 +60,7 @@ const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratis
                                 setKom70((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
+                                setHasChanged(true);
                             }}
                         />
                         <input
@@ -68,6 +73,7 @@ const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratis
                                 setGratisKom((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
+                                setHasChanged(true);
                             }}
                         />
                         <input
@@ -79,6 +85,7 @@ const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratis
                                 setPrice70((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
+                                setHasChanged(true);
                             }}
                         />
                     </div>

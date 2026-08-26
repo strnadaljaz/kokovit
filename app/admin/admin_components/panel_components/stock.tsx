@@ -13,9 +13,10 @@ type StockParams = {
     setBigBag: Dispatch<SetStateAction<boolean>>;
     priceBigBag: string | undefined;
     setPriceBigBag: Dispatch<SetStateAction<string | undefined>>;
+    setHasChanged: Dispatch<SetStateAction<boolean>>;
 }
 
-const Stock = ({ bag45, setBag45, priceOne45, setPriceOne45, bag70, setBag70, priceOne70, setPriceOne70, bigBag, setBigBag, priceBigBag, setPriceBigBag }: StockParams) => {
+const Stock = ({ bag45, setBag45, priceOne45, setPriceOne45, bag70, setBag70, priceOne70, setPriceOne70, bigBag, setBigBag, priceBigBag, setPriceBigBag, setHasChanged }: StockParams) => {
     return (
         <div id="zaloga" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
@@ -39,7 +40,10 @@ const Stock = ({ bag45, setBag45, priceOne45, setPriceOne45, bag70, setBag70, pr
                                     id={id}
                                     name={id}
                                     checked={state}
-                                    onChange={(e) => setState(e.target.checked)}
+                                    onChange={(e) => {
+                                        setState(e.target.checked);
+                                        setHasChanged(true);
+                                    }}
                                     className="sr-only peer"
                                 />
                                 <span
@@ -60,7 +64,7 @@ const Stock = ({ bag45, setBag45, priceOne45, setPriceOne45, bag70, setBag70, pr
                                     type="text"
                                     className="text-slate-100 bg-[#0F1115] w-24 px-3 py-1.5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={price}
-                                    onChange={(e) => priceChange(e.target.value)}
+                                    onChange={(e) => { priceChange(e.target.value); setHasChanged(true); }}
                                 ></input>
                             </div>
                         }

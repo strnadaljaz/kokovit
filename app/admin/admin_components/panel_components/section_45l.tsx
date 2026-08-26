@@ -9,9 +9,10 @@ type Section45lParams = {
     setShipping: Dispatch<SetStateAction<string[]>>;
     deleteEntry: Function;
     increaseEntry: Function;
+    setHasChanged: Dispatch<SetStateAction<boolean>>;
 };
 
-const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShipping, deleteEntry, increaseEntry }: Section45lParams) => {
+const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShipping, deleteEntry, increaseEntry, setHasChanged }: Section45lParams) => {
     return (
         <div id="cene_45l" className="bg-[#161A20] rounded-xl shadow-md shadow-black/30 hover:shadow-lg hover:shadow-black/40 transition-shadow duration-300 p-6 mb-6 border border-white/5">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-slate-100 flex items-center gap-2 border-b border-white/10 pb-4">
@@ -40,7 +41,10 @@ const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShippin
                     >
                         <button
                             type="button"
-                            onClick={() => deleteEntry(i, setKom45, setPrice45, setShipping, null)}
+                            onClick={() => {
+                                deleteEntry(i, setKom45, setPrice45, setShipping, null)
+                                setHasChanged(true);
+                            }}
                             aria-label="Odstrani vrstico"
                             className="flex items-center justify-center w-8 h-8 rounded-full bg-[#0F1115] text-slate-200 shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200 cursor-pointer"
                         >
@@ -56,6 +60,7 @@ const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShippin
                                 setKom45((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
+                                setHasChanged(true);
                             }}
                         />
                         <input
@@ -67,6 +72,7 @@ const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShippin
                                 setPrice45((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
+                                setHasChanged(true);
                             }}
                         />
                         <input
@@ -78,6 +84,7 @@ const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShippin
                                 setShipping((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
+                                setHasChanged(true);
                             }}
                         />
                     </div>
