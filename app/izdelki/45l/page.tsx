@@ -2,9 +2,69 @@
 import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+class Discount45 {
+    quantity: number = 0;
+    price: string = "";
+    shipping: string = "";
+
+    constructor(q: number, p: string, s: string) {
+        this.quantity = q;
+        this.price = p;
+        this.shipping = s;
+    }
+}
 
 export default function Page() {
-    return(
+    const [onePiecePrice, setOnePiecePrice] = useState<string | null>(null);
+
+    const [discounts, setDiscounts] = useState<Discount45[]>();
+
+    useEffect(() => {
+        const supabase = createClient();
+
+        const getData = async () => {
+            const { data, error } = await supabase
+                .from('products')
+                .select('price')
+                .eq('id', 1);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            setOnePiecePrice(data[0].price);
+        }
+
+        const getDiscounts = async () => {
+            const { data, error } = await supabase
+                .from('discounts')
+                .select('quantity, price, shipping')
+                .eq('product_id', 1)
+                .order('quantity', { ascending: true });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            let arr: Discount45[] = [];
+
+            for (let d of data) {
+                arr.push(new Discount45(d.quantity, d.price, d.shipping));
+            }
+
+            setDiscounts(arr);
+        }
+
+        getData();
+        getDiscounts();
+    }, []);
+
+    return (
         <div>
             <Navbar />
             <div className="bg-gradient-to-b from-[#4CAF50] to-[#6b4226] min-h-screen">
@@ -25,15 +85,15 @@ export default function Page() {
                     {/* Product Image & Description */}
                     <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="flex justify-center">
-                            <Image 
-                                src="/45l-detailed.webp" 
+                            <Image
+                                src="/45l-detailed.webp"
                                 alt="Kokovit 45L substrat"
                                 width={800}
                                 height={800}
                                 className="w-full max-w-lg rounded-3xl shadow-2xl ring-4 ring-[#F5F5DC]/30"
                             />
                         </div>
-                        
+
                         <div className="bg-[#F5F5DC] rounded-2xl p-8 shadow-2xl">
                             <h2 className="text-3xl font-bold text-[#2d5016] mb-6">
                                 🚚 Novost: dostava po pošti!
@@ -54,7 +114,7 @@ export default function Page() {
                                     <span className="text-2xl">🌱</span>
                                     <p className="text-lg text-gray-700">Pripravljen za takojšnje sajenje in setev</p>
                                 </div>
-                                <p className="text-2xl font-bold text-[#4CAF50]">Cena: 9,76€ / kom</p>
+                                <p className="text-2xl font-bold text-[#4CAF50]">Cena: {onePiecePrice}€ / kom</p>
                             </div>
                             <div className="mt-6">
                                 <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer inline-block">Kako uporabljati 📚</a>
@@ -67,32 +127,35 @@ export default function Page() {
                         <h2 className="text-4xl font-bold text-center text-red-600 mb-8">
                             🔥 Posebna ponudba 🔥
                         </h2>
-                        
-                        <div className="grid md:grid-cols-2 gap-6 mb-8">
-                            <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <p className="text-xl font-semibold text-gray-800 mb-2">
-                                    👉 4 kosi
-                                </p>
-                                <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    39,04€ + poštnina 5,99€
-                                </p>
-                            </div>
 
-                            <div className="bg-white rounded-xl p-6 shadow-lg border-4 border-[#4CAF50]">
-                                <p className="text-xl font-semibold text-gray-800 mb-2">
-                                    👉 8 kosov
-                                </p>
-                                <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    78,08€
-                                </p>
-                                <p className="text-lg text-green-600 font-semibold">
-                                    🚚 BREZ poštnine!
-                                </p>
-                            </div>
+                        <div className="grid md:grid-cols-2 gap-6 mb-8">
+
+                            {
+                                discounts && (
+                                    discounts.map((item, index) => (
+                                        <div key={index} className={`bg-white rounded-xl p-6 shadow-lg ${index === discounts.length - 1 ? "border-4 border-[#4CAF50]" : ""}`}>
+                                            < p className="text-xl font-semibold text-gray-800 mb-2" >
+                                                👉 {item.quantity} kosov
+                                            </p>
+                                            <p className="text-2xl font-bold text-[#4CAF50] mb-2">
+                                                {item.price}€
+                                                {item.shipping && (
+                                                    <a> + poštnina {item.shipping}€  </a>
+                                                )}
+                                            </p>
+                                            {!item.shipping && (
+                                                <p className="text-lg text-green-600 font-semibold">
+                                                    🚚 BREZ poštnine!
+                                                </p>
+                                            )}
+                                        </div>
+                                    )))
+
+                            }
                         </div>
 
                         <div className="text-center">
- 
+
                             <p className="text-2xl font-semibold text-[#2d5016] mb-4">
                                 Dostavni rok: <span className="text-[#4CAF50]">3 - 5 delovnih dni</span> od prejema naročila
                             </p>
@@ -105,22 +168,22 @@ export default function Page() {
                             <p className="text-xl font-semibold text-[#2d5016] mb-8">
                                 🌞 Poskrbite za bogat pridelek – ne zamudite priložnosti!
                             </p>
-                            
+
                             {/* Order CTA */}
                             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-                                <a 
-                                    href="/povprasevanje" 
+                                <a
+                                    href="/povprasevanje"
                                     className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer"
                                 >
                                     📝 Naročite tukaj
                                 </a>
                                 <span className="text-xl font-semibold text-gray-600">ali pa</span>
-                                <a 
-                                    href="tel:+386030333167" 
+                                <a
+                                    href="tel:+386030333167"
                                     className="px-10 py-4 bg-[#2d5016] text-[#F5F5DC] font-bold text-xl rounded-lg shadow-lg hover:bg-[#3d6020] hover:scale-105 transition-all duration-300 cursor-pointer flex items-center gap-2"
                                 >
                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                     </svg>
                                     Pokličite: 030 333 167
                                 </a>
@@ -177,8 +240,8 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
             <Footer />
-        </div>
+        </div >
     );
 }
