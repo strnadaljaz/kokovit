@@ -2,8 +2,71 @@
 import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+class Discount70 {
+    quantity: number = 0;
+    price: string = "";
+    free_quantity: number = 0;
+
+    constructor(q: number, p: string, fq: number) {
+        this.quantity = q;
+        this.price = p;
+        this.free_quantity = fq;
+    }
+}
 
 export default function Page() {
+    const [onePiecePrice, setOnePiecePrice] = useState<string | null>(null);
+
+    const [discounts, setDiscounts] = useState<Discount70[]>();
+
+    useEffect(() => {
+        const supabase = createClient();
+
+        const getData = async () => {
+            const { data, error } = await supabase
+                .from('products')
+                .select('price')
+                .eq('id', 2);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            setOnePiecePrice(data[0].price);
+        }
+
+        const getDiscounts = async () => {
+            const { data, error } = await supabase
+                .from('discounts')
+                .select('quantity, price, free_quantity')
+                .eq('product_id', 2)
+                .order('quantity', { ascending: true });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            let arr: Discount70[] = [];
+
+            for (let d of data) {
+                arr.push(new Discount70(d.quantity, d.price, d.free_quantity));
+            }
+
+            setDiscounts(arr);
+        }
+
+        getData();
+        getDiscounts();
+    }, []);
+
+
+
+
     return (
         <div>
             <Navbar />
@@ -39,7 +102,7 @@ export default function Page() {
                                 Z KOKOVIT substratom 70L – naraven substrat iz kokosovih vlaken, šote in organskih snovi, idealen za visoke grede, vrtove, rastlinjake, okrasne grede in lončnice!
                             </p>
                             <div className="text-2xl font-bold text-[#4CAF50]">
-                                Cena: 13,70€ / kom
+                                Cena: {onePiecePrice}€ / kom
                             </div>
 
                             <div className="mt-6">
@@ -59,41 +122,24 @@ export default function Page() {
                         </p>
 
                         <div className="space-y-6">
-                            <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <p className="text-xl font-semibold text-gray-800 mb-2">
-                                    ✍️ 10 kom + 1 GRATIS
-                                </p>
-                                <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    129,93€
-                                </p>
-                                <p className="text-lg text-green-600 font-semibold">
-                                    🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
-                                </p>
-                            </div>
 
-                            <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <p className="text-xl font-semibold text-gray-800 mb-2">
-                                    ✍️ 16 kom + 2 GRATIS
-                                </p>
-                                <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    199,10€
-                                </p>
-                                <p className="text-lg text-green-600 font-semibold">
-                                    🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
-                                </p>
-                            </div>
-
-                            <div className="bg-white rounded-xl p-6 shadow-lg border-4 border-[#4CAF50]">
-                                <p className="text-xl font-semibold text-gray-800 mb-2">
-                                    ✍️ PALETA 33 kom + 5 GRATIS
-                                </p>
-                                <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                    394,55€
-                                </p>
-                                <p className="text-lg text-green-600 font-semibold">
-                                    🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
-                                </p>
-                            </div>
+                            {
+                                discounts && (
+                                    discounts.map((item, index) => (
+                                        <div key={index} className={`bg-white rounded-xl p-6 shadow-lg ${index === discounts.length - 1 ? "border-4 border-[#4CAF50]" : ""}`}>
+                                            <p className="text-xl font-semibold text-gray-800 mb-2">
+                                                ✍️{item.quantity === 33 ? "PALETA" : ""} {item.quantity} kom + {item.free_quantity} GRATIS
+                                            </p>
+                                            <p className="text-2xl font-bold text-[#4CAF50] mb-2">
+                                                {item.price}€
+                                            </p>
+                                            <p className="text-lg text-green-600 font-semibold">
+                                                🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!
+                                            </p>
+                                        </div>
+                                    ))
+                                )
+                            }
                         </div>
 
                         <div className="mt-8 text-center">
