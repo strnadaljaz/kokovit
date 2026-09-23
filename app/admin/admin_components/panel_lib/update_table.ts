@@ -1,6 +1,25 @@
 import { createClient } from "@/lib/supabase/client";
+import { Product } from "@/app/kolekcija/page";
 
 const supabase = createClient();
+
+const updateCollection = async (collection: Product[]) => {
+    const { data, error } = await supabase
+        .from('merch')
+        .delete();
+
+    if (error)
+        console.error(error);
+
+    for (let product of collection) {
+        const { data, error } = await supabase
+            .from('merch')
+            .insert({ name: product.name, img: product.img, sizes: product.sizes, price: product.price });
+
+        if (error)
+            console.error(error);
+    }
+}
 
 const updateStock = async (stock: boolean, id: number) => {
     const { data, error } = await supabase
@@ -66,4 +85,4 @@ const updateDiscounts70 = async (kom70: number[], price70: string[], gratisKom: 
     }
 }
 
-export { updateStock, updatePrice, updateDiscounts45, updateDiscounts70 };
+export { updateStock, updatePrice, updateDiscounts45, updateDiscounts70, updateCollection };

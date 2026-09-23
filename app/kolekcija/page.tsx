@@ -4,10 +4,10 @@ import Footer from "../Components/Footer";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-type Product = {
-    id: number,
+export type Product = {
     name: string,
     img: string,
+    sizes: string;
     price: string
 };
 
@@ -17,7 +17,7 @@ const getProducts = async (setProducts: React.Dispatch<React.SetStateAction<Prod
 
     const { data, error } = await supabase
         .from('merch')
-        .select('*')
+        .select('name, img, sizes, price')
 
     if (error) {
         console.error(error);
@@ -38,9 +38,9 @@ const Merch = () => {
             <Navbar />
             <main className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 {products &&
-                    products.map((product) => (
+                    products.map((product, i) => (
                         <div
-                            key={product.id}
+                            key={i}
                             className="border-solid border-3 border-sky-500 h-10 w-auto"
                         >{product.name}</div>
                     ))

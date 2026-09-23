@@ -6,9 +6,12 @@ import Header from "./panel_components/header";
 import Stock from "./panel_components/stock";
 import Section45l from "./panel_components/section_45l";
 import Section70l from "./panel_components/section_70l";
-import { updateDiscounts45, updatePrice, updateStock, updateDiscounts70 } from "./panel_lib/update_table";
+import SectionMerch from "./panel_components/section_merch";
+import { Product } from "@/app/kolekcija/page";
+import { updateDiscounts45, updatePrice, updateStock, updateDiscounts70, updateCollection } from "./panel_lib/update_table";
 
 const Panel = () => {
+    const [collection, setCollection] = useState<Product[]>([]);
 
     const [bag70, setBag70] = useState<boolean>(false);
     const [bag45, setBag45] = useState<boolean>(false);
@@ -115,9 +118,23 @@ const Panel = () => {
             setPrice70(price);
         }
 
+        const loadCollectionData = async () => {
+            const { data, error } = await supabase
+                .from('merch')
+                .select('name, img, sizes, price')
+
+            if (error) {
+                console.error("couldnt get collection data");
+                return;
+            }
+
+            setCollection(data);
+        }
+
         loadStockData();
         load45Data();
         load70Data();
+        loadCollectionData();
     }, []);
 
     const increaseEntry = (
@@ -164,6 +181,8 @@ const Panel = () => {
                 <Section45l kom45={kom45} setKom45={setKom45} price45={price45} setPrice45={setPrice45} shipping={shipping} setShipping={setShipping} deleteEntry={deleteEntry} increaseEntry={increaseEntry} setHasChanged={setHasChanged} />
                 {/* Cene 70l Section */}
                 <Section70l kom70={kom70} setKom70={setKom70} price70={price70} setPrice70={setPrice70} gratisKom={gratisKom} setGratisKom={setGratisKom} deleteEntry={deleteEntry} increaseEntry={increaseEntry} setHasChanged={setHasChanged} />
+                {/* Merch sekcija */}
+                <SectionMerch products={collection} setProducts={setCollection} setHasChanged={setHasChanged} />
 
                 {/* Shrani gumb */}
                 <div className="flex justify-end mt-2 mb-8">
@@ -179,6 +198,7 @@ const Panel = () => {
                                     updatePrice(priceOne45, 1);
                                     updatePrice(priceOne70, 2);
                                     updatePrice(priceBigBag, 3);
+                                    updateCollection(collection);
 
                                     updateDiscounts45(kom45, price45, shipping);
                                     updateDiscounts70(kom70, price70, gratisKom);
