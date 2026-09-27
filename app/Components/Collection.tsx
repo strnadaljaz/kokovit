@@ -26,7 +26,7 @@ const Collection = () => {
 
                 <div className="order-1 flex justify-center md:order-2">
                     <Image
-                        src=""
+                        src="/kokovit_merch.png"
                         alt="Kokovit kolekcija oblačil"
                         width={768}
                         height={512}
