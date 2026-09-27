@@ -12,11 +12,12 @@ interface Product {
     in_stock: boolean;
 }
 
-const collection = [
-    { name: "70l", img: "test", price: "13,99", sizes: "" },
-    { name: "M", img: "test", price: "19,99", sizes: "S / M / L" },
-    { name: "XXL", img: "test", price: "24,99", sizes: "L / XL / XXL" },
-];
+interface CollectionProduct {
+    name: string;
+    img: string;
+    price: string;
+    sizes: string;
+}
 
 async function getProductsData(setProducts: React.Dispatch<React.SetStateAction<Product[]>>) {
     const supabase = createClient();
@@ -33,7 +34,22 @@ async function getProductsData(setProducts: React.Dispatch<React.SetStateAction<
     setProducts(data);
 }
 
-const ProductCard = ({ product }: { product: Product }) => (
+async function getCollectionData(setCollection: React.Dispatch<React.SetStateAction<CollectionProduct[]>>) {
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+        .from('merch')
+        .select('name, img, sizes, price');
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    setCollection(data);
+}
+
+const ProductCard = ({ product }: { product: Product | CollectionProduct }) => (
     <article className="group overflow-hidden rounded-[28px] border border-[#F5F5DC]/25 bg-[#F5F5DC]/95 shadow-[0_24px_60px_rgba(20,36,18,0.2)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(20,36,18,0.28)]">
         <div className="relative flex h-72 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.18),_rgba(245,245,220,0.9)_58%,_rgba(245,245,220,1)_100%)] p-6">
             <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/10 via-transparent to-[#6b4226]/10" />
@@ -56,15 +72,27 @@ const ProductCard = ({ product }: { product: Product }) => (
                     {product.price}€
                 </span>
             </div>
+            {product.sizes && (
+                <div className="flex items-center justify-between gap-4 border-t border-[#2d5016]/15 pt-4">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6b4226]">
+                        Velikosti
+                    </span>
+                    <span className="rounded-full bg-[#4CAF50]/12 px-3 py-2 text-sm font-bold text-[#2d5016]">
+                        {product.sizes || "—"}
+                    </span>
+                </div>
+            )}
         </div>
     </article>
 );
 
 const Store = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    const [collection, setCollection] = useState<CollectionProduct[]>([]);
 
     useEffect(() => {
         getProductsData(setProducts);
+        getCollectionData(setCollection);
     }, []);
 
     return (
@@ -106,11 +134,11 @@ const Store = () => {
                             <div className="h-px flex-1 bg-[#F5F5DC]/25" />
                         </div>
 
-                        {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"> */}
-                        {/*     {collection.map((product, index) => ( */}
-                        {/*         <ProductCard key={`${product.name}-${index}`} product={product} /> */}
-                        {/*     ))} */}
-                        {/* </div> */}
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                            {collection.map((product, index) => (
+                                <ProductCard key={`${product.name}-${index}`} product={product} />
+                            ))}
+                        </div>
                     </section>
                 </div>
             </main>
