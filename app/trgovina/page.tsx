@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import { useRouter } from "next/navigation";
+import { formatPrice } from "@/lib/helper/formatPrice";
 
 interface Product {
     name: string;
     img: string;
-    price: string;
+    price: number;
     in_stock: boolean;
 }
 
@@ -95,7 +96,7 @@ const ProductCard = ({ product, product_id }: { product: Product | CollectionPro
                         <h3 className="text-2xl font-black text-[#2d5016]">{product.name}</h3>
                     </div>
                     <span className="whitespace-nowrap rounded-full bg-[#6b4226] px-3 py-2 text-base font-extrabold text-[#F5F5DC] shadow-sm">
-                        {product.price}€
+                        {formatPrice(product.price)}
                     </span>
                 </div>
                 {product.sizes && (

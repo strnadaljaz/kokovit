@@ -219,72 +219,74 @@ export default function Substrat() {
                                             Dodaj {quantity} kosov v košarico
                                         </button>                                   </div>
 
-                                    <div className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
-                                        <div className="mb-5 flex items-end justify-between gap-4">
-                                            <div>
-                                                <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
-                                                    Posebne ponudbe
-                                                </p>
-                                                <h2 className="text-2xl font-black sm:text-3xl">Izberi akcijo</h2>
-                                            </div>
-                                            <span className="text-2xl">🔥</span>
-                                        </div>
-
-                                        {isBigBag ? (
-                                            <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#4CAF50] bg-white p-4 ring-2 ring-[#4CAF50]/20">
+                                    {product.in_stock && (
+                                        <div className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
+                                            <div className="mb-5 flex items-end justify-between gap-4">
                                                 <div>
-                                                    <p className="font-black text-[#2d5016]">2 + 1 GRATIS</p>
-                                                    <p className="mt-1 text-sm font-semibold text-gray-600">
-                                                        Ob nakupu 2 kosov prejmete tretji kos brezplačno
+                                                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
+                                                        Posebne ponudbe
                                                     </p>
+                                                    <h2 className="text-2xl font-black sm:text-3xl">Izberi akcijo</h2>
                                                 </div>
-                                                <a
-                                                    aria-label="Izberi akcijo 2 plus 1 gratis"
-                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
-                                                >
-                                                    <CartIcon />
-                                                </a>
+                                                <span className="text-2xl">🔥</span>
                                             </div>
-                                        ) : discounts.length > 0 ? (
-                                            <div className="space-y-3">
-                                                {discounts.map((discount, index) => (
-                                                    <div
-                                                        key={discount.id}
-                                                        className={`flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 ${index === discounts.length - 1
-                                                            ? "border-[#4CAF50] ring-2 ring-[#4CAF50]/20"
-                                                            : "border-[#2d5016]/10"
-                                                            }`}
-                                                    >
-                                                        <div>
-                                                            <p className="font-black text-[#2d5016]">
-                                                                {discount.quantity} kosov
-                                                                {discount.free_quantity ? ` + ${discount.free_quantity} GRATIS` : ""}
-                                                            </p>
-                                                            <p className="mt-1 text-sm font-semibold text-gray-600">
-                                                                {formatPrice(discount.price)}
-                                                                {discount.shipping
-                                                                    ? ` + poštnina ${formatPrice(discount.shipping)}`
-                                                                    : " · brez poštnine"}
-                                                            </p>
-                                                        </div>
-                                                        <a
-                                                            onClick={() => {
-                                                                handleAddToCart(product.id, product.name, product.img, discount.quantity, product.price, true, discount.price, discount.quantity + " kosov + " + discount.free_quantity + " GRATIS", discount.free_quantity, discount.shipping);
-                                                            }}
-                                                            aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
-                                                            className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
-                                                        >
-                                                            <CartIcon />
-                                                        </a>
+
+                                            {isBigBag ? (
+                                                <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#4CAF50] bg-white p-4 ring-2 ring-[#4CAF50]/20">
+                                                    <div>
+                                                        <p className="font-black text-[#2d5016]">2 + 1 GRATIS</p>
+                                                        <p className="mt-1 text-sm font-semibold text-gray-600">
+                                                            Ob nakupu 2 kosov prejmete tretji kos brezplačno
+                                                        </p>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <p className="rounded-2xl bg-white p-5 text-gray-700">
-                                                Za ta izdelek trenutno ni objavljenih akcij.
-                                            </p>
-                                        )}
-                                    </div>
+                                                    <a
+                                                        aria-label="Izberi akcijo 2 plus 1 gratis"
+                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
+                                                    >
+                                                        <CartIcon />
+                                                    </a>
+                                                </div>
+                                            ) : discounts.length > 0 ? (
+                                                <div className="space-y-3">
+                                                    {discounts.map((discount, index) => (
+                                                        <div
+                                                            key={discount.id}
+                                                            className={`flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 ${index === discounts.length - 1
+                                                                ? "border-[#4CAF50] ring-2 ring-[#4CAF50]/20"
+                                                                : "border-[#2d5016]/10"
+                                                                }`}
+                                                        >
+                                                            <div>
+                                                                <p className="font-black text-[#2d5016]">
+                                                                    {discount.quantity} kosov
+                                                                    {discount.free_quantity ? ` + ${discount.free_quantity} GRATIS` : ""}
+                                                                </p>
+                                                                <p className="mt-1 text-sm font-semibold text-gray-600">
+                                                                    {formatPrice(discount.price)}
+                                                                    {discount.shipping
+                                                                        ? ` + poštnina ${formatPrice(discount.shipping)}`
+                                                                        : " · brez poštnine"}
+                                                                </p>
+                                                            </div>
+                                                            <a
+                                                                onClick={() => {
+                                                                    handleAddToCart(product.id, product.name, product.img, discount.quantity, product.price, true, discount.price, discount.quantity + " kosov + " + discount.free_quantity + " GRATIS", discount.free_quantity, discount.shipping);
+                                                                }}
+                                                                aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
+                                                                className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
+                                                            >
+                                                                <CartIcon />
+                                                            </a>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p className="rounded-2xl bg-white p-5 text-gray-700">
+                                                    Za ta izdelek trenutno ni objavljenih akcij.
+                                                </p>
+                                            )}
+                                        </div>
+                                    )}
                                 </section>
                             </div>
                         </>
