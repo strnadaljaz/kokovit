@@ -4,13 +4,14 @@ import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { formatPrice } from "@/lib/helper/formatPrice";
 
 class Discount45 {
     quantity: number = 0;
-    price: string = "";
-    shipping: string = "";
+    price: number = 0;
+    shipping: number = 0;
 
-    constructor(q: number, p: string, s: string) {
+    constructor(q: number, p: number, s: number) {
         this.quantity = q;
         this.price = p;
         this.shipping = s;
@@ -18,7 +19,7 @@ class Discount45 {
 }
 
 export default function Page() {
-    const [onePiecePrice, setOnePiecePrice] = useState<string | null>(null);
+    const [onePiecePrice, setOnePiecePrice] = useState<number>(0);
 
     const [discounts, setDiscounts] = useState<Discount45[]>();
 
@@ -114,7 +115,7 @@ export default function Page() {
                                     <span className="text-2xl">🌱</span>
                                     <p className="text-lg text-gray-700">Pripravljen za takojšnje sajenje in setev</p>
                                 </div>
-                                <p className="text-2xl font-bold text-[#4CAF50]">Cena: {onePiecePrice}€ / kom</p>
+                                <p className="text-2xl font-bold text-[#4CAF50]">Cena: {formatPrice(onePiecePrice)} / kom</p>
                             </div>
                             <div className="mt-6">
                                 <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer inline-block">Kako uporabljati 📚</a>
@@ -138,9 +139,9 @@ export default function Page() {
                                                 👉 {item.quantity} kosov
                                             </p>
                                             <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                                {item.price}€
-                                                {item.shipping && (
-                                                    <a> + poštnina {item.shipping}€  </a>
+                                                {formatPrice(item.price)}
+                                                {item.shipping != 0 && (
+                                                    <a> + poštnina {formatPrice(item.shipping)} </a>
                                                 )}
                                             </p>
                                             {!item.shipping && (

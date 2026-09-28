@@ -13,7 +13,7 @@ const updateStock = async (stock: boolean, id: number) => {
     }
 }
 
-const updatePrice = async (price: string | undefined, id: number) => {
+const updatePrice = async (price: number | undefined, id: number) => {
     const { data, error } = await supabase
         .from('products')
         .update({ price: price })
@@ -24,7 +24,7 @@ const updatePrice = async (price: string | undefined, id: number) => {
     }
 }
 
-const updateDiscounts45 = async (kom45: number[], price45: string[], shipping: string[]) => {
+const updateDiscounts45 = async (kom45: number[], price45: number[], shipping: number[]) => {
     const { data, error } = await supabase
         .from('discounts')
         .delete()
@@ -45,7 +45,7 @@ const updateDiscounts45 = async (kom45: number[], price45: string[], shipping: s
     }
 }
 
-const updateDiscounts70 = async (kom70: number[], price70: string[], gratisKom: number[]) => {
+const updateDiscounts70 = async (kom70: number[], price70: number[], gratisKom: number[]) => {
     const { data, error } = await supabase
         .from('discounts')
         .delete()

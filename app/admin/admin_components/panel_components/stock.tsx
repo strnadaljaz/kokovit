@@ -3,16 +3,16 @@ import { Dispatch, SetStateAction } from "react";
 type StockParams = {
     bag45: boolean;
     setBag45: Dispatch<SetStateAction<boolean>>;
-    priceOne45: string | undefined;
-    setPriceOne45: Dispatch<SetStateAction<string | undefined>>;
+    priceOne45: number | undefined;
+    setPriceOne45: Dispatch<SetStateAction<number | undefined>>;
     bag70: boolean;
     setBag70: Dispatch<SetStateAction<boolean>>;
-    priceOne70: string | undefined;
-    setPriceOne70: Dispatch<SetStateAction<string | undefined>>;
+    priceOne70: number | undefined;
+    setPriceOne70: Dispatch<SetStateAction<number | undefined>>;
     bigBag: boolean;
     setBigBag: Dispatch<SetStateAction<boolean>>;
-    priceBigBag: string | undefined;
-    setPriceBigBag: Dispatch<SetStateAction<string | undefined>>;
+    priceBigBag: number | undefined;
+    setPriceBigBag: Dispatch<SetStateAction<number | undefined>>;
     setHasChanged: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -61,10 +61,10 @@ const Stock = ({ bag45, setBag45, priceOne45, setPriceOne45, bag70, setBag70, pr
                             state &&
                             <div className="flex items-center gap-2">
                                 <input
-                                    type="text"
+                                    type="number"
                                     className="text-slate-100 bg-[#0F1115] w-24 px-3 py-1.5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                                     value={price}
-                                    onChange={(e) => { priceChange(e.target.value); setHasChanged(true); }}
+                                    onChange={(e) => { priceChange(Number(e.target.value)); setHasChanged(true); }}
                                 ></input>
                             </div>
                         }

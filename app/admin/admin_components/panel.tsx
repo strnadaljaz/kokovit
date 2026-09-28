@@ -19,14 +19,14 @@ const Panel = () => {
 
     const [gratisKom, setGratisKom] = useState<number[]>([]);
 
-    const [price45, setPrice45] = useState<string[]>([]);
-    const [price70, setPrice70] = useState<string[]>([]);
-    const [priceBigBag, setPriceBigBag] = useState<string>();
+    const [price45, setPrice45] = useState<number[]>([]);
+    const [price70, setPrice70] = useState<number[]>([]);
+    const [priceBigBag, setPriceBigBag] = useState<number>();
 
-    const [priceOne45, setPriceOne45] = useState<string>();
-    const [priceOne70, setPriceOne70] = useState<string>();
+    const [priceOne45, setPriceOne45] = useState<number>();
+    const [priceOne70, setPriceOne70] = useState<number>();
 
-    const [shipping, setShipping] = useState<string[]>([]);
+    const [shipping, setShipping] = useState<number[]>([]);
 
     const [hasChanged, setHasChanged] = useState(false);
 
@@ -74,14 +74,14 @@ const Panel = () => {
                 return;
             }
 
-            let quantity = [];
-            let price = [];
-            let shipping = [];
+            const quantity: number[] = [];
+            const price: number[] = [];
+            const shipping: number[] = [];
 
             for (const d of data) {
                 quantity.push(d.quantity);
                 price.push(d.price);
-                shipping.push(d.shipping ? d.shipping : "");
+                shipping.push(d.shipping ?? 0);
             }
 
             setKom45(quantity);
@@ -100,9 +100,9 @@ const Panel = () => {
                 return;
             }
 
-            let quantity = [];
-            let free_quantity = [];
-            let price = [];
+            const quantity: number[] = [];
+            const free_quantity: number[] = [];
+            const price: number[] = [];
 
             for (const d of data) {
                 quantity.push(d.quantity);
@@ -122,15 +122,15 @@ const Panel = () => {
 
     const increaseEntry = (
         setKom: React.Dispatch<SetStateAction<number[]>>,
-        setPrice: React.Dispatch<SetStateAction<string[]>>,
-        setShip: React.Dispatch<SetStateAction<string[]>> | null,
+        setPrice: React.Dispatch<SetStateAction<number[]>>,
+        setShip: React.Dispatch<SetStateAction<number[]>> | null,
         setGratis: React.Dispatch<SetStateAction<number[]>> | null
     ) => {
         setKom((prev) => [...prev, 0]);
-        setPrice((prev) => [...prev, ""]);
+        setPrice((prev) => [...prev, 0]);
 
         if (setShip)
-            setShip((prev) => [...prev, ""]);
+            setShip((prev) => [...prev, 0]);
 
         if (setGratis)
             setGratis((prev) => [...prev, 0]);
@@ -139,8 +139,8 @@ const Panel = () => {
     const deleteEntry = (
         i: number,
         setKom: React.Dispatch<SetStateAction<number[]>>,
-        setPrice: React.Dispatch<SetStateAction<string[]>>,
-        setShip: React.Dispatch<SetStateAction<string[]>> | null,
+        setPrice: React.Dispatch<SetStateAction<number[]>>,
+        setShip: React.Dispatch<SetStateAction<number[]>> | null,
         setGratis: React.Dispatch<SetStateAction<number[]>> | null,
     ) => {
         setKom((prev) => prev.filter((_, index) => index !== i));
