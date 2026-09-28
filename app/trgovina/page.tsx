@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface Product {
     name: string;
@@ -25,7 +25,8 @@ async function getProductsData(setProducts: React.Dispatch<React.SetStateAction<
 
     const { data, error } = await supabase
         .from('products')
-        .select('name, price, in_stock, img')
+        .select('id, name, price, in_stock, img')
+        .order('id', { ascending: true });
 
     if (error) {
         console.error(error);
@@ -61,7 +62,7 @@ function isProduct(value: unknown): value is Product {
     );
 }
 
-const ProductCard = ({ product }: { product: Product | CollectionProduct }) => {
+const ProductCard = ({ product, product_id }: { product: Product | CollectionProduct, product_id: string, }) => {
     const router = useRouter();
 
     const handleClick = () => {
@@ -73,7 +74,7 @@ const ProductCard = ({ product }: { product: Product | CollectionProduct }) => {
 
     return (
         <article
-            className="group overflow-hidden rounded-[28px] border border-[#F5F5DC]/25 bg-[#F5F5DC]/95 shadow-[0_24px_60px_rgba(20,36,18,0.2)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(20,36,18,0.28)]"
+            className="cursor-pointer group overflow-hidden rounded-[28px] border border-[#F5F5DC]/25 bg-[#F5F5DC]/95 shadow-[0_24px_60px_rgba(20,36,18,0.2)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(20,36,18,0.28)]"
             onClick={handleClick}
         >
             <div className="relative flex h-72 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.18),_rgba(245,245,220,0.9)_58%,_rgba(245,245,220,1)_100%)] p-6">
@@ -146,7 +147,7 @@ const Store = () => {
 
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
                             {products.map((product, index) => (
-                                <ProductCard key={`${product.name}-${index}`} product={product} />
+                                <ProductCard key={`${product.name}-${index}`} product={product} product_id={product.name} />
                             ))}
                         </div>
                     </section>
@@ -162,7 +163,7 @@ const Store = () => {
 
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
                             {collection.map((product, index) => (
-                                <ProductCard key={`${product.name}-${index}`} product={product} />
+                                <ProductCard key={`${product.name}-${index}`} product={product} product_id={product.name} />
                             ))}
                         </div>
                     </section>
