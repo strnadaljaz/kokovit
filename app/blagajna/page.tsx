@@ -26,7 +26,7 @@ function TrashIcon() {
 export default function Blagajna() {
     const { items, removeItem, totalItems, totalPrice } = useCart();
 
-    const shippingTotal = items.reduce((sum, item) => sum + (item.shipping ?? 0), 0);
+    const shippingTotal = 0;
     const orderTotal = totalPrice + shippingTotal;
 
     return (
@@ -106,26 +106,26 @@ export default function Blagajna() {
                                                 </button>
                                             </div>
 
-                                            {item.isPromotion && item.promotionLabel && (
-                                                <span className="mt-3 inline-flex rounded-full bg-[#4CAF50]/15 px-3 py-1 text-sm font-bold text-[#2d5016]">
-                                                    🔥 {item.promotionLabel}
-                                                </span>
-                                            )}
+                                            {/* {item.isPromotion && item.promotionLabel && ( */}
+                                            {/*     <span className="mt-3 inline-flex rounded-full bg-[#4CAF50]/15 px-3 py-1 text-sm font-bold text-[#2d5016]"> */}
+                                            {/*         🔥 {item.promotionLabel} */}
+                                            {/*     </span> */}
+                                            {/* )} */}
 
-                                            {!item.isPromotion && (
-                                                <span className="mt-3 inline-flex rounded-full bg-[#4CAF50]/15 px-3 py-1 text-sm font-bold text-[#2d5016]">{item.quantity} kosov</span>
-                                            )}
+                                            {/* {!item.isPromotion && ( */}
+                                            {/*     <span className="mt-3 inline-flex rounded-full bg-[#4CAF50]/15 px-3 py-1 text-sm font-bold text-[#2d5016]">{item.quantity} kosov</span> */}
+                                            {/* )} */}
 
-                                            <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                                                <div className="text-right">
-                                                    <p className="text-xl font-black text-[#4CAF50]">
-                                                        {formatPrice(item.promotionPrice ? item.promotionPrice : item.unitPrice * item.quantity)}
-                                                    </p>
-                                                    <p className="text-sm text-gray-500">
-                                                        {formatPrice(item.promotionPrice && item.freeQuantity ? (item.promotionPrice / (item.quantity + item.freeQuantity)) : item.unitPrice)} / kos
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            {/* <div className="mt-5 flex flex-wrap items-center justify-between gap-4"> */}
+                                            {/*     <div className="text-right"> */}
+                                            {/*         <p className="text-xl font-black text-[#4CAF50]"> */}
+                                            {/*             {formatPrice(item.promotionPrice ? item.promotionPrice : item.unitPrice * item.quantity)} */}
+                                            {/*         </p> */}
+                                            {/*         <p className="text-sm text-gray-500"> */}
+                                            {/*             {formatPrice(item.promotionPrice && item.freeQuantity ? (item.promotionPrice / (item.quantity + item.freeQuantity)) : item.unitPrice)} / kos */}
+                                            {/*         </p> */}
+                                            {/*     </div> */}
+                                            {/* </div> */}
                                         </div>
                                     </article>
                                 ))}

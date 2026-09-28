@@ -5,10 +5,4 @@ export interface CartItem {
     image: string;
     quantity: number;
     unitPrice: number;
-
-    isPromotion: boolean;
-    promotionPrice?: number;
-    promotionLabel?: string;
-    freeQuantity?: number;
-    shipping?: number;
 }
