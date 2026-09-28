@@ -5,21 +5,22 @@ import Navbar from "@/app/Components/Navbar";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useCart } from "@/Context/CartContext";
+import { formatPrice } from "@/lib/helper/formatPrice";
 
 interface Product {
     id: number;
     name: string;
     img: string;
-    price: string;
+    price: number;
     in_stock: boolean;
 }
 
 interface Discount {
     id: number;
     quantity: number;
-    price: string;
-    shipping: string | null;
-    free_quantity: number | null;
+    price: number;
+    shipping: number;
+    free_quantity: number;
 }
 
 function CartIcon() {
@@ -166,7 +167,7 @@ export default function Substrat() {
                                             zadrževati vlago in ustvarjajo dobre pogoje za zdrave rastline.
                                         </p>
                                         <p className="mt-5 text-2xl font-black text-[#4CAF50]">
-                                            {product.price}€ <span className="text-base font-semibold text-gray-600">/ kos</span>
+                                            {formatPrice(product.price)} <span className="text-base font-semibold text-gray-600">/ kos</span>
                                         </p>
                                     </div>
                                 </section>
@@ -211,7 +212,7 @@ export default function Substrat() {
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
                                             disabled={!product.in_stock}
                                             onClick={() => {
-                                                handleAddToCart(product.id, product.name, product.img, quantity, product.price, false, null, null, null)
+                                                handleAddToCart(product.id, product.name, product.img, quantity, product.price, false, undefined, undefined, undefined);
                                             }}
                                         >
                                             <CartIcon />
@@ -260,16 +261,18 @@ export default function Substrat() {
                                                                 {discount.free_quantity ? ` + ${discount.free_quantity} GRATIS` : ""}
                                                             </p>
                                                             <p className="mt-1 text-sm font-semibold text-gray-600">
-                                                                {discount.price}€
+                                                                {formatPrice(discount.price)}
                                                                 {discount.shipping
-                                                                    ? ` + poštnina ${discount.shipping}€`
+                                                                    ? ` + poštnina ${formatPrice(discount.shipping)}`
                                                                     : " · brez poštnine"}
                                                             </p>
                                                         </div>
                                                         <a
-                                                            href={`/povprasevanje?kolicina=${discount.quantity}&izdelek=${encodeURIComponent(product.name)}`}
+                                                            onClick={() => {
+                                                                handleAddToCart(product.id, product.name, product.img, discount.quantity, product.price, true, discount.quantity + " kosov + " + discount.free_quantity + " GRATIS", discount.free_quantity, discount.shipping);
+                                                            }}
                                                             aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
-                                                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
+                                                            className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
                                                         >
                                                             <CartIcon />
                                                         </a>
