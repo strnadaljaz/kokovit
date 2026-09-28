@@ -3,12 +3,23 @@ import { Dispatch, SetStateAction } from "react";
 type Section45lParams = {
     kom45: number[];
     setKom45: Dispatch<SetStateAction<number[]>>;
-    price45: string[];
-    setPrice45: Dispatch<SetStateAction<string[]>>;
-    shipping: string[];
-    setShipping: Dispatch<SetStateAction<string[]>>;
-    deleteEntry: Function;
-    increaseEntry: Function;
+    price45: number[];
+    setPrice45: Dispatch<SetStateAction<number[]>>;
+    shipping: number[];
+    setShipping: Dispatch<SetStateAction<number[]>>;
+    deleteEntry: (
+        i: number,
+        setKom: Dispatch<SetStateAction<number[]>>,
+        setPrice: Dispatch<SetStateAction<number[]>>,
+        setShip: Dispatch<SetStateAction<number[]>> | null,
+        setGratis: Dispatch<SetStateAction<number[]>> | null,
+    ) => void;
+    increaseEntry: (
+        setKom: Dispatch<SetStateAction<number[]>>,
+        setPrice: Dispatch<SetStateAction<number[]>>,
+        setShip: Dispatch<SetStateAction<number[]>> | null,
+        setGratis: Dispatch<SetStateAction<number[]>> | null,
+    ) => void;
     setHasChanged: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -64,11 +75,12 @@ const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShippin
                             }}
                         />
                         <input
+                            type="number"
                             placeholder="Cena"
                             className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                             value={price45[i]}
                             onChange={(e) => {
-                                const nextValue = e.target.value;
+                                const nextValue = Number(e.target.value);
                                 setPrice45((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
@@ -76,11 +88,12 @@ const Section45l = ({ kom45, setKom45, price45, setPrice45, shipping, setShippin
                             }}
                         />
                         <input
+                            type="number"
                             placeholder="Poštnina"
                             className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                             value={shipping[i]}
                             onChange={(e) => {
-                                const nextValue = e.target.value;
+                                const nextValue = Number(e.target.value);
                                 setShipping((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );

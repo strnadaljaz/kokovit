@@ -3,12 +3,23 @@ import { Dispatch, SetStateAction } from "react";
 type Section70lParams = {
     kom70: number[];
     setKom70: Dispatch<SetStateAction<number[]>>;
-    price70: string[];
-    setPrice70: Dispatch<SetStateAction<string[]>>;
+    price70: number[];
+    setPrice70: Dispatch<SetStateAction<number[]>>;
     gratisKom: number[];
     setGratisKom: Dispatch<SetStateAction<number[]>>;
-    deleteEntry: Function;
-    increaseEntry: Function;
+    deleteEntry: (
+        i: number,
+        setKom: Dispatch<SetStateAction<number[]>>,
+        setPrice: Dispatch<SetStateAction<number[]>>,
+        setShip: Dispatch<SetStateAction<number[]>> | null,
+        setGratis: Dispatch<SetStateAction<number[]>> | null,
+    ) => void;
+    increaseEntry: (
+        setKom: Dispatch<SetStateAction<number[]>>,
+        setPrice: Dispatch<SetStateAction<number[]>>,
+        setShip: Dispatch<SetStateAction<number[]>> | null,
+        setGratis: Dispatch<SetStateAction<number[]>> | null,
+    ) => void;
     setHasChanged: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -77,11 +88,12 @@ const Section70l = ({ kom70, setKom70, price70, setPrice70, gratisKom, setGratis
                             }}
                         />
                         <input
+                            type="number"
                             placeholder="Cena"
                             className="text-slate-100 placeholder:text-slate-500 w-full px-4 py-2.5 bg-[#0F1115] border border-white/10 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
                             value={price70[i]}
                             onChange={(e) => {
-                                const nextValue = e.target.value;
+                                const nextValue = Number(e.target.value);
                                 setPrice70((prev) =>
                                     prev.map((value, index) => (index === i ? nextValue : value))
                                 );
