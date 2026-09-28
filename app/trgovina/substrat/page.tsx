@@ -33,25 +33,8 @@ function CartIcon() {
     );
 }
 
-const handleAddToCart = (productId: number, productName: string, image: string, quantity: number, unitPrice: number, isPromotion: boolean, promotionLabel?: string, freeQuantity?: number, shipping?: number) => {
-    const { addItem } = useCart();
-
-    addItem({
-        id: productName + quantity.toString(),
-        productId: productId,
-        productName: productName,
-        image: image,
-        quantity: quantity,
-        unitPrice: unitPrice,
-
-        isPromotion: isPromotion,
-        promotionLabel: promotionLabel,
-        freeQuantity: freeQuantity,
-        shipping: shipping
-    });
-}
-
 export default function Substrat() {
+    const { addItem } = useCart();
     const [product, setProduct] = useState<Product | null>(null);
     const [discounts, setDiscounts] = useState<Discount[]>([]);
     const [quantity, setQuantity] = useState(5);
@@ -116,6 +99,22 @@ export default function Substrat() {
 
         loadProduct();
     }, []);
+
+    const handleAddToCart = (productId: number, productName: string, image: string, quantity: number, unitPrice: number, isPromotion: boolean, promotionLabel?: string, freeQuantity?: number, shipping?: number) => {
+        addItem({
+            id: productName + quantity.toString(),
+            productId: productId,
+            productName: productName,
+            image: image,
+            quantity: quantity,
+            unitPrice: unitPrice,
+
+            isPromotion: isPromotion,
+            promotionLabel: promotionLabel,
+            freeQuantity: freeQuantity,
+            shipping: shipping
+        });
+    }
 
     return (
         <div>
