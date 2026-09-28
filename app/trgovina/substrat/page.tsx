@@ -4,6 +4,7 @@ import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
+import { useCart } from "@/Context/CartContext";
 
 interface Product {
     id: number;
@@ -29,6 +30,24 @@ function CartIcon() {
             <circle cx="18" cy="20" r="1.25" strokeWidth={2} />
         </svg>
     );
+}
+
+const handleAddToCart = (productId: number, productName: string, image: string, quantity: number, unitPrice: number, isPromotion: boolean, promotionLabel?: string, freeQuantity?: number, shipping?: number) => {
+    const { addItem } = useCart();
+
+    addItem({
+        id: productName + quantity.toString(),
+        productId: productId,
+        productName: productName,
+        image: image,
+        quantity: quantity,
+        unitPrice: unitPrice,
+
+        isPromotion: isPromotion,
+        promotionLabel: promotionLabel,
+        freeQuantity: freeQuantity,
+        shipping: shipping
+    });
 }
 
 export default function Substrat() {
@@ -191,6 +210,9 @@ export default function Substrat() {
                                         <button
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
                                             disabled={!product.in_stock}
+                                            onClick={() => {
+                                                handleAddToCart(product.id, product.name, product.img, quantity, product.price, false, null, null, null)
+                                            }}
                                         >
                                             <CartIcon />
                                             Dodaj {quantity} kosov v košarico

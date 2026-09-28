@@ -1,3 +1,5 @@
+"use client";
+
 import { CartItem } from "@/lib/cart/CartItem";
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
