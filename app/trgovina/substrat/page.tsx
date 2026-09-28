@@ -34,19 +34,18 @@ function CartIcon() {
 export default function Substrat() {
     const [product, setProduct] = useState<Product | null>(null);
     const [discounts, setDiscounts] = useState<Discount[]>([]);
-    const [quantity, setQuantity] = useState(0);
+    const [quantity, setQuantity] = useState(5);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const isBigBag = product?.name.toLowerCase().includes("big bag") ?? false;
-    const is45l = product?.name.toLowerCase().includes('45l') ?? false;
-    let quantityOptions;
-    if (isBigBag)
-        quantityOptions = [1, 2, 3];
-    if (is45l)
-        quantityOptions = [4, 8, 12, 16];
-    else
-        quantityOptions = [5, 6, 7, 8, 9];
+    const normalizedProductName = product?.name.toLowerCase().replace(/\s/g, "") ?? "";
+    const isBigBag = product?.id === 3 || normalizedProductName.includes("bigbag");
+    const is45l = normalizedProductName.includes("45l");
+    const quantityOptions = isBigBag
+        ? [1, 2, 3]
+        : is45l
+            ? [4, 8, 12, 16]
+            : [5, 6, 7, 8, 9];
 
     useEffect(() => {
         const loadProduct = async () => {
@@ -90,6 +89,7 @@ export default function Substrat() {
             }
 
             setProduct(selectedProduct);
+            setQuantity(selectedProduct.id === 3 ? 1 : selectedProduct.name.toLowerCase().includes("45l") ? 4 : 5);
             setDiscounts(discountData ?? []);
             setIsLoading(false);
         };
@@ -161,35 +161,40 @@ export default function Substrat() {
                                                 </p>
                                                 <h2 className="text-2xl font-black sm:text-3xl">Koliko kosov?</h2>
                                             </div>
-                                            <span className="rounded-full bg-[#4CAF50]/15 px-3 py-2 text-sm font-bold text-[#4CAF50]">
-                                                {product.in_stock ? "Na zalogi" : "Po naročilu"}
+                                            <span
+                                                className={`rounded-full px-3 py-2 text-sm font-bold ${product.in_stock
+                                                    ? 'bg-[#4CAF50]/15 text-[#4CAF50]'
+                                                    : 'bg-red-500/15 text-red-400'
+                                                    }`}
+                                            >
+                                                {product.in_stock ? 'Na zalogi' : 'Ni na zalogi'}
                                             </span>
                                         </div>
 
-                                        <div className={`grid gap-2 sm:gap-3 ${isBigBag ? "grid-cols-3" : "grid-cols-5"}`}>
+                                        <div className={`grid gap-2 sm:gap-3 ${isBigBag ? "grid-cols-3" : "grid-cols-4 sm:grid-cols-5"}`}>
                                             {quantityOptions.map((value) => (
                                                 <button
                                                     key={value}
                                                     type="button"
                                                     onClick={() => setQuantity(value)}
-                                                    className={`cursor-pointer rounded-xl border-2 px-2 py-3 text-lg font-black transition ${quantity === value
+                                                    className={`cursor-pointer rounded-xl border-2 px-2 py-3 text-lg font-black transition disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none ${quantity === value
                                                         ? "border-[#4CAF50] bg-[#4CAF50] text-white shadow-lg"
                                                         : "border-[#2d5016]/15 bg-white text-[#2d5016] hover:border-[#4CAF50]"
                                                         }`}
                                                     aria-label={`Izberi ${value} kosov`}
+                                                    disabled={!product.in_stock}
                                                 >
                                                     {value}
                                                 </button>
                                             ))}
                                         </div>
-                                        <a
-                                            href={`/povprasevanje?kolicina=${quantity}&izdelek=${encodeURIComponent(product.name)}`}
-                                            className="mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50]"
+                                        <button
+                                            className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
+                                            disabled={!product.in_stock}
                                         >
                                             <CartIcon />
                                             Dodaj {quantity} kosov v košarico
-                                        </a>
-                                    </div>
+                                        </button>                                   </div>
 
                                     <div className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
                                         <div className="mb-5 flex items-end justify-between gap-4">
@@ -211,7 +216,6 @@ export default function Substrat() {
                                                     </p>
                                                 </div>
                                                 <a
-                                                    href={`/povprasevanje?kolicina=2&izdelek=${encodeURIComponent(product.name)}`}
                                                     aria-label="Izberi akcijo 2 plus 1 gratis"
                                                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
                                                 >
@@ -261,8 +265,8 @@ export default function Substrat() {
                         </>
                     )}
                 </div>
-            </main>
+            </main >
             <Footer />
-        </div>
+        </div >
     );
 }
