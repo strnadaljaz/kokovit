@@ -4,13 +4,14 @@ import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { formatPrice } from "@/lib/helper/formatPrice";
 
 class Discount70 {
     quantity: number = 0;
-    price: string = "";
+    price: number = 0;
     free_quantity: number = 0;
 
-    constructor(q: number, p: string, fq: number) {
+    constructor(q: number, p: number, fq: number) {
         this.quantity = q;
         this.price = p;
         this.free_quantity = fq;
@@ -18,7 +19,7 @@ class Discount70 {
 }
 
 export default function Page() {
-    const [onePiecePrice, setOnePiecePrice] = useState<string | null>(null);
+    const [onePiecePrice, setOnePiecePrice] = useState<number>(0);
 
     const [discounts, setDiscounts] = useState<Discount70[]>();
 
@@ -102,7 +103,7 @@ export default function Page() {
                                 Z KOKOVIT substratom 70L – naraven substrat iz kokosovih vlaken, šote in organskih snovi, idealen za visoke grede, vrtove, rastlinjake, okrasne grede in lončnice!
                             </p>
                             <div className="text-2xl font-bold text-[#4CAF50]">
-                                Cena: {onePiecePrice}€ / kom
+                                Cena: {formatPrice(onePiecePrice)} / kom
                             </div>
 
                             <div className="mt-6">
@@ -131,7 +132,7 @@ export default function Page() {
                                                 ✍️{item.quantity === 33 ? "PALETA" : ""} {item.quantity} kom + {item.free_quantity} GRATIS
                                             </p>
                                             <p className="text-2xl font-bold text-[#4CAF50] mb-2">
-                                                {item.price}€
+                                                {formatPrice(item.price)}
                                             </p>
                                             <p className="text-lg text-green-600 font-semibold">
                                                 🚚 BREZPLAČNA DOSTAVA po celi Sloveniji!

@@ -4,9 +4,10 @@ import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { formatPrice } from "@/lib/helper/formatPrice";
 
 export default function Page() {
-    const [price, setPrice] = useState<string>("");
+    const [price, setPrice] = useState<number>(0);
 
     useEffect(() => {
         const getPrice = async () => {
@@ -98,7 +99,7 @@ export default function Page() {
                                     💶 Cena / 1m³
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
-                                    {price}€ / kom
+                                    {formatPrice(price)} / kom
                                 </p>
                             </div>
 
