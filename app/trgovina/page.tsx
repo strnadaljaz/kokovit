@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
+import { useRouter } from "next/router";
 
 interface Product {
     name: string;
@@ -49,42 +50,67 @@ async function getCollectionData(setCollection: React.Dispatch<React.SetStateAct
     setCollection(data);
 }
 
-const ProductCard = ({ product }: { product: Product | CollectionProduct }) => (
-    <article className="group overflow-hidden rounded-[28px] border border-[#F5F5DC]/25 bg-[#F5F5DC]/95 shadow-[0_24px_60px_rgba(20,36,18,0.2)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(20,36,18,0.28)]">
-        <div className="relative flex h-72 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.18),_rgba(245,245,220,0.9)_58%,_rgba(245,245,220,1)_100%)] p-6">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/10 via-transparent to-[#6b4226]/10" />
-            <img
-                src={product.img}
-                alt={product.name}
-                className="relative h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-        </div>
+function isProduct(value: unknown): value is Product {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'name' in value &&
+        'img' in value &&
+        'price' in value &&
+        'in_stock' in value
+    );
+}
 
-        <div className="p-5 sm:p-6">
-            <div className="mb-5 flex items-start justify-between gap-3">
-                <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[#6b4226]/80">
-                        KOKOVIT
-                    </p>
-                    <h3 className="text-2xl font-black text-[#2d5016]">{product.name}</h3>
-                </div>
-                <span className="whitespace-nowrap rounded-full bg-[#6b4226] px-3 py-2 text-base font-extrabold text-[#F5F5DC] shadow-sm">
-                    {product.price}€
-                </span>
+const ProductCard = ({ product }: { product: Product | CollectionProduct }) => {
+    const router = useRouter();
+
+    const handleClick = () => {
+        if (isProduct(product))
+            router.push(`/trgovina/substrat?productId=${product_id}`);
+        else
+            router.push(`/trgovina/kolekcija?product_id=${product_id}`);
+    }
+
+    return (
+        <article
+            className="group overflow-hidden rounded-[28px] border border-[#F5F5DC]/25 bg-[#F5F5DC]/95 shadow-[0_24px_60px_rgba(20,36,18,0.2)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(20,36,18,0.28)]"
+            onClick={handleClick}
+        >
+            <div className="relative flex h-72 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.18),_rgba(245,245,220,0.9)_58%,_rgba(245,245,220,1)_100%)] p-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/10 via-transparent to-[#6b4226]/10" />
+                <img
+                    src={product.img}
+                    alt={product.name}
+                    className="relative h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
             </div>
-            {product.sizes && (
-                <div className="flex items-center justify-between gap-4 border-t border-[#2d5016]/15 pt-4">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6b4226]">
-                        Velikosti
-                    </span>
-                    <span className="rounded-full bg-[#4CAF50]/12 px-3 py-2 text-sm font-bold text-[#2d5016]">
-                        {product.sizes || "—"}
+
+            <div className="p-5 sm:p-6">
+                <div className="mb-5 flex items-start justify-between gap-3">
+                    <div>
+                        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[#6b4226]/80">
+                            KOKOVIT
+                        </p>
+                        <h3 className="text-2xl font-black text-[#2d5016]">{product.name}</h3>
+                    </div>
+                    <span className="whitespace-nowrap rounded-full bg-[#6b4226] px-3 py-2 text-base font-extrabold text-[#F5F5DC] shadow-sm">
+                        {product.price}€
                     </span>
                 </div>
-            )}
-        </div>
-    </article>
-);
+                {product.sizes && (
+                    <div className="flex items-center justify-between gap-4 border-t border-[#2d5016]/15 pt-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6b4226]">
+                            Velikosti
+                        </span>
+                        <span className="rounded-full bg-[#4CAF50]/12 px-3 py-2 text-sm font-bold text-[#2d5016]">
+                            {product.sizes || "—"}
+                        </span>
+                    </div>
+                )}
+            </div>
+        </article>
+    );
+};
 
 const Store = () => {
     const [products, setProducts] = useState<Product[]>([]);
