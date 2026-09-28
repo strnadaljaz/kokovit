@@ -17,7 +17,7 @@ interface Product {
 interface CollectionProduct {
     name: string;
     img: string;
-    price: string;
+    price: number;
     sizes: string;
 }
 
@@ -99,7 +99,7 @@ const ProductCard = ({ product, product_id }: { product: Product | CollectionPro
                         {formatPrice(product.price)}
                     </span>
                 </div>
-                {product.sizes && (
+                {!isProduct(product) && (
                     <div className="flex items-center justify-between gap-4 border-t border-[#2d5016]/15 pt-4">
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6b4226]">
                             Velikosti
