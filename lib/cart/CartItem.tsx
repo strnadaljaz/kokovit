@@ -7,6 +7,7 @@ export interface CartItem {
     unitPrice: number;
 
     isPromotion: boolean;
+    promotionPrice?: number;
     promotionLabel?: string;
     freeQuantity?: number;
     shipping?: number;

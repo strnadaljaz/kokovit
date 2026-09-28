@@ -100,7 +100,7 @@ export default function Substrat() {
         loadProduct();
     }, []);
 
-    const handleAddToCart = (productId: number, productName: string, image: string, quantity: number, unitPrice: number, isPromotion: boolean, promotionLabel?: string, freeQuantity?: number, shipping?: number) => {
+    const handleAddToCart = (productId: number, productName: string, image: string, quantity: number, unitPrice: number, isPromotion: boolean, promotionPrice?: number, promotionLabel?: string, freeQuantity?: number, shipping?: number) => {
         addItem({
             id: productName + quantity.toString(),
             productId: productId,
@@ -110,6 +110,7 @@ export default function Substrat() {
             unitPrice: unitPrice,
 
             isPromotion: isPromotion,
+            promotionPrice: promotionPrice,
             promotionLabel: promotionLabel,
             freeQuantity: freeQuantity,
             shipping: shipping
@@ -211,7 +212,7 @@ export default function Substrat() {
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
                                             disabled={!product.in_stock}
                                             onClick={() => {
-                                                handleAddToCart(product.id, product.name, product.img, quantity, product.price, false, undefined, undefined, undefined);
+                                                handleAddToCart(product.id, product.name, product.img, quantity, product.price, false, undefined, undefined, undefined, undefined);
                                             }}
                                         >
                                             <CartIcon />
@@ -268,7 +269,7 @@ export default function Substrat() {
                                                         </div>
                                                         <a
                                                             onClick={() => {
-                                                                handleAddToCart(product.id, product.name, product.img, discount.quantity, product.price, true, discount.quantity + " kosov + " + discount.free_quantity + " GRATIS", discount.free_quantity, discount.shipping);
+                                                                handleAddToCart(product.id, product.name, product.img, discount.quantity, product.price, true, discount.price, discount.quantity + " kosov + " + discount.free_quantity + " GRATIS", discount.free_quantity, discount.shipping);
                                                             }}
                                                             aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
                                                             className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
