@@ -2,71 +2,17 @@
 import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
-import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { formatPrice } from "@/lib/helper/formatPrice";
-
-class Discount70 {
-    quantity: number = 0;
-    price: number = 0;
-    free_quantity: number = 0;
-
-    constructor(q: number, p: number, fq: number) {
-        this.quantity = q;
-        this.price = p;
-        this.free_quantity = fq;
-    }
-}
+import { useProducts } from "@/Context/ProductsContext";
 
 export default function Page() {
-    const [onePiecePrice, setOnePiecePrice] = useState<number>(0);
+    const { products } = useProducts();
 
-    const [discounts, setDiscounts] = useState<Discount70[]>();
+    if (!products) return (<p>loading...</p>);
 
-    useEffect(() => {
-        const supabase = createClient();
+    const product = products.find(p => p.name === "70l");
 
-        const getData = async () => {
-            const { data, error } = await supabase
-                .from('products')
-                .select('price')
-                .eq('id', 2);
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            setOnePiecePrice(data[0].price);
-        }
-
-        const getDiscounts = async () => {
-            const { data, error } = await supabase
-                .from('discounts')
-                .select('quantity, price, free_quantity')
-                .eq('product_id', 2)
-                .order('quantity', { ascending: true });
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            let arr: Discount70[] = [];
-
-            for (let d of data) {
-                arr.push(new Discount70(d.quantity, d.price, d.free_quantity));
-            }
-
-            setDiscounts(arr);
-        }
-
-        getData();
-        getDiscounts();
-    }, []);
-
-
-
+    if (!product) return (<p>error</p>);
 
     return (
         <div>
@@ -103,7 +49,7 @@ export default function Page() {
                                 Z KOKOVIT substratom 70L – naraven substrat iz kokosovih vlaken, šote in organskih snovi, idealen za visoke grede, vrtove, rastlinjake, okrasne grede in lončnice!
                             </p>
                             <div className="text-2xl font-bold text-[#4CAF50]">
-                                Cena: {formatPrice(onePiecePrice)} / kom
+                                Cena: {formatPrice(product.basePrice)} / kom
                             </div>
 
                             <div className="mt-6">
@@ -125,11 +71,11 @@ export default function Page() {
                         <div className="space-y-6">
 
                             {
-                                discounts && (
-                                    discounts.map((item, index) => (
-                                        <div key={index} className={`bg-white rounded-xl p-6 shadow-lg ${index === discounts.length - 1 ? "border-4 border-[#4CAF50]" : ""}`}>
+                                product.discounts && (
+                                    product.discounts.map((item, index) => (
+                                        <div key={index} className={`bg-white rounded-xl p-6 shadow-lg ${product.discounts && index === product.discounts.length - 1 ? "border-4 border-[#4CAF50]" : ""}`}>
                                             <p className="text-xl font-semibold text-gray-800 mb-2">
-                                                ✍️{item.quantity === 33 ? "PALETA" : ""} {item.quantity} kom + {item.free_quantity} GRATIS
+                                                ✍️{item.quantity === 33 ? "PALETA" : ""} {item.quantity} kom + {item.freeQuantity} GRATIS
                                             </p>
                                             <p className="text-2xl font-bold text-[#4CAF50] mb-2">
                                                 {formatPrice(item.price)}
@@ -217,7 +163,6 @@ export default function Page() {
                                 <span className="text-2xl">✅</span>
                                 <p className="text-lg text-gray-700">Pripravljen za takojšnje sajenje in setev</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
