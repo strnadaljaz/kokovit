@@ -12,7 +12,7 @@ interface Discount {
     shipping?: number;
 }
 
-interface Product {
+export interface Product {
     id: number;
     name: string;
     inStock: boolean;

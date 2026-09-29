@@ -2,26 +2,11 @@
 
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
-import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCart } from "@/Context/CartContext";
 import { formatPrice } from "@/lib/helper/formatPrice";
-
-interface Product {
-    id: number;
-    name: string;
-    img: string;
-    price: number;
-    in_stock: boolean;
-}
-
-interface Discount {
-    id: number;
-    quantity: number;
-    price: number;
-    shipping: number;
-    free_quantity: number;
-}
+import { useProducts } from "@/Context/ProductsContext";
+import { useSearchParams } from "next/navigation";
 
 function CartIcon() {
     return (
@@ -34,12 +19,26 @@ function CartIcon() {
 }
 
 export default function Substrat() {
+    const { products, loading, error: productsError } = useProducts();
     const { addItem } = useCart();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [discounts, setDiscounts] = useState<Discount[]>([]);
     const [quantity, setQuantity] = useState(5);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    const requestedProduct =
+        searchParams.get("productId") ?? searchParams.get("product_id")
+    const requestedProductId = Number(requestedProduct);
+
+    console.log("search:", window.location.search);
+    console.log("requestedProduct:", requestedProduct);
+    console.log("requestedProductId:", requestedProductId);
+    console.log("products:", products);
+    console.log("loading:", loading);
+
+
+    const product = products.find(p =>
+        Number(p.id) === requestedProductId ||
+        p.name === requestedProduct ||
+        p.name.toLowerCase() === requestedProduct?.toLowerCase()
+    );
 
     const normalizedProductName = product?.name.toLowerCase().replace(/\s/g, "") ?? "";
     const isBigBag = product?.id === 3 || normalizedProductName.includes("bigbag");
@@ -50,64 +49,11 @@ export default function Substrat() {
             ? [4, 8, 12, 16]
             : [5, 6, 7, 8, 9];
 
-    useEffect(() => {
-        const loadProduct = async () => {
-            const supabase = createClient();
-            const requestedProduct = new URLSearchParams(window.location.search).get("productId");
-
-            const { data: products, error: productsError } = await supabase
-                .from("products")
-                .select("id, name, img, price, in_stock")
-                .order("id", { ascending: true });
-
-            if (productsError) {
-                console.error(productsError);
-                setError("Izdelka trenutno ni mogoče naložiti.");
-                setIsLoading(false);
-                return;
-            }
-
-            const selectedProduct =
-                products?.find((item) => item.name === requestedProduct) ??
-                products?.[0];
-
-            if (!selectedProduct) {
-                setError("Izdelek trenutno ni na voljo.");
-                setIsLoading(false);
-                return;
-            }
-
-            const { data: discountData, error: discountsError } = await supabase
-                .from("discounts")
-                .select("id, quantity, price, shipping, free_quantity")
-                .eq("product_id", selectedProduct.id)
-                .order("quantity", { ascending: true })
-                .limit(3);
-
-            if (discountsError) {
-                console.error(discountsError);
-                setError("Akcij trenutno ni mogoče naložiti.");
-                setIsLoading(false);
-                return;
-            }
-
-            setProduct(selectedProduct);
-            setQuantity(selectedProduct.id === 3 ? 1 : selectedProduct.name.toLowerCase().includes("45l") ? 4 : 5);
-            setDiscounts(discountData ?? []);
-            setIsLoading(false);
-        };
-
-        loadProduct();
-    }, []);
-
-    const handleAddToCart = (productId: number, productName: string, image: string, quantity: number, unitPrice: number) => {
+    const handleAddToCart = (productId: number, productName: string) => {
         addItem({
             id: productName + quantity.toString(),
             productId: productId,
-            productName: productName,
-            image: image,
             quantity: quantity,
-            unitPrice: unitPrice,
         });
     }
 
@@ -116,19 +62,25 @@ export default function Substrat() {
             <Navbar />
             <main className="min-h-screen bg-gradient-to-b from-[#4CAF50] to-[#6b4226] px-4 py-8 text-[#F5F5DC] sm:px-6 md:py-14">
                 <div className="mx-auto max-w-7xl">
-                    {isLoading && (
+                    {loading && (
                         <div className="rounded-3xl bg-[#F5F5DC]/90 p-10 text-center text-xl font-semibold text-[#2d5016]">
                             Nalagam izdelek ...
                         </div>
                     )}
 
-                    {error && !isLoading && (
+                    {!loading && productsError && (
                         <div className="rounded-3xl bg-[#F5F5DC]/90 p-10 text-center text-xl font-semibold text-red-700">
-                            {error}
+                            {productsError}
                         </div>
                     )}
 
-                    {product && !isLoading && (
+                    {!loading && !productsError && !product && (
+                        <div className="rounded-3xl bg-[#F5F5DC]/90 p-10 text-center text-xl font-semibold text-red-700">
+                            Izdelek ni bil najden.
+                        </div>
+                    )}
+
+                    {product && !loading && !productsError && (
                         <>
                             <header className="mb-8">
                                 <p className="mb-3 text-xs font-bold uppercase tracking-[0.35em] text-[#F5F5DC]/80">
@@ -143,7 +95,7 @@ export default function Substrat() {
                                 <section className="overflow-hidden rounded-[30px] border border-[#F5F5DC]/20 bg-[#F5F5DC]/10 shadow-[0_24px_70px_rgba(20,36,18,0.2)] backdrop-blur-sm">
                                     <div className="flex min-h-[320px] items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.2),_rgba(245,245,220,0.96)_60%)] p-6 sm:min-h-[500px] sm:p-10">
                                         <img
-                                            src={`/${product.img}`}
+                                            src={`/${product.image}`}
                                             alt={product.name}
                                             className="max-h-[460px] w-full object-contain drop-shadow-[0_24px_20px_rgba(45,80,22,0.2)]"
                                         />
@@ -161,7 +113,7 @@ export default function Substrat() {
                                             zadrževati vlago in ustvarjajo dobre pogoje za zdrave rastline.
                                         </p>
                                         <p className="mt-5 text-2xl font-black text-[#4CAF50]">
-                                            {formatPrice(product.price)} <span className="text-base font-semibold text-gray-600">/ kos</span>
+                                            {formatPrice(product.basePrice)} <span className="text-base font-semibold text-gray-600">/ kos</span>
                                         </p>
                                     </div>
                                 </section>
@@ -176,12 +128,12 @@ export default function Substrat() {
                                                 <h2 className="text-2xl font-black sm:text-3xl">Koliko kosov?</h2>
                                             </div>
                                             <span
-                                                className={`rounded-full px-3 py-2 text-sm font-bold ${product.in_stock
+                                                className={`rounded-full px-3 py-2 text-sm font-bold ${product.inStock
                                                     ? 'bg-[#4CAF50]/15 text-[#4CAF50]'
                                                     : 'bg-red-500/15 text-red-400'
                                                     }`}
                                             >
-                                                {product.in_stock ? 'Na zalogi' : 'Ni na zalogi'}
+                                                {product.inStock ? 'Na zalogi' : 'Ni na zalogi'}
                                             </span>
                                         </div>
 
@@ -196,7 +148,7 @@ export default function Substrat() {
                                                         : "border-[#2d5016]/15 bg-white text-[#2d5016] hover:border-[#4CAF50]"
                                                         }`}
                                                     aria-label={`Izberi ${value} kosov`}
-                                                    disabled={!product.in_stock}
+                                                    disabled={!product.inStock}
                                                 >
                                                     {value}
                                                 </button>
@@ -204,84 +156,81 @@ export default function Substrat() {
                                         </div>
                                         <button
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
-                                            disabled={!product.in_stock}
+                                            disabled={!product.inStock}
                                             onClick={() => {
-                                                handleAddToCart(product.id, product.name, product.img, quantity, product.price);
+                                                handleAddToCart(product.id, product.name);
                                             }}
                                         >
                                             <CartIcon />
                                             Dodaj {quantity} kosov v košarico
-                                        </button>
-                                    </div>
+                                        </button>                                   </div>
 
-                                    {product.in_stock && (
-                                        <div className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
-                                            <div className="mb-5 flex items-end justify-between gap-4">
-                                                <div>
-                                                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
-                                                        Posebne ponudbe
-                                                    </p>
-                                                    <h2 className="text-2xl font-black sm:text-3xl">Izberi akcijo</h2>
-                                                </div>
-                                                <span className="text-2xl">🔥</span>
-                                            </div>
-
-                                            {isBigBag ? (
-                                                <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#4CAF50] bg-white p-4 ring-2 ring-[#4CAF50]/20">
-                                                    <div>
-                                                        <p className="font-black text-[#2d5016]">2 + 1 GRATIS</p>
-                                                        <p className="mt-1 text-sm font-semibold text-gray-600">
-                                                            Ob nakupu 2 kosov prejmete tretji kos brezplačno
-                                                        </p>
-                                                    </div>
-                                                    <a
-                                                        aria-label="Izberi akcijo 2 plus 1 gratis"
-                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
-                                                    >
-                                                        <CartIcon />
-                                                    </a>
-                                                </div>
-                                            ) : discounts.length > 0 ? (
-                                                <div className="space-y-3">
-                                                    {discounts.map((discount, index) => (
-                                                        <div
-                                                            key={discount.id}
-                                                            className={`flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 ${index === discounts.length - 1
-                                                                ? "border-[#4CAF50] ring-2 ring-[#4CAF50]/20"
-                                                                : "border-[#2d5016]/10"
-                                                                }`}
-                                                        >
-                                                            <div>
-                                                                <p className="font-black text-[#2d5016]">
-                                                                    {discount.quantity} kosov
-                                                                    {discount.free_quantity ? ` + ${discount.free_quantity} GRATIS` : ""}
-                                                                </p>
-                                                                <p className="mt-1 text-sm font-semibold text-gray-600">
-                                                                    {formatPrice(discount.price)}
-                                                                    {discount.shipping
-                                                                        ? ` + poštnina ${formatPrice(discount.shipping)}`
-                                                                        : " · brez poštnine"}
-                                                                </p>
-                                                            </div>
-                                                            <a
-                                                                onClick={() => {
-                                                                    handleAddToCart(product.id, product.name, product.img, discount.quantity, product.price);
-                                                                }}
-                                                                aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
-                                                                className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
-                                                            >
-                                                                <CartIcon />
-                                                            </a>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <p className="rounded-2xl bg-white p-5 text-gray-700">
-                                                    Za ta izdelek trenutno ni objavljenih akcij.
+                                    <div className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
+                                        <div className="mb-5 flex items-end justify-between gap-4">
+                                            <div>
+                                                <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
+                                                    Posebne ponudbe
                                                 </p>
-                                            )}
+                                                <h2 className="text-2xl font-black sm:text-3xl">Izberi akcijo</h2>
+                                            </div>
+                                            <span className="text-2xl">🔥</span>
                                         </div>
-                                    )}
+
+                                        {isBigBag ? (
+                                            <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#4CAF50] bg-white p-4 ring-2 ring-[#4CAF50]/20">
+                                                <div>
+                                                    <p className="font-black text-[#2d5016]">2 + 1 GRATIS</p>
+                                                    <p className="mt-1 text-sm font-semibold text-gray-600">
+                                                        Ob nakupu 2 kosov prejmete tretji kos brezplačno
+                                                    </p>
+                                                </div>
+                                                <a
+                                                    aria-label="Izberi akcijo 2 plus 1 gratis"
+                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
+                                                >
+                                                    <CartIcon />
+                                                </a>
+                                            </div>
+                                        ) : product.discounts.length > 0 ? (
+                                            <div className="space-y-3">
+                                                {product.discounts.map((discount, index) => (
+                                                    <div
+                                                        key={discount.id}
+                                                        className={`flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 ${index === product.discounts.length - 1
+                                                            ? "border-[#4CAF50] ring-2 ring-[#4CAF50]/20"
+                                                            : "border-[#2d5016]/10"
+                                                            }`}
+                                                    >
+                                                        <div>
+                                                            <p className="font-black text-[#2d5016]">
+                                                                {discount.quantity} kosov
+                                                                {discount.freeQuantity ? ` + ${discount.freeQuantity} GRATIS` : ""}
+                                                            </p>
+                                                            <p className="mt-1 text-sm font-semibold text-gray-600">
+                                                                {formatPrice(discount.price)}
+                                                                {discount.shipping
+                                                                    ? ` + poštnina ${formatPrice(discount.shipping)}`
+                                                                    : " · brez poštnine"}
+                                                            </p>
+                                                        </div>
+                                                        <a
+                                                            onClick={() => {
+                                                                handleAddToCart(product.id, product.name);
+                                                            }}
+                                                            aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
+                                                            className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
+                                                        >
+                                                            <CartIcon />
+                                                        </a>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p className="rounded-2xl bg-white p-5 text-gray-700">
+                                                Za ta izdelek trenutno ni objavljenih akcij.
+                                            </p>
+                                        )}
+                                    </div>
                                 </section>
                             </div>
                         </>
