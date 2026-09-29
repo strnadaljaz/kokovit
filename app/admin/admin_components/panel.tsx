@@ -221,7 +221,6 @@ const Panel = () => {
 
         // 4) PONOVNO NALOŽI IZ BAZE
         await refresh();
-        setHasChanged(false);
     }
 
     return (
@@ -243,7 +242,10 @@ const Panel = () => {
                         <button
                             type="button"
                             className="cursor-pointer rounded-xl bg-[#4CAF50] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-green-950/30 transition hover:bg-[#43A047]"
-                            onClick={saveChanges}
+                            onClick={() => {
+                                saveChanges();
+                                setHasChanged(false);
+                            }}
                         >
                             Shrani
                         </button>
@@ -469,8 +471,8 @@ const Panel = () => {
                         Dodaj produkt
                     </button>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 };
 
