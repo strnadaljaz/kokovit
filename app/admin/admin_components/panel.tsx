@@ -4,6 +4,7 @@ import { useProducts } from "@/Context/ProductsContext";
 import Header from "./panel_components/header";
 import { useEffect, useState } from "react";
 import { ProductDraft, DiscountDraft } from "./panel_components/draftData";
+import { createClient } from "@/lib/supabase/client";
 
 const inputClassName =
     "w-full rounded-lg border border-white/10 bg-[#0F1115] px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-[#4CAF50] focus:ring-1 focus:ring-[#4CAF50]";
@@ -12,7 +13,7 @@ const labelClassName =
     "flex flex-col gap-2 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
 const Panel = () => {
-    const { products } = useProducts();
+    const { products, refresh } = useProducts();
     const [hasChanged, setHasChanged] = useState(false);
     const [drafts, setDrafts] = useState<Record<string, ProductDraft>>({});
 
@@ -117,6 +118,112 @@ const Panel = () => {
         setHasChanged(true);
     };
 
+    async function saveChanges() {
+        const supabase = createClient();
+
+        // 1) UPSERT PRODUKTOV (obstoječi + novi)
+        //    Shrani mapping: draftId -> pravi productId
+        const idMap = new Map<string, number>();
+
+        for (const [draftId, draft] of Object.entries(drafts)) {
+            const existing = products.find(p => String(p.id) === draftId);
+
+            const { data, error } = await supabase
+                .from("products")
+                .upsert(
+                    {
+                        ...(existing && { id: existing.id }),
+                        name: draft.name,
+                        price: draft.basePrice,
+                        in_stock: draft.inStock,
+                        img: draft.image,
+                    },
+                    { onConflict: "id" }
+                )
+                .select("id")
+                .single();
+
+            if (error) {
+                console.error("Napaka pri produktu:", draft.name, error);
+                return;
+            }
+
+            idMap.set(draftId, data.id);
+        }
+
+        // 2) UPSERT DISCOUNTOV za vsak produkt
+        //    + pobriši discounte, ki so bili prej, pa jih ni več
+        for (const [draftId, draft] of Object.entries(drafts)) {
+            const productId = idMap.get(draftId);
+            if (productId === undefined) continue;
+
+            // 2a) Upsert discountov, ki so v draftu
+            const discountRows = draft.discounts.map(d => ({
+                ...(d.id !== undefined && { id: d.id }),
+                quantity: d.quantity,
+                price: d.price,
+                free_quantity: d.freeQuantity ?? null,
+                shipping: d.shipping ?? null,
+                product_id: productId,
+            }));
+
+            if (discountRows.length > 0) {
+                const { error } = await supabase
+                    .from("discounts")
+                    .upsert(discountRows, { onConflict: "id" });
+
+                if (error) {
+                    console.error("Napaka pri discountih:", error);
+                    return;
+                }
+            }
+
+            // 2b) Pobriši discounte, ki so bili prej v bazi, pa jih ni več v draftu
+            const existingProduct = products.find(p => String(p.id) === draftId);
+            const previousDiscountIds = existingProduct?.discounts.map(d => d.id) ?? [];
+            const currentDiscountIds = new Set(
+                draft.discounts.map(d => d.id).filter((id): id is number => id !== undefined)
+            );
+            const discountsToDelete = previousDiscountIds.filter(
+                id => !currentDiscountIds.has(id)
+            );
+
+            if (discountsToDelete.length > 0) {
+                const { error } = await supabase
+                    .from("discounts")
+                    .delete()
+                    .in("id", discountsToDelete);
+
+                if (error) {
+                    console.error("Napaka pri brisanju discountov:", error);
+                    return;
+                }
+            }
+        }
+
+        // 3) POBRIŠI PRODUKTE, ki so bili prej, pa jih ni več v draftih
+        const draftIds = new Set(Object.keys(drafts));
+        const productsToDelete = products
+            .filter(p => !draftIds.has(String(p.id)))
+            .map(p => p.id);
+
+        if (productsToDelete.length > 0) {
+            const { error } = await supabase
+                .from("products")
+                .delete()
+                .in("id", productsToDelete);
+
+            if (error) {
+                console.error("Napaka pri brisanju produktov:", error);
+                return;
+            }
+        }
+
+        // 4) PONOVNO NALOŽI IZ BAZE
+        await refresh();
+        setHasChanged(false);
+    }
+
     return (
         <div
             className="min-h-screen bg-[#0F1115] font-sans text-white"
@@ -136,6 +243,7 @@ const Panel = () => {
                         <button
                             type="button"
                             className="cursor-pointer rounded-xl bg-[#4CAF50] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-green-950/30 transition hover:bg-[#43A047]"
+                            onClick={saveChanges}
                         >
                             Shrani
                         </button>
