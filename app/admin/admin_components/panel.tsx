@@ -1,218 +1,237 @@
 "use client";
 
-import React, { SetStateAction, useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { useProducts } from "@/Context/ProductsContext";
 import Header from "./panel_components/header";
-import Stock from "./panel_components/stock";
-import Section45l from "./panel_components/section_45l";
-import Section70l from "./panel_components/section_70l";
-import SectionMerch from "./panel_components/section_merch";
-import { Product } from "@/app/kolekcija/page";
-import { updateDiscounts45, updatePrice, updateStock, updateDiscounts70, updateCollection } from "./panel_lib/update_table";
+import { useState } from "react";
+
+const inputClassName =
+    "w-full rounded-lg border border-white/10 bg-[#0F1115] px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-[#4CAF50] focus:ring-1 focus:ring-[#4CAF50]";
+
+const labelClassName =
+    "flex flex-col gap-2 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
 const Panel = () => {
-    const [collection, setCollection] = useState<Product[]>([]);
-
-    const [bag70, setBag70] = useState<boolean>(false);
-    const [bag45, setBag45] = useState<boolean>(false);
-    const [bigBag, setBigBag] = useState<boolean>(false);
-
-    const [kom45, setKom45] = useState<number[]>([]);
-    const [kom70, setKom70] = useState<number[]>([]);
-
-    const [gratisKom, setGratisKom] = useState<number[]>([]);
-
-    const [price45, setPrice45] = useState<number[]>([]);
-    const [price70, setPrice70] = useState<number[]>([]);
-    const [priceBigBag, setPriceBigBag] = useState<number>();
-
-    const [priceOne45, setPriceOne45] = useState<number>();
-    const [priceOne70, setPriceOne70] = useState<number>();
-
-    const [shipping, setShipping] = useState<number[]>([]);
-
+    const { products } = useProducts();
     const [hasChanged, setHasChanged] = useState(false);
 
-    useEffect(() => {
-        const supabase = createClient();
-
-        const loadStockData = async () => {
-
-            const { data, error } = await supabase
-                .from('products')
-                .select('id, in_stock, price');
-
-            if (error) {
-                console.error("couldnt get data stock data");
-                console.error(error);
-                return;
-            }
-
-            console.log(data);
-
-            for (const d of data) {
-                if (d.id == 1) {
-                    setBag45(d.in_stock);
-                    setPriceOne45(d.price);
-                }
-                else if (d.id == 2) {
-                    setBag70(d.in_stock);
-                    setPriceOne70(d.price);
-                }
-                else {
-                    setBigBag(d.in_stock);
-                    setPriceBigBag(d.price);
-                }
-            }
-        }
-
-        const load45Data = async () => {
-            const { data, error } = await supabase
-                .from('discounts')
-                .select('id, quantity, price, shipping')
-                .eq("product_id", 1);
-
-            if (error) {
-                console.error("couldnt get 45l data");
-                return;
-            }
-
-            const quantity: number[] = [];
-            const price: number[] = [];
-            const shipping: number[] = [];
-
-            for (const d of data) {
-                quantity.push(d.quantity);
-                price.push(d.price);
-                shipping.push(d.shipping ?? 0);
-            }
-
-            setKom45(quantity);
-            setPrice45(price);
-            setShipping(shipping);
-        }
-
-        const load70Data = async () => {
-            const { data, error } = await supabase
-                .from('discounts')
-                .select('id, quantity, free_quantity, price')
-                .eq("product_id", 2);
-
-            if (error) {
-                console.error("couldnt get 70l data");
-                return;
-            }
-
-            const quantity: number[] = [];
-            const free_quantity: number[] = [];
-            const price: number[] = [];
-
-            for (const d of data) {
-                quantity.push(d.quantity);
-                free_quantity.push(d.free_quantity);
-                price.push(d.price);
-            }
-
-            setKom70(quantity);
-            setGratisKom(free_quantity);
-            setPrice70(price);
-        }
-
-        const loadCollectionData = async () => {
-            const { data, error } = await supabase
-                .from('merch')
-                .select('name, img, sizes, price')
-
-            if (error) {
-                console.error("couldnt get collection data");
-                return;
-            }
-
-            setCollection(data);
-        }
-
-        loadStockData();
-        load45Data();
-        load70Data();
-        loadCollectionData();
-    }, []);
-
-    const increaseEntry = (
-        setKom: React.Dispatch<SetStateAction<number[]>>,
-        setPrice: React.Dispatch<SetStateAction<number[]>>,
-        setShip: React.Dispatch<SetStateAction<number[]>> | null,
-        setGratis: React.Dispatch<SetStateAction<number[]>> | null
-    ) => {
-        setKom((prev) => [...prev, 0]);
-        setPrice((prev) => [...prev, 0]);
-
-        if (setShip)
-            setShip((prev) => [...prev, 0]);
-
-        if (setGratis)
-            setGratis((prev) => [...prev, 0]);
-    }
-
-    const deleteEntry = (
-        i: number,
-        setKom: React.Dispatch<SetStateAction<number[]>>,
-        setPrice: React.Dispatch<SetStateAction<number[]>>,
-        setShip: React.Dispatch<SetStateAction<number[]>> | null,
-        setGratis: React.Dispatch<SetStateAction<number[]>> | null,
-    ) => {
-        setKom((prev) => prev.filter((_, index) => index !== i));
-        setPrice((prev) => prev.filter((_, index) => index !== i));
-
-        if (setShip)
-            setShip((prev) => prev.filter((_, index) => index !== i));
-
-        if (setGratis)
-            setGratis((prev) => prev.filter((_, index) => index !== i));
-    }
-
     return (
-        <div className="min-h-screen bg-[#0F1115] flex flex-col font-sans" style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
-            {/* Header */}
+        <div
+            className="min-h-screen bg-[#0F1115] font-sans text-white"
+            style={{ fontFamily: "Inter, system-ui, sans-serif" }}
+        >
             <Header />
-            <div className="flex-1 p-4 sm:p-8 max-w-6xl mx-auto w-full">
-                {/* Zaloga Section */}
-                <Stock bag45={bag45} setBag45={setBag45} priceOne45={priceOne45} setPriceOne45={setPriceOne45} bag70={bag70} setBag70={setBag70} priceOne70={priceOne70} setPriceOne70={setPriceOne70} bigBag={bigBag} setBigBag={setBigBag} priceBigBag={priceBigBag} setPriceBigBag={setPriceBigBag} setHasChanged={setHasChanged} />
-                {/* Cene 45l Section */}
-                <Section45l kom45={kom45} setKom45={setKom45} price45={price45} setPrice45={setPrice45} shipping={shipping} setShipping={setShipping} deleteEntry={deleteEntry} increaseEntry={increaseEntry} setHasChanged={setHasChanged} />
-                {/* Cene 70l Section */}
-                <Section70l kom70={kom70} setKom70={setKom70} price70={price70} setPrice70={setPrice70} gratisKom={gratisKom} setGratisKom={setGratisKom} deleteEntry={deleteEntry} increaseEntry={increaseEntry} setHasChanged={setHasChanged} />
-                {/* Merch sekcija */}
-                <SectionMerch products={collection} setProducts={setCollection} setHasChanged={setHasChanged} />
 
-                {/* Shrani gumb */}
-                <div className="flex justify-end mt-2 mb-8">
-                    {
-                        hasChanged && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setHasChanged(false);
-                                    updateStock(bag45, 1);
-                                    updateStock(bag70, 2);
-                                    updateStock(bigBag, 3);
-                                    updatePrice(priceOne45, 1);
-                                    updatePrice(priceOne70, 2);
-                                    updatePrice(priceBigBag, 3);
-                                    updateCollection(collection);
-
-                                    updateDiscounts45(kom45, price45, shipping);
-                                    updateDiscounts70(kom70, price70, gratisKom);
-                                }}
-                                className="inline-flex items-center gap-2 cursor-pointer bg-[#4CAF50] hover:bg-[#43A047] text-white font-semibold px-8 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
-                            >
-                                💾 Shrani
-                            </button>
-                        )
-                    }
+            <main className="mx-auto w-full max-w-7xl px-5 py-8 sm:px-8">
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-[#72d572]">
+                            Upravljanje kataloga
+                        </p>
+                        <h2 className="text-3xl font-bold tracking-tight">Produkti</h2>
+                    </div>
+                    {hasChanged && (
+                        <button
+                            type="button"
+                            className="cursor-pointer rounded-xl bg-[#4CAF50] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-green-950/30 transition hover:bg-[#43A047]"
+                        >
+                            Shrani
+                        </button>
+                    )}
                 </div>
-            </div>
-        </div >
+
+                <div className="space-y-6">
+                    {products.map((product) => (
+                        <article
+                            key={product.id}
+                            className="overflow-hidden rounded-2xl border border-white/10 bg-[#161A20] shadow-xl shadow-black/10"
+                        >
+                            <div className="flex flex-col gap-4 border-b border-white/10 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                        Produkt #{product.id}
+                                    </p>
+                                    <h3 className="mt-1 text-xl font-bold">{product.name}</h3>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="cursor-pointer self-start rounded-lg border border-red-400/25 px-3 py-2 text-sm font-semibold text-red-300 transition hover:bg-red-400/10 sm:self-auto"
+                                >
+                                    Izbriši produkt
+                                </button>
+                            </div>
+
+                            <div className="space-y-7 p-5 sm:p-6">
+                                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                                    <label className={labelClassName}>
+                                        ID
+                                        <p>{product.id}</p>
+                                    </label>
+
+                                    <label className={labelClassName}>
+                                        Ime
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            value={product.name}
+                                            onChange={() => {
+                                                setHasChanged(true);
+                                            }}
+                                        />
+                                    </label>
+
+                                    <label className={labelClassName}>
+                                        Osnovna cena
+                                        <input
+                                            className={inputClassName}
+                                            type="number"
+                                            step="0.01"
+                                            value={product.basePrice}
+                                            onChange={() => {
+                                                setHasChanged(true);
+                                            }}
+                                        />
+                                    </label>
+
+                                    <label className={labelClassName}>
+                                        Slika (URL)
+                                        <input
+                                            className={inputClassName}
+                                            type="text"
+                                            value={product.image}
+                                            onChange={() => {
+                                                setHasChanged(true);
+                                            }}
+                                        />
+                                    </label>
+                                </div>
+
+                                <label className="flex cursor-pointer items-center gap-3 text-sm font-semibold text-slate-200">
+                                    <input
+                                        className="h-4 w-4 accent-[#4CAF50]"
+                                        type="checkbox"
+                                        checked={product.inStock}
+                                        onChange={() => {
+                                            setHasChanged(true);
+                                        }}
+                                    />
+                                    Produkt je na zalogi
+                                </label>
+
+                                <section className="rounded-xl border border-white/10 bg-[#0F1115]/70 p-4 sm:p-5">
+                                    <div className="mb-4 flex items-center justify-between gap-3">
+                                        <div>
+                                            <h4 className="font-bold">Discounts</h4>
+                                            <p className="mt-1 text-xs text-slate-500">
+                                                Popusti za ta produkt
+                                            </p>
+                                        </div>
+                                        <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-semibold text-slate-400">
+                                            {product.discounts?.length ?? 0}
+                                        </span>
+                                    </div>
+
+                                    {product.discounts && product.discounts.length > 0 ? (
+                                        <div className="grid gap-4 xl:grid-cols-2">
+                                            {product.discounts.map((discount) => (
+                                                <div
+                                                    key={discount.id}
+                                                    className="rounded-xl border border-white/10 bg-[#161A20] p-4"
+                                                >
+                                                    <div className="mb-4 flex items-center justify-between">
+                                                        <span className="text-xs font-bold uppercase tracking-wider text-[#72d572]">
+                                                            Discount #{discount.id}
+                                                        </span>
+                                                        <span className="text-xs text-slate-500">
+                                                            Produkt #{discount.productId}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="grid gap-4 sm:grid-cols-2">
+                                                        <label className={labelClassName}>
+                                                            ID
+                                                            <input
+                                                                className={inputClassName}
+                                                                type="number"
+                                                                value={discount.id}
+                                                                onChange={() => {
+                                                                    setHasChanged(true);
+                                                                }}
+                                                            />
+                                                        </label>
+
+                                                        <label className={labelClassName}>
+                                                            Količina
+                                                            <input
+                                                                className={inputClassName}
+                                                                type="number"
+                                                                value={discount.quantity}
+                                                                onChange={() => {
+                                                                    setHasChanged(true);
+                                                                }}
+                                                            />
+                                                        </label>
+
+                                                        <label className={labelClassName}>
+                                                            Cena
+                                                            <input
+                                                                className={inputClassName}
+                                                                type="number"
+                                                                step="0.01"
+                                                                value={discount.price}
+                                                                onChange={() => {
+                                                                    setHasChanged(true);
+                                                                }}
+                                                            />
+                                                        </label>
+
+                                                        <label className={labelClassName}>
+                                                            Brezplačna količina
+                                                            <input
+                                                                className={inputClassName}
+                                                                type="number"
+                                                                value={discount.freeQuantity ?? ""}
+                                                                onChange={() => {
+                                                                    setHasChanged(true);
+                                                                }}
+                                                            />
+                                                        </label>
+
+                                                        <label className={labelClassName}>
+                                                            Dostava
+                                                            <input
+                                                                className={inputClassName}
+                                                                type="number"
+                                                                step="0.01"
+                                                                value={discount.shipping ?? ""}
+                                                                onChange={() => {
+                                                                    setHasChanged(true);
+                                                                }}
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="rounded-lg border border-dashed border-white/10 px-4 py-6 text-center text-sm text-slate-500">
+                                            Ta produkt nima nastavljenih popustov.
+                                        </p>
+                                    )}
+                                </section>
+                            </div>
+                        </article>
+                    ))}
+                    <button
+                        type="button"
+                        className="cursor-pointer self-start rounded-lg border border-[#4CAF50] px-3 py-2 text-sm font-semibold text-[#4CAF50] sm:self-auto"
+                    >
+                        Dodaj produkt
+                    </button>
+                </div>
+            </main>
+        </div>
     );
-}
+};
 
 export default Panel;
