@@ -4,6 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { CartProvider } from "@/Context/CartContext";
+import { ProductsProvider } from "@/Context/ProductsContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -31,7 +32,11 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <CartProvider>{children}</CartProvider>
+                <ProductsProvider>
+                    <CartProvider>
+                        {children}
+                    </CartProvider>
+                </ProductsProvider>
                 <Analytics />
                 <SpeedInsights />
             </body>
