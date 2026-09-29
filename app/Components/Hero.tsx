@@ -21,7 +21,7 @@ export default function Hero() {
                 {products.map(product => (
                     <div
                         key={product.id}
-                        className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up mt-6" onClick={() => openNewPage(router, `/izdelki/${product.name}`)}
+                        className="w-full md:w-[30%] cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-slide-up mt-6" onClick={() => openNewPage(router, product.name === 'Big bag' ? '/izdelki/bigbag' : `/izdelki/${product.name}`)}
                     >
                         <Image src={`/${product.image}`} alt={product.name} width={500} height={500} className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] object-contain" />
                         {
