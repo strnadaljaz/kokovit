@@ -18,7 +18,7 @@ interface Product {
     inStock: boolean;
     basePrice: number;
     image: string;
-    discounts?: Discount[];
+    discounts: Discount[];
 }
 
 export interface ProductsContextValue {
