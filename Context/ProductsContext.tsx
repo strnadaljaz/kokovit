@@ -39,7 +39,8 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
 
             const { data: productData, error: productError } = await supabase
                 .from("products")
-                .select("id, name, price, in_stock, img");
+                .select("id, name, price, in_stock, img")
+                .order("id", { ascending: true });
 
             if (productError) {
                 console.error(productError);
