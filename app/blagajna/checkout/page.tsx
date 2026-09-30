@@ -2,10 +2,11 @@
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useState } from "react";
-import { calculateTotalShipping, calculateTotalPrice } from "@/lib/helper/priceCalculations";
+import { calculateTotalShipping, calculateTotalPrice, calculateFreeQuantity, calculateTotalItemPrice } from "@/lib/helper/priceCalculations";
 import { Product, useProducts } from "@/Context/ProductsContext";
 import { useCart } from "@/Context/CartContext";
 import { CartItem } from "@/lib/cart/CartItem";
+import { formatPrice } from "@/lib/helper/formatPrice";
 
 enum Payment {
     Predracun,
@@ -22,7 +23,63 @@ function CanPayAfter(items: CartItem[], products: Product[]): boolean {
     return true;
 }
 
+function isValidEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
+function isValidPhone(phone: string): boolean {
+    const regex = /^\+?[0-9]{6,15}$/;
+    return regex.test(phone);
+}
+
+async function sendEmail(name: string, email: string, phone: string, address: string, postNumber: string, city: string, payment: Payment, notes: string, items: CartItem[], products: Product[]) {
+    let itemsString = "";
+
+    for (const item of items) {
+        const productName = products.find(p => p.id === item.productId)?.name;
+
+        itemsString += productName + ": " + item.quantity + " + " + calculateFreeQuantity(item, products) + ", cena: " + formatPrice(calculateTotalItemPrice(item, products)) + '\n';
+    }
+
+    itemsString += "Skupaj cena: " + formatPrice(calculateTotalPrice(items, products));
+
+    let paymentString;
+
+    if (payment === Payment.Predracun)
+        paymentString = 'Predračun';
+    else
+        paymentString = 'Po povzetju';
+
+    const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, address, postNumber, city, paymentString, itemsString, notes })
+    })
+
+    return response.ok;
+}
+
 const Checkout = () => {
+    const submit = () => {
+        if (name && email && phone && address && postNumber && city && payment && terms) {
+            if (!isValidEmail(email)) {
+                alert("E-pošta ni pravilnega formata!");
+                return;
+            }
+            if (!isValidPhone(phone)) {
+                alert("Telefonska številka ni veljavnega formata!");
+                return;
+            }
+            if (!(!isNaN(Number(postNumber)) && postNumber.trim() !== '')) {
+                alert("Poštna številka ni pravilna!");
+                return;
+            }
+
+            sendEmail(name, email, phone, address, postNumber, city, payment, notes, items, products);
+        }
+    }
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -73,6 +130,7 @@ const Checkout = () => {
                                         className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
+                                        required
                                     />
                                 </label>
 
@@ -84,6 +142,7 @@ const Checkout = () => {
                                         className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        required
                                     />
                                 </label>
 
@@ -95,6 +154,7 @@ const Checkout = () => {
                                         className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
+                                        required
                                     />
                                 </label>
 
@@ -106,6 +166,7 @@ const Checkout = () => {
                                         className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
                                         value={address}
                                         onChange={(e) => setAddress(e.target.value)}
+                                        required
                                     />
                                 </label>
 
@@ -117,6 +178,7 @@ const Checkout = () => {
                                         className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
                                         value={postNumber}
                                         onChange={(e) => setPostNumber(e.target.value)}
+                                        required
                                     />
                                 </label>
 
@@ -128,6 +190,7 @@ const Checkout = () => {
                                         className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
                                         value={city}
                                         onChange={(e) => setCity(e.target.value)}
+                                        required
                                     />
                                 </label>
 
@@ -166,11 +229,10 @@ const Checkout = () => {
                                     </span>
                                 </label>
 
-                                <label className={`flex items-start gap-3 rounded-2xl border p-4 transition ${
-                                    canPayAfter
-                                        ? "cursor-pointer border-[#2d5016]/15 bg-white hover:border-[#4CAF50]"
-                                        : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
-                                }`}>
+                                <label className={`flex items-start gap-3 rounded-2xl border p-4 transition ${canPayAfter
+                                    ? "cursor-pointer border-[#2d5016]/15 bg-white hover:border-[#4CAF50]"
+                                    : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                                    }`}>
                                     <input
                                         type="radio"
                                         name="nacin-placila"
@@ -204,6 +266,7 @@ const Checkout = () => {
                             <button
                                 type="button"
                                 className="cursor-pointer mt-6 flex w-full items-center justify-center rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50]"
+                                onClick={submit}
                             >
                                 Oddaj naročilo
                             </button>

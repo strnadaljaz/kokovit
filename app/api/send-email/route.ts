@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-    const {imeInPriimek, eMail, telefonska, naslov, postna, kraj, kolicina70, kolicina45, kolicinaBigBag, nacinPlacila, opombe} = await req.json();
+    const { name, email, phone, address, postNumber, city, paymentString, itemsString, notes } = await req.json();
 
     const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -18,28 +18,23 @@ export async function POST(req: Request) {
             success: false,
             error: err
         },
-        {
-            status: 502
-        },
+            {
+                status: 502
+            },
         )
     }
 
     const message = {
         from: process.env.GMAIL_USER,
         to: process.env.GMAIL_USER,
-        subject: `Novo naročilo od ${imeInPriimek}`,
+        subject: `Novo naročilo od ${name}`,
         text: [
-            imeInPriimek,
-            eMail,
-            telefonska,
-            naslov,
-            postna,
-            kraj,
-            `Količina70: ${kolicina70 ?? 0}`,
-            `Količina45: ${kolicina45 ?? 0}`,
-            `Količina Big Bag: ${kolicinaBigBag ?? 0}`,
-            `Način plačila: ${nacinPlacila}`,
-            `Opombe: ${opombe}`,
+            name,
+            email,
+            phone,
+            address + ", " + postNumber + " " + city,
+            `Izdelki: \n${itemsString}`,
+            `Opombe: ${notes}`,
         ].join('\n'),
     };
 
