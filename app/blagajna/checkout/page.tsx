@@ -2,7 +2,7 @@
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useState } from "react";
-import { calculateTotalShipping, calculateTotalPrice, calculateFreeQuantity, calculateTotalItemPrice } from "@/lib/helper/priceCalculations";
+import { calculateTotalPrice, calculateFreeQuantity, calculateTotalItemPrice } from "@/lib/helper/priceCalculations";
 import { Product, useProducts } from "@/Context/ProductsContext";
 import { useCart } from "@/Context/CartContext";
 import { CartItem } from "@/lib/cart/CartItem";
@@ -14,7 +14,7 @@ enum Payment {
 }
 
 function CanPayAfter(items: CartItem[], products: Product[]): boolean {
-    for (let item of items) {
+    for (const item of items) {
         const product = products.find(p => p.id === item.productId);
         if (product && product.name === '45l')
             return false;
@@ -57,12 +57,12 @@ async function sendEmail(name: string, email: string, phone: string, address: st
         body: JSON.stringify({ name, email, phone, address, postNumber, city, paymentString, itemsString, notes })
     })
 
-    return response.ok;
+    return response;
 }
 
 const Checkout = () => {
-    const submit = () => {
-        if (name && email && phone && address && postNumber && city && payment && terms) {
+    const submit = async () => {
+        if (name && email && phone && address && postNumber && city && payment !== "" && terms) {
             if (!isValidEmail(email)) {
                 alert("E-pošta ni pravilnega formata!");
                 return;
@@ -76,7 +76,23 @@ const Checkout = () => {
                 return;
             }
 
-            sendEmail(name, email, phone, address, postNumber, city, payment, notes, items, products);
+            setIsSubmitting(true);
+
+            try {
+                const response = await sendEmail(name, email, phone, address, postNumber, city, payment, notes, items, products);
+
+                if (response.ok) {
+                    clearCart();
+                    setMailSent(true);
+                }
+                else {
+                    setErrorMail(true);
+                }
+            } catch {
+                setErrorMail(true);
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     }
 
@@ -89,9 +105,12 @@ const Checkout = () => {
     const [notes, setNotes] = useState("");
     const [payment, setPayment] = useState<Payment | "">("");
     const [terms, setTerms] = useState(false);
+    const [mailSent, setMailSent] = useState(false);
+    const [errorMail, setErrorMail] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { products } = useProducts();
-    const { items } = useCart();
+    const { items, clearCart } = useCart();
 
     const canPayAfter = CanPayAfter(items, products);
 
@@ -112,166 +131,222 @@ const Checkout = () => {
                         </p>
                     </header>
 
-                    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-                        <section className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
-                            <div className="mb-8">
-                                <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
-                                    Podatki za dostavo
+                    {mailSent || errorMail ? (
+                        <section className="mx-auto w-full max-w-3xl overflow-hidden rounded-[30px] bg-[#F5F5DC] text-center text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)]">
+                            <div className={`h-2 w-full ${mailSent ? "bg-[#4CAF50]" : "bg-[#b94a48]"}`} />
+                            <div className="px-6 py-12 sm:px-12 sm:py-16">
+                                <div className={`mx-auto mb-7 flex h-24 w-24 items-center justify-center rounded-full ${mailSent
+                                        ? "bg-[#4CAF50]/15 text-[#2d5016]"
+                                        : "bg-[#b94a48]/12 text-[#a33d3b]"
+                                    }`}>
+                                    {mailSent ? (
+                                        <svg viewBox="0 0 24 24" fill="none" className="h-12 w-12" aria-hidden="true">
+                                            <path d="m5 12.5 4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    ) : (
+                                        <svg viewBox="0 0 24 24" fill="none" className="h-12 w-12" aria-hidden="true">
+                                            <path d="M7 7 17 17M17 7 7 17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                                        </svg>
+                                    )}
+                                </div>
+
+                                <p className={`mb-3 text-xs font-bold uppercase tracking-[0.3em] ${mailSent ? "text-[#4CAF50]" : "text-[#a33d3b]"
+                                    }`}>
+                                    {mailSent ? "Naročilo uspešno oddano" : "Pošiljanje ni uspelo"}
                                 </p>
-                                <h2 className="text-3xl font-black">Vaši podatki</h2>
-                            </div>
+                                <h2 className="text-3xl font-black sm:text-4xl">
+                                    {mailSent ? "Hvala za vaše naročilo!" : "Naročila žal ni bilo mogoče oddati."}
+                                </h2>
+                                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#2d5016]/70 sm:text-lg">
+                                    {mailSent
+                                        ? "O času dostave vas bomo obvestili v najkrajšem možnem času. Če ste izbrali plačilo po predračunu, ga boste prejeli na vaš e-naslov par dni pred dostavo. Ekipa KOKOVIT :)"
+                                        : "Pri pošiljanju je prišlo do napake. Preverite povezavo in poskusite znova. Vaši podatki so še vedno izpolnjeni."
+                                    }
+                                </p>
 
-                            <div className="grid gap-5 sm:grid-cols-2">
-                                <label className="block sm:col-span-2">
-                                    <span className="mb-2 block text-sm font-bold">Ime in priimek</span>
-                                    <input
-                                        type="text"
-                                        placeholder="Vnesite ime in priimek"
-                                        className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        required
-                                    />
-                                </label>
-
-                                <label className="block">
-                                    <span className="mb-2 block text-sm font-bold">E-pošta</span>
-                                    <input
-                                        type="email"
-                                        placeholder="vas@email.si"
-                                        className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                </label>
-
-                                <label className="block">
-                                    <span className="mb-2 block text-sm font-bold">Telefonska številka</span>
-                                    <input
-                                        type="tel"
-                                        placeholder="+386 40 123 456"
-                                        className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
-                                        required
-                                    />
-                                </label>
-
-                                <label className="block sm:col-span-2">
-                                    <span className="mb-2 block text-sm font-bold">Naslov</span>
-                                    <input
-                                        type="text"
-                                        placeholder="Ulica in hišna številka"
-                                        className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                        required
-                                    />
-                                </label>
-
-                                <label className="block">
-                                    <span className="mb-2 block text-sm font-bold">Poštna številka</span>
-                                    <input
-                                        type="text"
-                                        placeholder="1000"
-                                        className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={postNumber}
-                                        onChange={(e) => setPostNumber(e.target.value)}
-                                        required
-                                    />
-                                </label>
-
-                                <label className="block">
-                                    <span className="mb-2 block text-sm font-bold">Kraj</span>
-                                    <input
-                                        type="text"
-                                        placeholder="Ljubljana"
-                                        className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={city}
-                                        onChange={(e) => setCity(e.target.value)}
-                                        required
-                                    />
-                                </label>
-
-                                <label className="block sm:col-span-2">
-                                    <span className="mb-2 block text-sm font-bold">Opombe <span className="font-normal text-gray-500">(neobvezno)</span></span>
-                                    <textarea
-                                        rows={4}
-                                        placeholder="Morebitne posebnosti glede dostave ..."
-                                        className="w-full resize-y rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
-                                    />
-                                </label>
+                                <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+                                    {mailSent ? (
+                                        <a
+                                            href="/trgovina"
+                                            className="inline-flex items-center justify-center rounded-xl bg-[#2d5016] px-6 py-3.5 font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50]"
+                                        >
+                                            Nazaj v trgovino
+                                        </a>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            onClick={() => setErrorMail(false)}
+                                            className="inline-flex items-center justify-center rounded-xl bg-[#2d5016] px-6 py-3.5 font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50]"
+                                        >
+                                            Poskusi znova
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </section>
+                    ) : (
+                        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+                            <section className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
+                                <div className="mb-8">
+                                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
+                                        Podatki za dostavo
+                                    </p>
+                                    <h2 className="text-3xl font-black">Vaši podatki</h2>
+                                </div>
 
-                        <aside className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8 lg:sticky lg:top-6">
-                            <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
-                                Plačilo
-                            </p>
-                            <h2 className="text-3xl font-black">Način plačila</h2>
+                                <div className="grid gap-5 sm:grid-cols-2">
+                                    <label className="block sm:col-span-2">
+                                        <span className="mb-2 block text-sm font-bold">Ime in priimek</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Vnesite ime in priimek"
+                                            className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            required
+                                        />
+                                    </label>
 
-                            <div className="mt-6 space-y-3">
-                                <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-[#2d5016]/15 bg-white p-4 transition hover:border-[#4CAF50]">
+                                    <label className="block">
+                                        <span className="mb-2 block text-sm font-bold">E-pošta</span>
+                                        <input
+                                            type="email"
+                                            placeholder="vas@email.si"
+                                            className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="block">
+                                        <span className="mb-2 block text-sm font-bold">Telefonska številka</span>
+                                        <input
+                                            type="tel"
+                                            placeholder="+386 40 123 456"
+                                            className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="block sm:col-span-2">
+                                        <span className="mb-2 block text-sm font-bold">Naslov</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Ulica in hišna številka"
+                                            className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={address}
+                                            onChange={(e) => setAddress(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="block">
+                                        <span className="mb-2 block text-sm font-bold">Poštna številka</span>
+                                        <input
+                                            type="text"
+                                            placeholder="1000"
+                                            className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={postNumber}
+                                            onChange={(e) => setPostNumber(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="block">
+                                        <span className="mb-2 block text-sm font-bold">Kraj</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Ljubljana"
+                                            className="w-full rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={city}
+                                            onChange={(e) => setCity(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="block sm:col-span-2">
+                                        <span className="mb-2 block text-sm font-bold">Opombe <span className="font-normal text-gray-500">(neobvezno)</span></span>
+                                        <textarea
+                                            rows={4}
+                                            placeholder="Morebitne posebnosti glede dostave ..."
+                                            className="w-full resize-y rounded-xl border border-[#2d5016]/20 bg-white px-4 py-3 text-[#2d5016] outline-none transition placeholder:text-gray-400 focus:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50]/20"
+                                            value={notes}
+                                            onChange={(e) => setNotes(e.target.value)}
+                                        />
+                                    </label>
+                                </div>
+                            </section>
+
+                            <aside className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8 lg:sticky lg:top-6">
+                                <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-[#6b4226]">
+                                    Plačilo
+                                </p>
+                                <h2 className="text-3xl font-black">Način plačila</h2>
+
+                                <div className="mt-6 space-y-3">
+                                    <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-[#2d5016]/15 bg-white p-4 transition hover:border-[#4CAF50]">
+                                        <input
+                                            type="radio"
+                                            name="nacin-placila"
+                                            value={Payment.Predracun}
+                                            checked={payment === Payment.Predracun}
+                                            onChange={() => setPayment(Payment.Predracun)}
+                                            className="mt-1 h-4 w-4 accent-[#4CAF50]"
+                                        />
+                                        <span>
+                                            <span className="block font-bold">Predračun</span>
+                                            <span className="mt-1 block text-sm text-gray-500">Podatke za plačilo prejmete po oddaji naročila.</span>
+                                        </span>
+                                    </label>
+
+                                    <label className={`flex items-start gap-3 rounded-2xl border p-4 transition ${canPayAfter
+                                        ? "cursor-pointer border-[#2d5016]/15 bg-white hover:border-[#4CAF50]"
+                                        : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                                        }`}>
+                                        <input
+                                            type="radio"
+                                            name="nacin-placila"
+                                            value={Payment.PoPovzetju}
+                                            checked={payment === Payment.PoPovzetju}
+                                            onChange={() => setPayment(Payment.PoPovzetju)}
+                                            disabled={!canPayAfter}
+                                            className="mt-1 h-4 w-4 accent-[#4CAF50]"
+                                        />
+                                        <span>
+                                            <span className="block font-bold">Po povzetju</span>
+                                            <span className="mt-1 block text-sm text-gray-500">Plačilo ob prevzemu pošiljke.</span>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div className="my-7 border-t border-[#2d5016]/15" />
+
+                                <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-gray-600">
                                     <input
-                                        type="radio"
-                                        name="nacin-placila"
-                                        value={Payment.Predracun}
-                                        checked={payment === Payment.Predracun}
-                                        onChange={() => setPayment(Payment.Predracun)}
-                                        className="mt-1 h-4 w-4 accent-[#4CAF50]"
+                                        type="checkbox"
+                                        className="mt-1 h-4 w-4 shrink-0 accent-[#4CAF50]"
+                                        checked={terms}
+                                        onChange={(e) => setTerms(e.target.checked)}
                                     />
                                     <span>
-                                        <span className="block font-bold">Predračun</span>
-                                        <span className="mt-1 block text-sm text-gray-500">Podatke za plačilo prejmete po oddaji naročila.</span>
+                                        Strinjam se s <a href="/splosni-pogoji" className="font-bold text-[#2d5016] underline decoration-[#4CAF50] underline-offset-2">splošnimi pogoji poslovanja</a>.
                                     </span>
                                 </label>
 
-                                <label className={`flex items-start gap-3 rounded-2xl border p-4 transition ${canPayAfter
-                                    ? "cursor-pointer border-[#2d5016]/15 bg-white hover:border-[#4CAF50]"
-                                    : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
-                                    }`}>
-                                    <input
-                                        type="radio"
-                                        name="nacin-placila"
-                                        value={Payment.PoPovzetju}
-                                        checked={payment === Payment.PoPovzetju}
-                                        onChange={() => setPayment(Payment.PoPovzetju)}
-                                        disabled={!canPayAfter}
-                                        className="mt-1 h-4 w-4 accent-[#4CAF50]"
-                                    />
-                                    <span>
-                                        <span className="block font-bold">Po povzetju</span>
-                                        <span className="mt-1 block text-sm text-gray-500">Plačilo ob prevzemu pošiljke.</span>
-                                    </span>
-                                </label>
-                            </div>
-
-                            <div className="my-7 border-t border-[#2d5016]/15" />
-
-                            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-gray-600">
-                                <input
-                                    type="checkbox"
-                                    className="mt-1 h-4 w-4 shrink-0 accent-[#4CAF50]"
-                                    checked={terms}
-                                    onChange={(e) => setTerms(e.target.checked)}
-                                />
-                                <span>
-                                    Strinjam se s <a href="/splosni-pogoji" className="font-bold text-[#2d5016] underline decoration-[#4CAF50] underline-offset-2">splošnimi pogoji poslovanja</a>.
-                                </span>
-                            </label>
-
-                            <button
-                                type="button"
-                                className="cursor-pointer mt-6 flex w-full items-center justify-center rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50]"
-                                onClick={submit}
-                            >
-                                Oddaj naročilo
-                            </button>
-                        </aside>
-                    </div>
+                                <button
+                                    type="button"
+                                    disabled={isSubmitting}
+                                    className="mt-6 flex w-full items-center justify-center rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:opacity-60"
+                                    onClick={submit}
+                                >
+                                    {isSubmitting ? "Pošiljanje ..." : "Oddaj naročilo"}
+                                </button>
+                            </aside>
+                        </div>
+                    )}
                 </div>
             </main>
             <Footer />
