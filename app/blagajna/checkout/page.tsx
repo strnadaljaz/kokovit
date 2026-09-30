@@ -2,10 +2,24 @@
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useState } from "react";
+import { calculateTotalShipping, calculateTotalPrice } from "@/lib/helper/priceCalculations";
+import { Product, useProducts } from "@/Context/ProductsContext";
+import { useCart } from "@/Context/CartContext";
+import { CartItem } from "@/lib/cart/CartItem";
 
 enum Payment {
     Predracun,
     PoPovzetju,
+}
+
+function CanPayAfter(items: CartItem[], products: Product[]): boolean {
+    for (let item of items) {
+        const product = products.find(p => p.id === item.productId);
+        if (product && product.name === '45l')
+            return false;
+    }
+
+    return true;
 }
 
 const Checkout = () => {
@@ -18,6 +32,11 @@ const Checkout = () => {
     const [notes, setNotes] = useState("");
     const [payment, setPayment] = useState<Payment | "">("");
     const [terms, setTerms] = useState(false);
+
+    const { products } = useProducts();
+    const { items } = useCart();
+
+    const canPayAfter = CanPayAfter(items, products);
 
     return (
         <>
@@ -147,13 +166,18 @@ const Checkout = () => {
                                     </span>
                                 </label>
 
-                                <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-[#2d5016]/15 bg-white p-4 transition hover:border-[#4CAF50]">
+                                <label className={`flex items-start gap-3 rounded-2xl border p-4 transition ${
+                                    canPayAfter
+                                        ? "cursor-pointer border-[#2d5016]/15 bg-white hover:border-[#4CAF50]"
+                                        : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                                }`}>
                                     <input
                                         type="radio"
                                         name="nacin-placila"
                                         value={Payment.PoPovzetju}
                                         checked={payment === Payment.PoPovzetju}
                                         onChange={() => setPayment(Payment.PoPovzetju)}
+                                        disabled={!canPayAfter}
                                         className="mt-1 h-4 w-4 accent-[#4CAF50]"
                                     />
                                     <span>
