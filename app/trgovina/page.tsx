@@ -103,21 +103,21 @@ const Store = () => {
                         </div>
                     </section>
 
-                    <section>
-                        <div className="mb-7 flex items-center gap-4">
-                            <div className="h-px flex-1 bg-[#F5F5DC]/25" />
-                            <h2 className="text-2xl font-black text-[#F5F5DC] md:text-3xl">
-                                Kolekcija oblačil
-                            </h2>
-                            <div className="h-px flex-1 bg-[#F5F5DC]/25" />
-                        </div>
-
-                        {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"> */}
-                        {/*     {collection.map((product, index) => ( */}
-                        {/*         <ProductCard key={`${product.name}-${index}`} product={product} product_id={product.name} /> */}
-                        {/*     ))} */}
-                        {/* </div> */}
-                    </section>
+                    {/* <section> */}
+                    {/*     <div className="mb-7 flex items-center gap-4"> */}
+                    {/*         <div className="h-px flex-1 bg-[#F5F5DC]/25" /> */}
+                    {/*         <h2 className="text-2xl font-black text-[#F5F5DC] md:text-3xl"> */}
+                    {/*             Kolekcija oblačil */}
+                    {/*         </h2> */}
+                    {/*         <div className="h-px flex-1 bg-[#F5F5DC]/25" /> */}
+                    {/*     </div> */}
+                    {/**/}
+                    {/*     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"> */}
+                    {/*         {collection.map((product, index) => ( */}
+                    {/*             <ProductCard key={`${product.name}-${index}`} product={product} product_id={product.name} /> */}
+                    {/*         ))} */}
+                    {/*     </div> */}
+                    {/* </section> */}
                 </div>
             </main>
             <Footer />

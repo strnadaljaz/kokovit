@@ -18,7 +18,7 @@ export default function Home() {
                 <Media />
                 <Usage />
                 <About />
-                <Collection />
+                {/* <Collection /> */}
                 <Reviews />
             </div>
             <Footer />
