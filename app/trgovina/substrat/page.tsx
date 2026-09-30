@@ -42,6 +42,7 @@ export default function Substrat() {
     const normalizedProductName = product?.name.toLowerCase().replace(/\s/g, "") ?? "";
     const isBigBag = product?.id === 3 || normalizedProductName.includes("bigbag");
     const is45l = normalizedProductName.includes("45l");
+    const is70l = normalizedProductName.includes("70l");
     const quantityOptions = isBigBag
         ? [1, 2, 3]
         : is45l
@@ -51,10 +52,15 @@ export default function Substrat() {
     const [quantity, setQuantity] = useState(isBigBag ? 1 : is45l ? 4 : 5);
     const [customQuantity, setCustomQuantity] = useState<number | "">("");
     const selectedQuantity = customQuantity === "" ? quantity : customQuantity;
-    const canAddSelectedQuantity =
-        typeof selectedQuantity === "number" &&
-        Number.isInteger(selectedQuantity) &&
-        selectedQuantity > 0;
+    const canAddSelectedQuantity = (): boolean => {
+        if (typeof selectedQuantity !== "number") return false;
+        else if (!Number.isInteger(selectedQuantity)) return false;
+        else if (selectedQuantity < 4) return false;
+        else if (is45l && selectedQuantity % 4 != 0) return false;
+        else if (is70l && selectedQuantity < 5) return false;
+
+        return true;
+    }
 
     const handleAddToCart = (productId: number, selectedQuantity: number) => {
         if (selectedQuantity <= 0) return;
@@ -208,9 +214,9 @@ export default function Substrat() {
                                         </div>
                                         <button
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
-                                            disabled={!product.inStock || !canAddSelectedQuantity}
+                                            disabled={!product.inStock || !canAddSelectedQuantity()}
                                             onClick={() => {
-                                                if (typeof selectedQuantity === "number" && canAddSelectedQuantity) {
+                                                if (typeof selectedQuantity === "number" && canAddSelectedQuantity()) {
                                                     handleAddToCart(product.id, selectedQuantity);
                                                 }
                                             }}
