@@ -2,7 +2,7 @@
 
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/Context/CartContext";
 import { formatPrice } from "@/lib/helper/formatPrice";
 import { useProducts } from "@/Context/ProductsContext";
@@ -22,6 +22,7 @@ export default function Substrat() {
     const { products, loading, error: productsError } = useProducts();
     const { addItem } = useCart();
     const [quantity, setQuantity] = useState(5);
+    const [addedNotice, setAddedNotice] = useState<string | null>(null);
     const searchParams = useSearchParams();
     const requestedProduct =
         searchParams.get("productId") ?? searchParams.get("product_id")
@@ -49,13 +50,26 @@ export default function Substrat() {
             ? [4, 8, 12, 16]
             : [5, 6, 7, 8, 9];
 
-    const handleAddToCart = (productId: number, productName: string) => {
+    const handleAddToCart = (productId: number, selectedQuantity: number) => {
+        if (selectedQuantity <= 0) return;
+
         addItem({
-            id: productName + quantity.toString(),
+            id: productId.toString(),
             productId: productId,
-            quantity: quantity,
+            quantity: selectedQuantity,
         });
+        setAddedNotice(`${selectedQuantity} kosov je bilo dodanih v košarico.`);
     }
+
+    useEffect(() => {
+        if (!addedNotice) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setAddedNotice(null);
+        }, 3000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [addedNotice]);
 
     return (
         <div>
@@ -82,6 +96,18 @@ export default function Substrat() {
 
                     {product && !loading && !productsError && (
                         <>
+                            {addedNotice && (
+                                <div
+                                    role="status"
+                                    aria-live="polite"
+                                    className="fixed right-4 top-24 z-50 flex items-center gap-3 rounded-2xl border border-[#4CAF50]/30 bg-[#F5F5DC] px-5 py-4 text-[#2d5016] shadow-[0_18px_50px_rgba(20,36,18,0.25)]"
+                                >
+                                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4CAF50] font-black text-white">
+                                        ✓
+                                    </span>
+                                    <span className="font-bold">{addedNotice}</span>
+                                </div>
+                            )}
                             <header className="mb-8">
                                 <p className="mb-3 text-xs font-bold uppercase tracking-[0.35em] text-[#F5F5DC]/80">
                                     KOKOVIT / TRGOVINA
@@ -158,7 +184,7 @@ export default function Substrat() {
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
                                             disabled={!product.inStock}
                                             onClick={() => {
-                                                handleAddToCart(product.id, product.name);
+                                                handleAddToCart(product.id, quantity);
                                             }}
                                         >
                                             <CartIcon />
@@ -213,15 +239,16 @@ export default function Substrat() {
                                                                     : " · brez poštnine"}
                                                             </p>
                                                         </div>
-                                                        <a
+                                                        <button
+                                                            type="button"
                                                             onClick={() => {
-                                                                handleAddToCart(product.id, product.name);
+                                                                handleAddToCart(product.id, discount.quantity);
                                                             }}
                                                             aria-label={`Izberi akcijo za ${discount.quantity} kosov`}
                                                             className=" cursor-pointer flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#4CAF50] text-white transition hover:bg-[#2d5016]"
                                                         >
                                                             <CartIcon />
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 ))}
                                             </div>

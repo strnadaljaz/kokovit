@@ -10,7 +10,6 @@ export interface CartContextValue {
     updateQuantity: (id: string, quantity: number) => void;
     clearCart: () => void;
     totalItems: number;
-    totalPrice: number;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -30,15 +29,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }, [items]);
 
     const addItem = (item: CartItem) => {
-        setItems((prev) => {
-            const existing = prev.find((i) => i.id === item.id);
-            if (existing) {
-                return prev.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-                );
-            }
-            return [...prev, item];
-        });
+        if (item.quantity > 0)
+            setItems((prev) => {
+                let merged = false;
+                const nextItems: CartItem[] = [];
+
+                for (const existing of prev) {
+                    if (existing.productId !== item.productId) {
+                        nextItems.push(existing);
+                        continue;
+                    }
+
+                    if (!merged) {
+                        nextItems.push({
+                            ...existing,
+                            id: item.productId.toString(),
+                            quantity: existing.quantity + item.quantity,
+                        });
+                        merged = true;
+                    }
+                }
+
+                return merged
+                    ? nextItems
+                    : [...nextItems, { ...item, id: item.productId.toString() }];
+            });
     };
 
     const removeItem = (id: string) => {
@@ -58,8 +73,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const clearCart = () => setItems([]);
 
     const totalItems = items.length;
-    const totalPrice = 0;
-
 
     return (
         <CartContext.Provider
@@ -70,7 +83,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 updateQuantity,
                 clearCart,
                 totalItems,
-                totalPrice,
             }}
         >
             {children}

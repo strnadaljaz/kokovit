@@ -3,6 +3,8 @@
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
 import { useCart } from "@/Context/CartContext";
+import { Product, useProducts } from "@/Context/ProductsContext";
+import { CartItem } from "@/lib/cart/CartItem";
 import { formatPrice } from "@/lib/helper/formatPrice";
 
 function CartIcon() {
@@ -23,11 +25,83 @@ function TrashIcon() {
     );
 }
 
-export default function Blagajna() {
-    const { items, removeItem, totalItems, totalPrice } = useCart();
+function calculateTotalShipping(items: CartItem[], products: Product[]): number {
+    let totalShipping = 0.0;
 
-    const shippingTotal = 0;
-    const orderTotal = totalPrice + shippingTotal;
+    const product = products.find(p => p.name === "45l");
+
+    for (const item of items) {
+        if (item.productId === product?.id && item.quantity <= 4) {
+            if (product.discounts[0].shipping)
+                totalShipping += product.discounts[0].shipping;
+        }
+    }
+
+    return totalShipping;
+}
+
+function calculateFreeQuantity(item: CartItem, products: Product[]): number {
+    let freeQuantity = 0;
+
+    const product = products.find(p => p.id === item.productId);
+    let quantity = item.quantity;
+
+    if (product) {
+        const discounts = [...product.discounts].sort((a, b) => b.quantity - a.quantity);
+
+        for (const discount of discounts) {
+            const total = Math.floor(quantity / discount.quantity);
+
+            if (total > 0) {
+                quantity %= discount.quantity;
+
+                if (discount.freeQuantity)
+                    freeQuantity += total * discount.freeQuantity;
+            }
+        }
+    }
+
+    return freeQuantity;
+}
+
+function calculateTotalPrice(items: CartItem[], products: Product[]): number {
+    let totalPrice = 0;
+
+    for (const item of items) {
+        totalPrice += calculateTotalItemPrice(item, products);
+    }
+
+    return totalPrice;
+}
+
+function calculateTotalItemPrice(item: CartItem, products: Product[]): number {
+    let totalPrice = 0.0;
+
+    const product = products.find(p => p.id === item.productId);
+    let quantity = item.quantity;
+
+    if (product) {
+        const discounts = [...product.discounts].sort((a, b) => b.quantity - a.quantity);
+        for (const discount of discounts) {
+            if (Math.floor(quantity / discount.quantity) > 0) {
+                totalPrice += (Math.floor(quantity / discount.quantity)) * discount.price;
+                quantity %= discount.quantity;
+            }
+        }
+        if (quantity > 0)
+            totalPrice += quantity * product.basePrice;
+    }
+
+    return totalPrice;
+}
+
+export default function Blagajna() {
+    const { items, removeItem, totalItems } = useCart();
+    const { products } = useProducts();
+
+    const totalPrice = calculateTotalPrice(items, products);
+    const shippingTotal = calculateTotalShipping(items, products);
+    const total = totalPrice + shippingTotal;
 
     return (
         <div>
@@ -75,60 +149,76 @@ export default function Blagajna() {
                     ) : (
                         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
                             <section className="space-y-4">
-                                {items.map((item) => (
-                                    <article
-                                        key={item.id}
-                                        className="flex flex-col gap-5 rounded-[26px] bg-[#F5F5DC] p-4 text-[#2d5016] shadow-[0_18px_50px_rgba(20,36,18,0.16)] sm:flex-row sm:items-center sm:p-5"
-                                    >
-                                        <div className="flex h-36 shrink-0 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.2),_rgba(245,245,220,0.9)_65%)] p-3 sm:h-32 sm:w-32">
-                                            <img
-                                                src={item.image.startsWith("/") ? item.image : `/${item.image}`}
-                                                alt={item.productName}
-                                                className="h-full w-full object-contain"
-                                            />
-                                        </div>
+                                {items.map((item) => {
+                                    const product = products.find(p => p.id === item.productId);
+                                    const freeQuantity = calculateFreeQuantity(item, products);
+                                    const itemPrice = calculateTotalItemPrice(item, products);
 
-                                        <div className="min-w-0 flex-1">
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div>
-                                                    <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-[#6b4226]">
-                                                        KOKOVIT
-                                                    </p>
-                                                    <h2 className="text-2xl font-black">{item.productName}</h2>
+                                    return (
+                                        <article
+                                            key={item.id}
+                                            className="overflow-hidden rounded-[26px] bg-[#F5F5DC] text-[#2d5016] shadow-[0_18px_50px_rgba(20,36,18,0.16)]"
+                                        >
+                                            <div className="flex flex-col gap-5 p-4 sm:flex-row sm:items-center sm:p-5">
+                                                <div className="flex h-36 shrink-0 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.2),_rgba(245,245,220,0.9)_65%)] p-3 sm:h-32 sm:w-32">
+                                                    <img
+                                                        src={product?.image}
+                                                        alt={product?.name ?? "Izdelek"}
+                                                        className="h-full w-full object-contain"
+                                                    />
                                                 </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeItem(item.id)}
-                                                    aria-label={`Odstrani ${item.productName} iz košarice`}
-                                                    className="cursor-pointer rounded-full p-2 text-gray-500 transition hover:bg-red-50 hover:text-red-600"
-                                                >
-                                                    <TrashIcon />
-                                                </button>
+
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="flex items-start justify-between gap-4">
+                                                        <div>
+                                                            <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-[#6b4226]">
+                                                                KOKOVIT
+                                                            </p>
+                                                            <h2 className="text-2xl font-black">
+                                                                {product?.name ?? "Neznan izdelek"}
+                                                            </h2>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeItem(item.id)}
+                                                            aria-label={`Odstrani ${product?.name ?? "izdelek"} iz košarice`}
+                                                            className="cursor-pointer rounded-full p-2 text-gray-500 transition hover:bg-red-50 hover:text-red-600"
+                                                        >
+                                                            <TrashIcon />
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                                                        <div className="rounded-2xl bg-[#2d5016]/[0.06] px-4 py-3">
+                                                            <p className="text-xs font-bold uppercase tracking-[0.15em] text-gray-500">
+                                                                Količina
+                                                            </p>
+                                                            <p className="mt-1 text-xl font-black">
+                                                                {item.quantity} <span className="text-sm font-bold text-gray-600">kosov</span>
+                                                            </p>
+                                                        </div>
+                                                        <div className="rounded-2xl bg-[#4CAF50]/10 px-4 py-3">
+                                                            <p className="text-xs font-bold uppercase tracking-[0.15em] text-gray-500">
+                                                                Brezplačno
+                                                            </p>
+                                                            <p className="mt-1 text-xl font-black text-[#4CAF50]">
+                                                                {freeQuantity} <span className="text-sm font-bold text-gray-600">kosov</span>
+                                                            </p>
+                                                        </div>
+                                                        <div className="rounded-2xl bg-[#2d5016]/[0.06] px-4 py-3">
+                                                            <p className="text-xs font-bold uppercase tracking-[0.15em] text-gray-500">
+                                                                Cena artikla
+                                                            </p>
+                                                            <p className="mt-1 text-xl font-black">
+                                                                {formatPrice(itemPrice)}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            {/* {item.isPromotion && item.promotionLabel && ( */}
-                                            {/*     <span className="mt-3 inline-flex rounded-full bg-[#4CAF50]/15 px-3 py-1 text-sm font-bold text-[#2d5016]"> */}
-                                            {/*         🔥 {item.promotionLabel} */}
-                                            {/*     </span> */}
-                                            {/* )} */}
-
-                                            {/* {!item.isPromotion && ( */}
-                                            {/*     <span className="mt-3 inline-flex rounded-full bg-[#4CAF50]/15 px-3 py-1 text-sm font-bold text-[#2d5016]">{item.quantity} kosov</span> */}
-                                            {/* )} */}
-
-                                            {/* <div className="mt-5 flex flex-wrap items-center justify-between gap-4"> */}
-                                            {/*     <div className="text-right"> */}
-                                            {/*         <p className="text-xl font-black text-[#4CAF50]"> */}
-                                            {/*             {formatPrice(item.promotionPrice ? item.promotionPrice : item.unitPrice * item.quantity)} */}
-                                            {/*         </p> */}
-                                            {/*         <p className="text-sm text-gray-500"> */}
-                                            {/*             {formatPrice(item.promotionPrice && item.freeQuantity ? (item.promotionPrice / (item.quantity + item.freeQuantity)) : item.unitPrice)} / kos */}
-                                            {/*         </p> */}
-                                            {/*     </div> */}
-                                            {/* </div> */}
-                                        </div>
-                                    </article>
-                                ))}
+                                        </article>
+                                    );
+                                })}
 
                                 <a
                                     href="/trgovina"
@@ -160,7 +250,7 @@ export default function Blagajna() {
                                 <div className="flex items-end justify-between gap-4 py-6">
                                     <span className="text-lg font-bold">Skupaj</span>
                                     <span className="text-3xl font-black text-[#4CAF50]">
-                                        {formatPrice(orderTotal)}
+                                        {formatPrice(total)}
                                     </span>
                                 </div>
 
