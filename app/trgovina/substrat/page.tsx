@@ -21,7 +21,6 @@ function CartIcon() {
 export default function Substrat() {
     const { products, loading, error: productsError } = useProducts();
     const { addItem } = useCart();
-    const [quantity, setQuantity] = useState(5);
     const [addedNotice, setAddedNotice] = useState<string | null>(null);
     const searchParams = useSearchParams();
     const requestedProduct =
@@ -33,7 +32,6 @@ export default function Substrat() {
     console.log("requestedProductId:", requestedProductId);
     console.log("products:", products);
     console.log("loading:", loading);
-
 
     const product = products.find(p =>
         Number(p.id) === requestedProductId ||
@@ -49,6 +47,14 @@ export default function Substrat() {
         : is45l
             ? [4, 8, 12, 16]
             : [5, 6, 7, 8, 9];
+
+    const [quantity, setQuantity] = useState(isBigBag ? 1 : is45l ? 4 : 5);
+    const [customQuantity, setCustomQuantity] = useState<number | "">("");
+    const selectedQuantity = customQuantity === "" ? quantity : customQuantity;
+    const canAddSelectedQuantity =
+        typeof selectedQuantity === "number" &&
+        Number.isInteger(selectedQuantity) &&
+        selectedQuantity > 0;
 
     const handleAddToCart = (productId: number, selectedQuantity: number) => {
         if (selectedQuantity <= 0) return;
@@ -169,7 +175,7 @@ export default function Substrat() {
                                                     key={value}
                                                     type="button"
                                                     onClick={() => setQuantity(value)}
-                                                    className={`cursor-pointer rounded-xl border-2 px-2 py-3 text-lg font-black transition disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none ${quantity === value
+                                                    className={`cursor-pointer rounded-xl border-2 px-2 py-3 text-lg font-black transition disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none ${customQuantity === "" && quantity === value
                                                         ? "border-[#4CAF50] bg-[#4CAF50] text-white shadow-lg"
                                                         : "border-[#2d5016]/15 bg-white text-[#2d5016] hover:border-[#4CAF50]"
                                                         }`}
@@ -180,15 +186,37 @@ export default function Substrat() {
                                                 </button>
                                             ))}
                                         </div>
+                                        <div className="mt-4">
+                                            <label htmlFor="custom-quantity" className="mb-2 block text-sm font-bold">
+                                                Vnesite število kosov po meri
+                                            </label>
+                                            <input
+                                                id="custom-quantity"
+                                                type="number"
+                                                min="1"
+                                                step="1"
+                                                inputMode="numeric"
+                                                value={customQuantity}
+                                                onChange={(event) => {
+                                                    const value = event.target.value;
+                                                    setCustomQuantity(value === "" ? "" : Number(value));
+                                                }}
+                                                className="w-full rounded-xl border-2 border-[#2d5016]/15 bg-white px-4 py-3 text-lg font-bold text-[#2d5016] outline-none transition focus:border-[#4CAF50]"
+                                                placeholder="npr. 25"
+                                                disabled={!product.inStock}
+                                            />
+                                        </div>
                                         <button
                                             className="cursor-pointer mt-5 flex w-full items-center justify-center gap-3 rounded-xl bg-[#2d5016] px-5 py-4 text-center font-bold text-[#F5F5DC] transition hover:bg-[#4CAF50] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200"
-                                            disabled={!product.inStock}
+                                            disabled={!product.inStock || !canAddSelectedQuantity}
                                             onClick={() => {
-                                                handleAddToCart(product.id, quantity);
+                                                if (typeof selectedQuantity === "number" && canAddSelectedQuantity) {
+                                                    handleAddToCart(product.id, selectedQuantity);
+                                                }
                                             }}
                                         >
                                             <CartIcon />
-                                            Dodaj {quantity} kosov v košarico
+                                            Dodaj {selectedQuantity === "" ? "..." : selectedQuantity} kosov v košarico
                                         </button>                                   </div>
 
                                     <div className="rounded-[30px] bg-[#F5F5DC] p-6 text-[#2d5016] shadow-[0_24px_70px_rgba(20,36,18,0.2)] sm:p-8">
