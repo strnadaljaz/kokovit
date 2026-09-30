@@ -113,7 +113,7 @@ export default function Page() {
                             {/* Order CTA */}
                             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
                                 <a
-                                    href="/trgovina"
+                                    href={`/trgovina/substrat?productId=${product.id}`}
                                     className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer"
                                 >
                                     📝 Naročite tukaj
