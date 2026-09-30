@@ -25,8 +25,8 @@ const ProductCard = ({ product }: { product: Product }) => {
     const handleClick = () => {
         if (isProduct(product))
             router.push(`/trgovina/substrat?productId=${product.id}`);
-        else
-            router.push(`/trgovina/kolekcija?product_id=${product.id}`);
+        // else
+        //     router.push(`/trgovina/kolekcija?product_id=${product.id}`);
     }
 
     return (
