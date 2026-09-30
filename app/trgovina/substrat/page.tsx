@@ -2,7 +2,7 @@
 
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useCart } from "@/Context/CartContext";
 import { formatPrice } from "@/lib/helper/formatPrice";
 import { useProducts } from "@/Context/ProductsContext";
@@ -18,7 +18,7 @@ function CartIcon() {
     );
 }
 
-export default function Substrat() {
+function SubstratContent() {
     const { products, loading, error: productsError } = useProducts();
     const { addItem } = useCart();
     const [addedNotice, setAddedNotice] = useState<string | null>(null);
@@ -300,5 +300,13 @@ export default function Substrat() {
             </main >
             <Footer />
         </div >
+    );
+}
+
+export default function Substrat() {
+    return (
+        <Suspense fallback={null}>
+            <SubstratContent />
+        </Suspense>
     );
 }
