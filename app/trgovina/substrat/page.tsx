@@ -49,7 +49,7 @@ export default function Substrat() {
             ? [4, 8, 12, 16]
             : [5, 6, 7, 8, 9];
 
-    const [quantity, setQuantity] = useState(isBigBag ? 1 : is45l ? 4 : 5);
+    const [quantity, setQuantity] = useState<number | "">(isBigBag ? 1 : is45l ? 4 : 5);
     const [customQuantity, setCustomQuantity] = useState<number | "">("");
     const selectedQuantity = customQuantity === "" ? quantity : customQuantity;
     const canAddSelectedQuantity = (): boolean => {
