@@ -60,13 +60,14 @@ export function calculateTotalItemPrice(item: CartItem, products: Product[]): nu
         const discounts = [...product.discounts].sort((a, b) => b.quantity - a.quantity);
         for (const discount of discounts) {
             if (Math.floor(quantity / discount.quantity) > 0) {
-                totalPrice += (Math.floor(quantity / discount.quantity)) * discount.price;
-                quantity %= discount.quantity;
+                totalPrice = (discount.price / discount.quantity) * quantity;
+                break;
             }
         }
-        if (quantity > 0)
-            totalPrice += quantity * product.basePrice;
     }
+
+    if (totalPrice === 0.0 && product)
+        totalPrice = quantity * product?.basePrice;
 
     return totalPrice;
 }
