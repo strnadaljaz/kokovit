@@ -34,12 +34,12 @@ const ProductCard = ({ product }: { product: Product }) => {
             className="cursor-pointer group overflow-hidden rounded-[28px] border border-[#F5F5DC]/25 bg-[#F5F5DC]/95 shadow-[0_24px_60px_rgba(20,36,18,0.2)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(20,36,18,0.28)]"
             onClick={handleClick}
         >
-            <div className="relative flex h-72 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.18),_rgba(245,245,220,0.9)_58%,_rgba(245,245,220,1)_100%)] p-6">
+            <div className="relative flex h-85 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.18),_rgba(245,245,220,0.9)_58%,_rgba(245,245,220,1)_100%)] p-6">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/10 via-transparent to-[#6b4226]/10" />
                 <img
                     src={product.image}
                     alt={product.name}
-                    className="relative h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="relative size-fit object-cover transition-transform duration-500 group-hover:scale-105"
                 />
             </div>
 
