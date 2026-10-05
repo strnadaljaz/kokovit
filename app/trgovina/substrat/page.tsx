@@ -2,11 +2,12 @@
 
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import { useCart } from "@/Context/CartContext";
 import { formatPrice } from "@/lib/helper/formatPrice";
 import { useProducts } from "@/Context/ProductsContext";
 import { useSearchParams } from "next/navigation";
+import AddToCartModal from "../AddToCartModal";
 
 function CartIcon() {
     return (
@@ -21,17 +22,11 @@ function CartIcon() {
 function SubstratContent() {
     const { products, loading, error: productsError } = useProducts();
     const { addItem } = useCart();
-    const [addedNotice, setAddedNotice] = useState<string | null>(null);
+    const [addedQuantity, setAddedQuantity] = useState<number | null>(null);
     const searchParams = useSearchParams();
     const requestedProduct =
         searchParams.get("productId") ?? searchParams.get("product_id")
     const requestedProductId = Number(requestedProduct);
-
-    console.log("search:", window.location.search);
-    console.log("requestedProduct:", requestedProduct);
-    console.log("requestedProductId:", requestedProductId);
-    console.log("products:", products);
-    console.log("loading:", loading);
 
     const product = products.find(p =>
         Number(p.id) === requestedProductId ||
@@ -70,18 +65,8 @@ function SubstratContent() {
             productId: productId,
             quantity: selectedQuantity,
         });
-        setAddedNotice(`${selectedQuantity} kosov je bilo dodanih v košarico.`);
+        setAddedQuantity(selectedQuantity);
     }
-
-    useEffect(() => {
-        if (!addedNotice) return;
-
-        const timeoutId = window.setTimeout(() => {
-            setAddedNotice(null);
-        }, 3000);
-
-        return () => window.clearTimeout(timeoutId);
-    }, [addedNotice]);
 
     return (
         <div>
@@ -108,17 +93,11 @@ function SubstratContent() {
 
                     {product && !loading && !productsError && (
                         <>
-                            {addedNotice && (
-                                <div
-                                    role="status"
-                                    aria-live="polite"
-                                    className="fixed right-4 top-24 z-50 flex items-center gap-3 rounded-2xl border border-[#4CAF50]/30 bg-[#F5F5DC] px-5 py-4 text-[#2d5016] shadow-[0_18px_50px_rgba(20,36,18,0.25)]"
-                                >
-                                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4CAF50] font-black text-white">
-                                        ✓
-                                    </span>
-                                    <span className="font-bold">{addedNotice}</span>
-                                </div>
+                            {addedQuantity !== null && (
+                                <AddToCartModal
+                                    quantity={addedQuantity}
+                                    onClose={() => setAddedQuantity(null)}
+                                />
                             )}
                             <header className="mb-8">
                                 <p className="mb-3 text-xs font-bold uppercase tracking-[0.35em] text-[#F5F5DC]/80">
