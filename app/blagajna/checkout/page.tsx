@@ -2,7 +2,7 @@
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { useState } from "react";
-import { calculateTotalPrice, calculateFreeQuantity, calculateTotalItemPrice } from "@/lib/helper/priceCalculations";
+import { calculateTotalPrice, calculateFreeQuantity, calculateTotalItemPrice, calculateTotalShipping } from "@/lib/helper/priceCalculations";
 import { Product, useProducts } from "@/Context/ProductsContext";
 import { useCart } from "@/Context/CartContext";
 import { CartItem } from "@/lib/cart/CartItem";
@@ -42,7 +42,9 @@ async function sendEmail(name: string, email: string, phone: string, address: st
         itemsString += productName + ": " + item.quantity + " + " + calculateFreeQuantity(item, products) + ", cena: " + formatPrice(calculateTotalItemPrice(item, products)) + '\n';
     }
 
-    itemsString += "Skupaj cena: " + formatPrice(calculateTotalPrice(items, products));
+    itemsString += "Postnina: " + formatPrice(calculateTotalShipping(items, products)) + '\n';
+
+    itemsString += "Skupaj cena: " + formatPrice(calculateTotalPrice(items, products) + calculateTotalShipping(items, products));
 
     let paymentString;
 
@@ -136,8 +138,8 @@ const Checkout = () => {
                             <div className={`h-2 w-full ${mailSent ? "bg-[#4CAF50]" : "bg-[#b94a48]"}`} />
                             <div className="px-6 py-12 sm:px-12 sm:py-16">
                                 <div className={`mx-auto mb-7 flex h-24 w-24 items-center justify-center rounded-full ${mailSent
-                                        ? "bg-[#4CAF50]/15 text-[#2d5016]"
-                                        : "bg-[#b94a48]/12 text-[#a33d3b]"
+                                    ? "bg-[#4CAF50]/15 text-[#2d5016]"
+                                    : "bg-[#b94a48]/12 text-[#a33d3b]"
                                     }`}>
                                     {mailSent ? (
                                         <svg viewBox="0 0 24 24" fill="none" className="h-12 w-12" aria-hidden="true">
