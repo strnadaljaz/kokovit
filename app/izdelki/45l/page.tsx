@@ -2,68 +2,17 @@
 import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
-import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { useProducts } from "@/Context/ProductsContext";
 import { formatPrice } from "@/lib/helper/formatPrice";
 
-class Discount45 {
-    quantity: number = 0;
-    price: number = 0;
-    shipping: number = 0;
-
-    constructor(q: number, p: number, s: number) {
-        this.quantity = q;
-        this.price = p;
-        this.shipping = s;
-    }
-}
-
 export default function Page() {
-    const [onePiecePrice, setOnePiecePrice] = useState<number>(0);
+    const { products } = useProducts();
 
-    const [discounts, setDiscounts] = useState<Discount45[]>();
+    if (products.length === 0) return (<p>loading...</p>);
 
-    useEffect(() => {
-        const supabase = createClient();
+    const product = products.find(p => p.name = "45l");
 
-        const getData = async () => {
-            const { data, error } = await supabase
-                .from('products')
-                .select('price')
-                .eq('id', 1);
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            setOnePiecePrice(data[0].price);
-        }
-
-        const getDiscounts = async () => {
-            const { data, error } = await supabase
-                .from('discounts')
-                .select('quantity, price, shipping')
-                .eq('product_id', 1)
-                .order('quantity', { ascending: true });
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            let arr: Discount45[] = [];
-
-            for (let d of data) {
-                arr.push(new Discount45(d.quantity, d.price, d.shipping));
-            }
-
-            setDiscounts(arr);
-        }
-
-        getData();
-        getDiscounts();
-    }, []);
+    if (!product) return (<p>error!</p>);
 
     return (
         <div>
@@ -115,7 +64,7 @@ export default function Page() {
                                     <span className="text-2xl">🌱</span>
                                     <p className="text-lg text-gray-700">Pripravljen za takojšnje sajenje in setev</p>
                                 </div>
-                                <p className="text-2xl font-bold text-[#4CAF50]">Cena: {formatPrice(onePiecePrice)} / kom</p>
+                                <p className="text-2xl font-bold text-[#4CAF50]">Cena: {formatPrice(product.basePrice)} / kom</p>
                             </div>
                             <div className="mt-6">
                                 <a href="/uporaba" className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer inline-block">Kako uporabljati 📚</a>
@@ -132,9 +81,9 @@ export default function Page() {
                         <div className="grid md:grid-cols-2 gap-6 mb-8">
 
                             {
-                                discounts && (
-                                    discounts.map((item, index) => (
-                                        <div key={index} className={`bg-white rounded-xl p-6 shadow-lg ${index === discounts.length - 1 ? "border-4 border-[#4CAF50]" : ""}`}>
+                                product.discounts && (
+                                    product.discounts.map((item, index) => (
+                                        <div key={index} className={`bg-white rounded-xl p-6 shadow-lg ${product.discounts && index === product.discounts.length - 1 ? "border-4 border-[#4CAF50]" : ""}`}>
                                             < p className="text-xl font-semibold text-gray-800 mb-2" >
                                                 👉 {item.quantity} kosov
                                             </p>
@@ -173,7 +122,7 @@ export default function Page() {
                             {/* Order CTA */}
                             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
                                 <a
-                                    href="/povprasevanje"
+                                    href={`/trgovina/substrat?productId=${product.id}`}
                                     className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer"
                                 >
                                     📝 Naročite tukaj

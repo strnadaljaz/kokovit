@@ -4,11 +4,13 @@ type Link = {
 }
 
 const links: Link[] = [
-    {name: "Domov", link: "/"},
-    {name: "Uporaba", link: "/uporaba"},
-    {name: "O nas", link: "/onas"},
-    {name: "Povpraševanje", link: "/povprasevanje"},
-    {name: "Partnerji", link: "/partnerji"}
+    { name: "Domov", link: "/" },
+    { name: "Uporaba", link: "/uporaba" },
+    { name: "O nas", link: "/onas" },
+    { name: "Trgovina", link: "/trgovina" },
+    // { name: "Povpraševanje", link: "/povprasevanje" },
+    // { name: "Kolekcija", link: "/kolekcija" },
+    { name: "Partnerji", link: "/partnerji" }
 ];
 
 export default links;

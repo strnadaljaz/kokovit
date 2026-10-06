@@ -1,0 +1,97 @@
+"use client";
+
+import { CartItem } from "@/lib/cart/CartItem";
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+export interface CartContextValue {
+    items: CartItem[];
+    addItem: (item: CartItem) => void;
+    removeItem: (id: string) => void;
+    updateQuantity: (id: string, quantity: number) => void;
+    clearCart: () => void;
+    totalItems: number;
+}
+
+const CartContext = createContext<CartContextValue | null>(null);
+
+export function CartProvider({ children }: { children: ReactNode }) {
+    const [items, setItems] = useState<CartItem[]>([]);
+
+    // naloži iz localStorage ob zagonu
+    useEffect(() => {
+        const saved = localStorage.getItem('cart');
+        if (saved) setItems(JSON.parse(saved));
+    }, []);
+
+    // shrani ob vsaki spremembi
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(items));
+    }, [items]);
+
+    const addItem = (item: CartItem) => {
+        if (item.quantity > 0)
+            setItems((prev) => {
+                let merged = false;
+                const nextItems: CartItem[] = [];
+
+                for (const existing of prev) {
+                    if (existing.productId !== item.productId) {
+                        nextItems.push(existing);
+                        continue;
+                    }
+
+                    if (!merged) {
+                        nextItems.push({
+                            ...existing,
+                            id: item.productId.toString(),
+                            quantity: existing.quantity + item.quantity,
+                        });
+                        merged = true;
+                    }
+                }
+
+                return merged
+                    ? nextItems
+                    : [...nextItems, { ...item, id: item.productId.toString() }];
+            });
+    };
+
+    const removeItem = (id: string) => {
+        setItems((prev) => prev.filter((i) => i.id !== id));
+    };
+
+    const updateQuantity = (id: string, quantity: number) => {
+        if (quantity <= 0) {
+            removeItem(id);
+            return;
+        }
+        setItems((prev) =>
+            prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+        );
+    };
+
+    const clearCart = () => setItems([]);
+
+    const totalItems = items.length;
+
+    return (
+        <CartContext.Provider
+            value={{
+                items,
+                addItem,
+                removeItem,
+                updateQuantity,
+                clearCart,
+                totalItems,
+            }}
+        >
+            {children}
+        </CartContext.Provider>
+    );
+}
+
+export function useCart() {
+    const ctx = useContext(CartContext);
+    if (!ctx) throw new Error('useCart must be used within CartProvider');
+    return ctx;
+}

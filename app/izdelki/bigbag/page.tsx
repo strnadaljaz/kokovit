@@ -2,32 +2,17 @@
 import Image from "next/image";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
-import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { formatPrice } from "@/lib/helper/formatPrice";
+import { useProducts } from "@/Context/ProductsContext";
 
 export default function Page() {
-    const [price, setPrice] = useState<number>(0);
+    const { products } = useProducts();
 
-    useEffect(() => {
-        const getPrice = async () => {
-            const supabase = createClient();
+    if (!products) return (<p>loading...</p>);
 
-            const { data, error } = await supabase
-                .from('products')
-                .select('price')
-                .eq('id', 3);
+    const product = products.find(p => p.name === "Big bag");
 
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            setPrice(data[0].price);
-        }
-
-        getPrice();
-    }, []);
+    if (!product) return (<p>error...</p>)
 
     return (
         <div>
@@ -99,18 +84,20 @@ export default function Page() {
                                     💶 Cena / 1m³
                                 </p>
                                 <p className="text-4xl font-bold text-[#4CAF50]">
-                                    {formatPrice(price)} / kom
+                                    {formatPrice(product.basePrice)} / kom
                                 </p>
                             </div>
 
-                            <div className="bg-white rounded-xl p-8 shadow-lg border-4 border-[#4CAF50]">
-                                <p className="text-2xl font-semibold text-gray-800 mb-4">
-                                    🎁 Posebna ponudba
-                                </p>
-                                <p className="text-3xl font-bold text-red-600 mb-2">
-                                    Ob nakupu 2 kom ➝ 3. GRATIS!
-                                </p>
-                            </div>
+                            {product.discounts && product.discounts.map(d => (
+                                <div key={d.id} className="bg-white rounded-xl p-8 shadow-lg border-4 border-[#4CAF50]">
+                                    <p className="text-2xl font-semibold text-gray-800 mb-4">
+                                        🎁 Posebna ponudba
+                                    </p>
+                                    <p className="text-3xl font-bold text-red-600 mb-2">
+                                        Ob nakupu {d.quantity} kom ➝ {d.freeQuantity} kom GRATIS!
+                                    </p>
+                                </div>
+                            ))}
                         </div>
 
                         <div className="text-center mb-8">
@@ -126,7 +113,7 @@ export default function Page() {
                             {/* Order CTA */}
                             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
                                 <a
-                                    href="/povprasevanje"
+                                    href={`/trgovina/substrat?productId=${product.id}`}
                                     className="px-10 py-4 bg-[#4CAF50] text-white font-bold text-xl rounded-lg shadow-lg hover:bg-[#45a049] hover:scale-105 transition-all duration-300 cursor-pointer"
                                 >
                                     📝 Naročite tukaj
