@@ -18,7 +18,7 @@ export interface Product {
     inStock: boolean;
     basePrice: number;
     image: string;
-    discounts: Discount[];
+    discounts?: Discount[];
 }
 
 export interface ProductsContextValue {
@@ -55,6 +55,17 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
             return;
         }
 
+        const productsWithoutDiscounts: Product[] = (productData ?? []).map(p => ({
+            id: p.id,
+            name: p.name,
+            inStock: p.in_stock,
+            basePrice: p.price,
+            image: p.img,
+        }));
+
+        setLoading(false);
+        setProducts(productsWithoutDiscounts);
+
         const { data: discountData, error: discountError } = await supabase
             .from("discounts")
             .select("id, quantity, free_quantity, price, shipping, product_id")
@@ -67,6 +78,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
         }
 
         const discountsByProduct = new Map<number, Discount[]>();
+
         for (const d of discountData ?? []) {
             const list = discountsByProduct.get(d.product_id) ?? [];
             list.push({
@@ -90,7 +102,6 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
         }));
 
         setProducts(mapped);
-        setLoading(false);
     }, []);
 
     useEffect(() => {
