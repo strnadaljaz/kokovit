@@ -27,7 +27,7 @@ const Panel = () => {
                         basePrice: p.basePrice,
                         inStock: p.inStock,
                         image: p.image,
-                        discounts: p.discounts.map(d => ({
+                        discounts: (p.discounts ?? []).map(d => ({
                             id: d.id,
                             quantity: d.quantity,
                             price: d.price,
@@ -180,7 +180,7 @@ const Panel = () => {
 
             // 2b) Pobriši discounte, ki so bili prej v bazi, pa jih ni več v draftu
             const existingProduct = products.find(p => String(p.id) === draftId);
-            const previousDiscountIds = existingProduct?.discounts.map(d => d.id) ?? [];
+            const previousDiscountIds = existingProduct?.discounts?.map(d => d.id) ?? [];
             const currentDiscountIds = new Set(
                 draft.discounts.map(d => d.id).filter((id): id is number => id !== undefined)
             );

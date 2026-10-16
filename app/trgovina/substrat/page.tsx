@@ -230,12 +230,12 @@ function SubstratContent() {
                                                     <CartIcon />
                                                 </a>
                                             </div>
-                                        ) : product.discounts.length > 0 ? (
+                                        ) : product.discounts && product.discounts.length > 0 ? (
                                             <div className="space-y-3">
                                                 {product.discounts.map((discount, index) => (
                                                     <div
                                                         key={discount.id}
-                                                        className={`flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 ${index === product.discounts.length - 1
+                                                        className={`flex items-center justify-between gap-3 rounded-2xl border bg-white p-4 ${product.discounts && index === product.discounts.length - 1
                                                             ? "border-[#4CAF50] ring-2 ring-[#4CAF50]/20"
                                                             : "border-[#2d5016]/10"
                                                             }`}

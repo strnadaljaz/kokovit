@@ -7,7 +7,7 @@ export function calculateFreeQuantity(item: CartItem, products: Product[]): numb
     const product = products.find(p => p.id === item.productId);
     let quantity = item.quantity;
 
-    if (product) {
+    if (product && product.discounts) {
         const discounts = [...product.discounts].sort((a, b) => b.quantity - a.quantity);
 
         for (const discount of discounts) {
@@ -42,7 +42,7 @@ export function calculateTotalShipping(items: CartItem[], products: Product[]): 
 
     for (const item of items) {
         if (item.productId === product?.id && item.quantity <= 4) {
-            if (product.discounts[0].shipping)
+            if (product.discounts && product.discounts[0].shipping)
                 totalShipping += product.discounts[0].shipping;
         }
     }
@@ -56,7 +56,7 @@ export function calculateTotalItemPrice(item: CartItem, products: Product[]): nu
     const product = products.find(p => p.id === item.productId);
     let quantity = item.quantity;
 
-    if (product) {
+    if (product && product.discounts) {
         const discounts = [...product.discounts].sort((a, b) => b.quantity - a.quantity);
         for (const discount of discounts) {
             if (Math.floor(quantity / discount.quantity) > 0) {
