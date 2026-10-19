@@ -34,6 +34,7 @@ export async function POST(req: Request) {
             phone,
             address + ", " + postNumber + " " + city,
             `Izdelki: \n${itemsString}`,
+            `Plačilo: ${paymentString}`,
             `Opombe: ${notes}`,
         ].join('\n'),
     };
