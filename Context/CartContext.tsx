@@ -20,7 +20,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     // naloži iz localStorage ob zagonu
     useEffect(() => {
         const saved = localStorage.getItem('cart');
-        if (saved) setItems(JSON.parse(saved));
+        if (saved) {
+            queueMicrotask(() => setItems(JSON.parse(saved)));
+        }
     }, []);
 
     // shrani ob vsaki spremembi

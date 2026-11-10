@@ -105,7 +105,11 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        refresh();
+        const loadProducts = async () => {
+            await refresh();
+        };
+
+        void loadProducts();
     }, [refresh]);
 
     const addProduct = (product: Product) => {

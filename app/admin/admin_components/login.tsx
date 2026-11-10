@@ -37,7 +37,7 @@ const Login = ({ logIn }: loginParams) => {
         >
             <div className="w-full max-w-xs m-auto bg-[#161A20] border border-white/5 rounded-xl shadow-lg shadow-black/40 p-8">
                 <header>
-                    <img className="w-20 mx-auto mb-6" src="logotip.webp" />
+                    <img className="w-20 mx-auto mb-6" src="logotip.webp" alt="Kokovit" />
                 </header>
 
                 <form onSubmit={(e) => {

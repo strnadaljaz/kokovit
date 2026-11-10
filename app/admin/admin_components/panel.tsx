@@ -18,26 +18,30 @@ const Panel = () => {
     const [drafts, setDrafts] = useState<Record<string, ProductDraft>>({});
 
     useEffect(() => {
-        setDrafts(
-            Object.fromEntries(
-                products.map(p => [
-                    String(p.id),
-                    {
-                        name: p.name,
-                        basePrice: p.basePrice,
-                        inStock: p.inStock,
-                        image: p.image,
-                        discounts: (p.discounts ?? []).map(d => ({
-                            id: d.id,
-                            quantity: d.quantity,
-                            price: d.price,
-                            freeQuantity: d.freeQuantity,
-                            shipping: d.shipping
-                        }))
-                    }
-                ])
-            )
-        )
+        const syncDrafts = () => {
+            setDrafts(
+                Object.fromEntries(
+                    products.map(p => [
+                        String(p.id),
+                        {
+                            name: p.name,
+                            basePrice: p.basePrice,
+                            inStock: p.inStock,
+                            image: p.image,
+                            discounts: (p.discounts ?? []).map(d => ({
+                                id: d.id,
+                                quantity: d.quantity,
+                                price: d.price,
+                                freeQuantity: d.freeQuantity,
+                                shipping: d.shipping
+                            }))
+                        }
+                    ])
+                )
+            );
+        };
+
+        syncDrafts();
     }, [products]);
 
     const updateDraft = (draftId: string, changes: Partial<ProductDraft>) => {

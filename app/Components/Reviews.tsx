@@ -139,7 +139,7 @@ export default function Reviews () {
                         </div>
 
                         <p className="text-base sm:text-lg md:text-xl text-gray-700 text-center mb-4 md:mb-6 leading-relaxed">
-                            "{reviews[currentIndex].text}"
+                            &quot;{reviews[currentIndex].text}&quot;
                         </p>
                         <p className="text-sm sm:text-base md:text-lg text-gray-900 text-center font-semibold">
                             {reviews[currentIndex].name}

@@ -6,10 +6,9 @@ import { useProducts } from "@/Context/ProductsContext";
 
 export default function Hero() {
     const { products } = useProducts();
+    const router = useRouter();
 
     if (products.length === 0) return <p>Loading…</p>;
-
-    const router = useRouter();
 
     return (
         <div className="min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center px-4 md:px-8 py-12">

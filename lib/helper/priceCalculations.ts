@@ -54,7 +54,7 @@ export function calculateTotalItemPrice(item: CartItem, products: Product[]): nu
     let totalPrice = 0.0;
 
     const product = products.find(p => p.id === item.productId);
-    let quantity = item.quantity;
+    const quantity = item.quantity;
 
     if (product && product.discounts) {
         const discounts = [...product.discounts].sort((a, b) => b.quantity - a.quantity);

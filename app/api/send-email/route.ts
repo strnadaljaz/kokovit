@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     });
     try {
         await transporter.verify();
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error(err);
         return Response.json({
             success: false,
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     };
 
     try {
-        const info = await transporter.sendMail(message);
+        await transporter.sendMail(message);
 
         return Response.json(
             {
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
             },
             { status: 200 },
         );
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error(err);
         return Response.json(
             {

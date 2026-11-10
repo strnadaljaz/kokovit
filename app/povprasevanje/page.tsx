@@ -84,9 +84,9 @@ export default function Povprasevanje() {
                 return;
             }
 
-            let arr: boolean[] = [];
+            const arr: boolean[] = [];
 
-            for (let d of data) {
+            for (const d of data) {
                 arr.push(d.in_stock);
             }
 

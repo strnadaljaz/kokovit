@@ -3,8 +3,7 @@
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
 import { useCart } from "@/Context/CartContext";
-import { Product, useProducts } from "@/Context/ProductsContext";
-import { CartItem } from "@/lib/cart/CartItem";
+import { useProducts } from "@/Context/ProductsContext";
 import { formatPrice } from "@/lib/helper/formatPrice";
 import { calculateTotalItemPrice, calculateTotalPrice, calculateFreeQuantity, calculateTotalShipping } from "@/lib/helper/priceCalculations";
 
