@@ -16,7 +16,7 @@ const Collection = () => {
                         kos in ga vzemite s seboj na vsak vrt.
                     </p>
                     <a
-                        href="/kolekcija"
+                        href="/trgovina"
                         className="inline-flex items-center gap-2 rounded-lg bg-[#F5F5DC] px-6 py-3 font-semibold text-[#2d5016] shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#F5F5DC]/90"
                     >
                         Izvedi več
@@ -26,7 +26,7 @@ const Collection = () => {
 
                 <div className="order-1 flex justify-center md:order-2">
                     <Image
-                        src="/kokovit_merch.png"
+                        src="/merch.webp"
                         alt="Kokovit kolekcija oblačil"
                         width={768}
                         height={512}
